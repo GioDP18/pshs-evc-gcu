@@ -16,7 +16,7 @@
                                 </button>
                             </RouterLink>
                         </div>
-                        <button>
+                        <button @click="viaGoogle">
                             SIGN IN WITH <i class="fa-brands fa-google"
                                 style="margin-left: 5px; background-color: #2087E4; border-radius: 50%; color: white; padding: 5px 5px 5px 5px;"></i>
                         </button>
@@ -66,6 +66,7 @@
 </template>
 
 <script setup>
+import axios from 'axios';
 import { ref } from 'vue';
 
 const formData = ref({
@@ -94,12 +95,24 @@ const validateForm = () => {
     }
 };
 
-const submitForm = () => {
+const submitForm = async () => {
     validateForm();
 
     if (Object.keys(errors.value).length === 0) {
         // Submit the form
-        console.log('Form submitted:', formData.value);
+        // console.log('Form submitted:', formData.value);
+        try{
+            await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/login`, {
+                email: formData.value.email,
+                password: formData.value.password
+            })
+            .then((response) => {
+                console.log(response);
+            })
+        }
+        catch(error){
+            console.log(error);
+        }
     }
 };
 
@@ -111,225 +124,237 @@ const isValidEmail = (email) => {
 const toggleShowPassword = () => {
     showPassword.value = !showPassword.value;
 };
+
+const viaGoogle = async () => {
+    try{
+        await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/oauth/google`)
+        .then((response) => {
+
+        })
+    }
+    catch(error){
+        console.log(error);
+    }
+}
 </script>
 
 <style scoped>
-.has-error input {
-    border-color: red;
-}
+    .has-error input {
+        border-color: red;
+    }
 
-.error-message {
-    color: red;
-    font-size: 12px;
-    margin-left: 10px;
-}
+    .error-message {
+        color: red;
+        font-size: 12px;
+        margin-left: 10px;
+    }
 
-.password-input-wrapper {
-    position: relative;
-}
+    .password-input-wrapper {
+        position: relative;
+    }
 
-.password-toggle-icon {
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-}
+    .password-toggle-icon {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+    }
 
-.login-content {
-    width: 100%;
-    height: 100vh;
-    display: flex;
-}
-
-.login-left {
-    width: 50%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: end;
-}
-
-.banner {
-    width: 80%;
-    height: 75%;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-}
-
-.banner .big-text {
-    width: 95%;
-    height: 80%;
-}
-
-.big-text h1 {
-    font-size: 65px;
-    color: #2087E4;
-    font-weight: 700
-}
-
-.option-button {
-    display: flex;
-    flex-direction: column;
-    width: 60%;
-    gap: 10px;
-}
-
-.option-button button {
-    height: 6vh;
-    border-radius: 20px;
-    background-color: transparent;
-    border: 1px solid #2087E4;
-    font-weight: 700;
-    color: #343470;
-    -webkit-transition: width .5s;
-    transition: width .5s;
-    width: 90%;
-}
-
-.option-button button:hover {
-    width: 100%;
-}
-
-.option-button .sign-up button {
-    height: 6vh;
-    border-radius: 20px;
-    background-color: #2087E4;
-    border: 1px solid #2087E4;
-    color: white;
-    -webkit-transition: width .5s;
-    transition: width .5s;
-    width: 90%;
-}
-
-.option-button .sign-up button:hover {
-    width: 100%;
-}
-
-.login-right {
-    width: 50%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.white-box {
-    border: 1px solid black;
-    box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;
-    width: 65%;
-    border-radius: 20px;
-    height: 75%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-
-.white-box .login-text {
-    width: 85%;
-    margin-bottom: 20px;
-}
-
-.login-text h1 {
-    font-weight: 700;
-    font-size: 31px;
-    color: #2087E4;
-}
-
-.login-inputs {
-    width: 85%;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.form-input input {
-    border-radius: 20px;
-    font-style: italic;
-    padding-left: 25px;
-    background-color: #f0f0f0;
-}
-
-.login-inputs .form-check {
-    margin-left: 10px;
-}
-
-.login-inputs button {
-    border-radius: 20px;
-    background-color: #2087E4;
-    font-weight: 700;
-    letter-spacing: 3px;
-    box-shadow: rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px;
-}
-
-.login-inputs .forgot {
-    width: 100%;
-    text-align: center;
-    margin-top: 15px;
-    font-size: 15px;
-}
-
-@media screen and (max-width: 360px) {
     .login-content {
-        flex-direction: column;
-        height: 100vh;
         width: 100%;
+        height: 100vh;
+        display: flex;
     }
 
     .login-left {
-        width: 100%;
+        width: 50%;
+        height: 100%;
         display: flex;
-        justify-content: center;
         align-items: center;
+        justify-content: end;
     }
 
     .banner {
-        width: 100%;
+        width: 80%;
+        height: 75%;
         display: flex;
         justify-content: center;
-        align-items: center;
-        height: 100vh;
-        gap: 50px;
-        text-align: center;
+        flex-direction: column;
     }
 
     .banner .big-text {
         width: 95%;
-        height: 60%;
-        margin-top: -30px;
+        height: 80%;
     }
 
     .big-text h1 {
-        font-size: 55px;
-        width: 100%;
-        padding-top: 100px;
+        font-size: 65px;
+        color: #2087E4;
         font-weight: 700
     }
 
     .option-button {
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        width: 90%;
+        width: 60%;
         gap: 10px;
     }
 
-    .option-button .sign-up {
+    .option-button button {
+        height: 6vh;
+        border-radius: 20px;
+        background-color: transparent;
+        border: 1px solid #2087E4;
+        font-weight: 700;
+        color: #343470;
+        -webkit-transition: width .5s;
+        transition: width .5s;
+        width: 90%;
+    }
+
+    .option-button button:hover {
+        width: 100%;
+    }
+
+    .option-button .sign-up button {
+        height: 6vh;
+        border-radius: 20px;
+        background-color: #2087E4;
+        border: 1px solid #2087E4;
+        color: white;
+        -webkit-transition: width .5s;
+        transition: width .5s;
+        width: 90%;
+    }
+
+    .option-button .sign-up button:hover {
         width: 100%;
     }
 
     .login-right {
-        width: 100%;
+        width: 50%;
         height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     .white-box {
-        width: 100%;
-        height: 100vh;
-        border-radius: 0%;
+        border: 1px solid black;
+        box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;
+        width: 65%;
+        border-radius: 20px;
+        height: 75%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
     }
-}
+
+    .white-box .login-text {
+        width: 85%;
+        margin-bottom: 20px;
+    }
+
+    .login-text h1 {
+        font-weight: 700;
+        font-size: 31px;
+        color: #2087E4;
+    }
+
+    .login-inputs {
+        width: 85%;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .form-input input {
+        border-radius: 20px;
+        font-style: italic;
+        padding-left: 25px;
+        background-color: #f0f0f0;
+    }
+
+    .login-inputs .form-check {
+        margin-left: 10px;
+    }
+
+    .login-inputs button {
+        border-radius: 20px;
+        background-color: #2087E4;
+        font-weight: 700;
+        letter-spacing: 3px;
+        box-shadow: rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px;
+    }
+
+    .login-inputs .forgot {
+        width: 100%;
+        text-align: center;
+        margin-top: 15px;
+        font-size: 15px;
+    }
+
+    @media screen and (max-width: 360px) {
+        .login-content {
+            flex-direction: column;
+            height: 100vh;
+            width: 100%;
+        }
+
+        .login-left {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .banner {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            gap: 50px;
+            text-align: center;
+        }
+
+        .banner .big-text {
+            width: 95%;
+            height: 60%;
+            margin-top: -30px;
+        }
+
+        .big-text h1 {
+            font-size: 55px;
+            width: 100%;
+            padding-top: 100px;
+            font-weight: 700
+        }
+
+        .option-button {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 90%;
+            gap: 10px;
+        }
+
+        .option-button .sign-up {
+            width: 100%;
+        }
+
+        .login-right {
+            width: 100%;
+            height: 100%;
+        }
+
+        .white-box {
+            width: 100%;
+            height: 100vh;
+            border-radius: 0%;
+        }
+    }
 </style>

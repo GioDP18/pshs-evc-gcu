@@ -42,30 +42,30 @@
                                 <label for="sex" class="form-label">Sex</label>
                                 <select id="sex" class="form-select" v-model="formData.sex">
                                     <option value="" selected disabled>Select sex</option>
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
                                 </select>
                                 <span class="error-message" v-if="errors.sex">
                                     <i class="fa fa-info-circle"></i> {{ errors.sex }}
                                 </span>
                             </div>
-                            <div class="mb-3 form-input" :class="{ 'has-error': errors.birthday }">
+                            <div class="mb-3 form-input" :class="{ 'has-error': errors.date_of_birth }">
                                 <label for="exampleInputEmail1" class="form-label">Date of Birth</label>
-                                <input type="date" class="form-control" v-model="formData.birthday">
-                                <span class="error-message" v-if="errors.birthday">
-                                    <i class="fa fa-info-circle"></i> {{ errors.birthday }}
+                                <input type="date" class="form-control" v-model="formData.date_of_birth">
+                                <span class="error-message" v-if="errors.date_of_birth">
+                                    <i class="fa fa-info-circle"></i> {{ errors.date_of_birth }}
                                 </span>
                             </div>
-                            <div class="mb-3 form-input" :class="{ 'has-error': errors.contact }">
+                            <div class="mb-3 form-input" :class="{ 'has-error': errors.contact_number }">
                                 <label for="exampleInputEmail1" class="form-label">Contact Number</label>
-                                <input type="number" class="form-control" v-model="formData.contact">
-                                <span class="error-message" v-if="errors.contact">
-                                    <i class="fa fa-info-circle"></i> {{ errors.contact }}
+                                <input type="text" class="form-control" v-model="formData.contact_number">
+                                <span class="error-message" v-if="errors.contact_number">
+                                    <i class="fa fa-info-circle"></i> {{ errors.contact_number }}
                                 </span>
                             </div>
                             <div class="mb-3 form-input" :class="{ 'has-error': errors.signature }">
                                 <label for="exampleInputPassword" class="form-label">Signature Image</label>
-                                <input type="file" class="form-control">
+                                <input type="file" class="form-control" @change="chooseSignature">
                                 <span class="error-message" v-if="errors.signature">
                                     <i class="fa fa-info-circle"></i> {{ errors.signature }}
                                 </span>
@@ -85,25 +85,26 @@
                                     <i class="fa fa-info-circle"></i> {{ errors.password }}
                                 </span>
                             </div>
-                            <div class="mb-3 form-input" :class="{ 'has-error': errors.confirmpassword }">
+                            <div class="mb-3 form-input" :class="{ 'has-error': errors.password_confirmation }">
                                 <label for="exampleInputPassword" class="form-label">Confirm Password</label>
                                 <div class="password-input-wrapper">
                                     <input :type="showPassword ? 'text' : 'password'" class="form-control"
-                                        v-model="formData.confirmpassword">
+                                        v-model="formData.password_confirmation">
                                     <i class="password-toggle-icon"
                                         :class="showPassword ? 'fa fa-eye-slash' : 'fa fa-eye'"
                                         @click="toggleShowPassword"></i>
                                 </div>
-                                <span class="error-message" v-if="errors.confirmpassword">
-                                    <i class="fa fa-info-circle"></i> {{ errors.confirmpassword }}
+                                <span class="error-message" v-if="errors.password_confirmation">
+                                    <i class="fa fa-info-circle"></i> {{ errors.password_confirmation }}
                                 </span>
                             </div>
                             <div class="mb-3 form-input" :class="{ 'has-error': errors.role }">
                                 <label for="role" class="form-label">Role</label>
                                 <select id="role" class="form-select" v-model="formData.role">
                                     <option value="" selected disabled>Select role</option>
-                                    <option value="staff">Staff</option>
+                                    <option value="gcu_staff">GCU Staff</option>
                                     <option value="parent">Parent</option>
+                                    <option value="teacher">Teacher</option>
                                     <option value="student">Student</option>
                                 </select>
                                 <span class="error-message" v-if="errors.role">
@@ -112,12 +113,12 @@
                             </div>
                             <div v-if="formData.role === 'parent' || formData.role === 'student'"
                                 class="mb-3 form-input">
-                                <div :class="{ 'has-error': errors.studentid }">
+                                <div :class="{ 'has-error': errors.id_number }">
                                     <label for="exampleInputEmail1" class="form-label">Student ID Number</label>
                                     <input type="email" class="form-control" placeholder="xx-xxxx-xxx"
-                                        v-model="formData.studentid">
-                                    <span class="error-message" v-if="errors.studentid">
-                                        <i class="fa fa-info-circle"></i> {{ errors.studentid }}
+                                        v-model="formData.id_number">
+                                    <span class="error-message" v-if="errors.id_number">
+                                        <i class="fa fa-info-circle"></i> {{ errors.id_number }}
                                     </span>
                                 </div>
                             </div>
@@ -151,6 +152,7 @@
 </template>
 
 <script setup>
+import axios from 'axios';
 import { ref } from 'vue';
 
 const formData = ref({
@@ -159,13 +161,13 @@ const formData = ref({
     lastname: '',
     email: '',
     sex: '',
-    birthday: '',
-    contact: '',
+    date_of_birth: '',
+    contact_number: '',
     signature: '',
     password: '',
-    confirmpassword: '',
+    password_confirmation: '',
     role: '',
-    studentid: '',
+    id_number: '',
 });
 
 const errors = ref({
@@ -174,13 +176,13 @@ const errors = ref({
     lastname: '',
     email: '',
     sex: '',
-    birthday: '',
-    contact: '',
+    date_of_birth: '',
+    contact_number: '',
     signature: '',
     password: '',
-    confirmpassword: '',
+    password_confirmation: '',
     role: '',
-    studentid: '',
+    id_number: '',
 });
 
 const currentStep = ref(1);
@@ -207,16 +209,16 @@ const validateForm = () => {
         errors.value.sex = 'Sex is required';
     }
 
-    if (!formData.value.birthday) {
-        errors.value.birthday = 'Birthday is required';
+    if (!formData.value.date_of_birth) {
+        errors.value.date_of_birth = 'date_of_birth is required';
     }
 
-    if (!formData.value.contact) {
-        errors.value.contact = 'Contact is required';
+    if (!formData.value.contact_number) {
+        errors.value.contact_number = 'Contact_number is required';
     }
 
-    if (!formData.value.studentid) {
-        errors.value.studentid = 'Student ID Number is required';
+    if (!formData.value.id_number) {
+        errors.value.id_number = 'Student ID Number is required';
     }
 
     if (!formData.value.email) {
@@ -233,18 +235,50 @@ const validateForm = () => {
         errors.value.password = 'Password is required';
     }
 
-    if (!formData.value.confirmpassword) {
-        errors.value.confirmpassword = "Confirm Password is required.";
-    } else if (formData.value.confirmpassword !== formData.value.password) {
-        errors.value.confirmpassword = "Passwords don't match.";
+    if (!formData.value.password_confirmation) {
+        errors.value.password_confirmation = "Confirm Password is required.";
+    } else if (formData.value.password_confirmation !== formData.value.password) {
+        errors.value.password_confirmation = "Passwords don't match.";
     }
 };
+const chooseSignature = (event) => {
+    const file = event.target.files[0];
+    formData.value.signature = file;
+    console.log(file.name)
+}
 
-const submitForm = () => {
+const submitForm = async () => {
     validateForm();
 
     if (Object.keys(errors.value).length === 0) {
-        console.log('Form submitted:', formData.value);
+        // console.log('Form submitted:', formData.value);
+        try{
+            await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/register`, {
+                firstname: formData.value.firstname,
+                lastname: formData.value.lastname,
+                middlename: formData.value.middlename,
+                sex: formData.value.sex,
+                date_of_birth: formData.value.date_of_birth,
+                role: formData.value.role,
+                contact_number: formData.value.contact_number,
+                signature: formData.value.signature,
+                id_number: formData.value.id_number,
+                email: formData.value.email,
+                password: formData.value.password,
+                password_confirmation: formData.value.password_confirmation,
+            },
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+        }
+        catch(error){
+            console.log(error);
+        }
+    }
+    else{
+        console.log(errors.value);
     }
 };
 
