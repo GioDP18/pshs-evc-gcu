@@ -2,6 +2,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\GenerateController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -24,4 +26,11 @@ Route::group([
 
     // Social login
     Route::get('/oauth/{provider}', [AuthController::class, 'socialLogin']);
+
+    // Generate File
+    Route::post('/generate-intake-interview', [GenerateController::class, 'generateIntInterview']);
+    Route::post('/generate-guidance-admission', [GenerateController::class, 'generateGuidAdmission']);
+    Route::post('/generate-referral-form', [GenerateController::class, 'generateReferralForm']);
 });
+
+
