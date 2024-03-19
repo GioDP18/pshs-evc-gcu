@@ -46,15 +46,15 @@ const initializeDataTable = () => {
                                             <span class="send-text">Action</span>
                                         </button>
                                         <ul class="dropdown-menu" aria-labelledby="sendUserCertDropdown">
-                                            <li><a class="dropdown-item" href="#"
+                                            <li><a class="dropdown-item view" href="#"
                                                     @click="sendCertificate('certificate1')"><i><font-awesome-icon
                                                             :icon="['fas', 'eye']"
                                                             style="margin-right: 10px;" /></i>View</a></li>
-                                            <li><a class="dropdown-item" href="#"
+                                            <li><a class="dropdown-item generate" href="#"
                                                     @click="sendCertificate('certificate2')"><i><font-awesome-icon
                                                             :icon="['fas', 'file']"
                                                             style="margin-right: 10px;" /></i>Generate</a></li>
-                                            <li><a class="dropdown-item" href="#"
+                                            <li><a class="dropdown-item delete" href="#"
                                                     @click="sendCertificate('certificate2')"><i><font-awesome-icon
                                                             :icon="['fas', 'trash']"
                                                             style="margin-right: 10px;" /></i>Delete</a></li>
@@ -166,47 +166,25 @@ const initializeDataTable = () => {
     margin-right: 6px;
 }
 
-.modal-header {
-    background-color: #303841;
-    color: #ffffff;
+.dropdown-menu .view {
+    color: #0059a7;
 }
 
-.modal-header .button-close {
-    color: white !important;
-    background-color: transparent;
-    border: none;
-    font-size: 20px;
+.dropdown-menu .generate {
+    color: #00a11b;
 }
 
-.list-item {
-    position: relative;
+.dropdown-menu .delete {
+    color: #a5000e;
 }
 
-.list-item p {
-    margin-right: 20%;
-}
-
-.modal-send {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 13%;
-    border-radius: 20px;
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-}
-
-.modal-send button {
-    background-color: transparent;
-    border: none;
-    width: 100%;
-}
-
-.modal-send i {
-    color: #7AA5D2;
-}
-
-.close:hover {
-    background-color: #303841;
-    color: #ffffff;
+@media screen and (max-width: 360px) {
+    .main-content {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
 }
 </style>
