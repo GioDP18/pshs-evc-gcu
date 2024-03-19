@@ -8,7 +8,12 @@ const router = useRouter();
 
 const showSidebar = ref(true);
 const showMobileSidebar = ref(false);
+const showForms = ref(true); // Control visibility of forms container
 const screenWidth = ref(window.innerWidth);
+
+const toggleForms = () => {
+    showForms.value = !showForms.value;
+};
 
 const updateScreenWidth = () => {
     screenWidth.value = window.innerWidth;
@@ -68,7 +73,8 @@ const handleLogout = async () => {
             <RouterLink to="" class="sidebar-logo" style="text-decoration: none;">
                 <img loading="lazy" src="../../../../public/external/C-Logo.png" class="img" />
                 <div v-if="showSidebar" class="logo-text">
-                    <div class="certicode"><span class="certi">Certi</span><span class="code">Code</span></div>
+                    <div class="certicode"><span class="certi">PSHS-</span><span class="code">EVC</span><span
+                            class="certi">-GCU</span></div>
                 </div>
             </RouterLink>
             <div class="menu">
@@ -77,21 +83,43 @@ const handleLogout = async () => {
                     <i><font-awesome-icon style="" class="icon" :icon="['fas', 'fa-home']" /></i>
                     <div v-if="showSidebar" class="sidebar-text">Home</div>
                 </RouterLink>
-                <RouterLink to="intakeInterviewForm" class="sidebar-menu" style="text-decoration: none;"
-                    title="participants">
-                    <i><font-awesome-icon class="icon" :icon="['fas', 'file']" /></i>
-                    <div v-if="showSidebar" class="sidebar-text">Intake Interview Form</div>
+                <RouterLink to="calendar" class="sidebar-menu" active-class="active" style="text-decoration: none;"
+                    title="calendar">
+                    <i><font-awesome-icon class="icon" :icon="['fas', 'calendar']" /></i>
+                    <div v-if="showSidebar" class="sidebar-text">Calendar</div>
                 </RouterLink>
-                <RouterLink to="guidanceAdmissionSlip" class="sidebar-menu" style="text-decoration: none;"
-                    title="participants">
-                    <i><font-awesome-icon class="icon" :icon="['fas', 'file']" /></i>
-                    <div v-if="showSidebar" class="sidebar-text">Guidance Admission Slip</div>
-                </RouterLink>
-                <RouterLink to="guidanceCallSlip" class="sidebar-menu" style="text-decoration: none;"
-                    title="participants">
-                    <i><font-awesome-icon class="icon" :icon="['fas', 'file']" /></i>
-                    <div v-if="showSidebar" class="sidebar-text">Guidance Call Slip</div>
-                </RouterLink>
+                <div class="forms">
+                    <div class="forms-header" @click="toggleForms">
+                        <i><font-awesome-icon class="icon" :icon="['fas', 'file']" /></i>
+                        <div v-if="showSidebar" class="sidebar-text">Forms</div>
+                        <i v-if="showSidebar" class="icon"
+                            :class="['fas', showForms ? 'fa-chevron-up' : 'fa-chevron-down']"></i>
+                    </div>
+                    <div v-show="showForms">
+                        <ul class="menu-option">
+                            <li>
+                                <RouterLink to="intakeInterviewForm" class="form-sidebar-menu"
+                                    style="text-decoration: none;" title="participants">
+                                    <div class="form-sidebar-text">Intake Interview Form</div>
+                                </RouterLink>
+                            </li>
+
+                            <li>
+                                <RouterLink to="guidanceAdmissionSlip" class="form-sidebar-menu"
+                                    style="text-decoration: none;" title="participants">
+                                    <div class="form-sidebar-text">Guidance Admission Slip</div>
+                                </RouterLink>
+                            </li>
+
+                            <li>
+                                <RouterLink to="guidanceCallSlip" class="form-sidebar-menu"
+                                    style="text-decoration: none;" title="participants">
+                                    <div class="form-sidebar-text">Guidance Call Slip</div>
+                                </RouterLink>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
         <!-- Mobile Sidebar -->
@@ -260,14 +288,14 @@ const handleLogout = async () => {
     margin-top: 3px;
 }
 
-.logo-text .certi {
-    color: #ffffff;
-    font-size: 25px;
+.logo-text .certicode .certi {
+    color: #f1f1f1;
+    font-size: 20px;
     font-weight: bolder;
 }
 
-.logo-text .code {
-    font-size: 25px;
+.logo-text .certicode .code {
+    font-size: 20px;
     color: #7AA5D2;
     font-weight: 400;
 }
@@ -315,6 +343,44 @@ const handleLogout = async () => {
     color: #fff;
     padding: 8px 25px;
     cursor: pointer;
+}
+
+.form-sidebar-menu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: -20px;
+    gap: 10px;
+    font-size: 16px;
+    color: #fff;
+    padding: 8px 10px;
+    cursor: pointer;
+}
+
+.forms {
+    margin-top: 15px;
+    gap: 20px;
+    font-size: 16px;
+    color: #fff;
+    padding: 8px 25px;
+    cursor: pointer;
+}
+
+.forms-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 23px;
+}
+
+.form-sidebar-text {
+    font-family: Inter, sans-serif;
+    align-self: start;
+    margin-top: 1px;
+    font-size: 15px;
+    flex-grow: 1;
+    flex-basis: auto;
 }
 
 .sidebar-text {

@@ -8,6 +8,7 @@ import Home from "../Components/Pages/Staff/Home.vue";
 import IntakeInterviewForm from "../Components/Pages/Staff/IntakeInterviewForm.vue";
 import GuidanceAdmissionSlip from "../Components/Pages/Staff/GuidanceAdmissionSlip.vue";
 import GuidanceCallSlip from "../Components/Pages/Staff/GuidanceCallSlip.vue";
+import Calendar from "../Components/Pages/Staff/Calendar.vue";
 
 // Student
 import StudentView from "../Components/Views/StudentView.vue";
@@ -34,6 +35,11 @@ const routes = [
                 path: "home",
                 component: Home,
                 name: "staff-home",
+            },
+            {
+                path: "calendar",
+                component: Calendar,
+                name: "staff-calendar",
             },
             {
                 path: "intakeInterviewForm",

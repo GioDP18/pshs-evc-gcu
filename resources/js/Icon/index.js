@@ -30,6 +30,7 @@ import {
     faBoxArchive,
     faFile,
     faTrash,
+    faCalendar,
 } from "@fortawesome/free-solid-svg-icons";
 
 /* add icons to the library */
@@ -59,7 +60,8 @@ library.add(
     faVideo,
     faBoxArchive,
     faFile,
-    faTrash
+    faTrash,
+    faCalendar
 );
 
 import { faFacebookF, faLinkedinIn } from "@fortawesome/free-brands-svg-icons";
