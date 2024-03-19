@@ -3,15 +3,15 @@
 namespace App\Http\Implementations;
 
 
-use App\Http\Services\CallendarService;
-use App\Models\Callendar;
+use App\Http\Services\CalendarService;
+use App\Models\Calendar;
 use Illuminate\Http\Request;
 
-Class CallendarServiceImpl implements CallendarService
+Class CalendarServiceImpl implements CalendarService
 {
     public function getSchedule($date){
         try{
-            $schedule = Callendar::where('date', $date)->get();
+            $schedule = Calendar::where('date', $date)->get();
 
             return response()->json([
                 "success"=> true,
@@ -29,9 +29,9 @@ Class CallendarServiceImpl implements CallendarService
 
     public function updateSchedule(Request $request){
         try {
-            Callendar::where('date', $request->date)->delete();
+            Calendar::where('date', $request->date)->delete();
             foreach ($request->available_time as $timeSlot) {
-                $result = Callendar::create([
+                $result = Calendar::create([
                     'available_time' => $timeSlot,
                     'date' => $request->date,
                 ]);

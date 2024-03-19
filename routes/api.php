@@ -2,7 +2,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\CallendarController;
+use App\Http\Controllers\CalendarController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,7 +29,7 @@ Route::group([
     Route::get('/auth/{provider}', [AuthController::class, 'socialLogin']);
 
     // Callendar Schedule
-    Route::get('/get-schedule/{date}', [CallendarController::class, 'getSchedule']);
-    Route::post('/update-schedule', [CallendarController::class, 'updateSchedule']);
+    Route::get('/get-schedule/{date}', [CalendarController::class, 'getSchedule']);
+    Route::post('/update-schedule', [CalendarController::class, 'updateSchedule']);
 
 });

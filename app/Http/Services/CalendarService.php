@@ -4,7 +4,7 @@ namespace App\Http\Services;
 
 use Illuminate\Http\Request;
 
-interface CallendarService
+interface CalendarService
 {
     public function getSchedule($date);
 

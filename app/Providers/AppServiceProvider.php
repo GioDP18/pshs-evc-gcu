@@ -4,15 +4,15 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 
 use App\Http\Implementations\AuthServiceImpl;
-use App\Http\Implementations\CallendarServiceImpl;
+use App\Http\Implementations\CalendarServiceImpl;
 use App\Http\Services\AuthService;
-use App\Http\Services\CallendarService;
+use App\Http\Services\CalendarService;
 
 class AppServiceProvider extends ServiceProvider
 {
     public $bindings = [
         AuthService::class => AuthServiceImpl::class,
-        CallendarService::class => CallendarServiceImpl::class
+        CalendarService::class => CalendarServiceImpl::class
     ];
     /**
      * Register any application services.
