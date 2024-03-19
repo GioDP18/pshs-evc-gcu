@@ -27,7 +27,7 @@ const toggleMobileSidebar = () => {
     showMobileSidebar.value = !showMobileSidebar.value;
     const mobileHamburger = document.querySelector("#mobile-hamburger");
     const searchInput = document.querySelector(".search-input");
-    const logoutButton = document.querySelector(".logout-button");
+    const logoutButton = document.querySelector(".dropdown");
 
     if (showMobileSidebar.value) {
         mobileHamburger.style.marginLeft = "250px";
@@ -73,18 +73,18 @@ const handleLogout = async () => {
             <RouterLink to="" class="sidebar-logo" style="text-decoration: none;">
                 <img loading="lazy" src="../../../../public/external/C-Logo.png" class="img" />
                 <div v-if="showSidebar" class="logo-text">
-                    <div class="certicode"><span class="certi">PSHS - </span><span class="code">EVC</span><span
-                            class="certi"> - GCU</span></div>
+                    <div class="phs"><span class="certi">PSHS - </span><span class="code">EVC</span><span class="certi">
+                            - GCU</span></div>
                 </div>
             </RouterLink>
             <div class="menu">
                 <RouterLink to="home" class="sidebar-menu" active-class="active" style="text-decoration: none;"
-                    title="home">
+                    title="Home">
                     <i><font-awesome-icon style="" class="icon" :icon="['fas', 'fa-home']" /></i>
                     <div v-if="showSidebar" class="sidebar-text">Home</div>
                 </RouterLink>
                 <RouterLink to="calendar" class="sidebar-menu" active-class="active" style="text-decoration: none;"
-                    title="calendar">
+                    title="Calendar">
                     <i><font-awesome-icon class="icon" :icon="['fas', 'calendar']" /></i>
                     <div v-if="showSidebar" class="sidebar-text">Calendar</div>
                 </RouterLink>
@@ -92,15 +92,16 @@ const handleLogout = async () => {
                     <div class="forms-header" @click="toggleForms"
                         :class="{ 'active': $route.path.startsWith('/staff/intakeInterviewForm') || $route.path.startsWith('/staff/guidanceAdmissionSlip') || $route.path.startsWith('/staff/guidanceCallSlip') || $route.path.startsWith('/staff/parentQuestionnaireForm') || $route.path.startsWith('/staff/referralForm') || $route.path.startsWith('/staff/cumulativeRecordForm') || $route.path.startsWith('/staff/clientMonitoringForm') }">
                         <i><font-awesome-icon class="icon" :icon="['fas', 'file']" /></i>
-                        <div v-if="showSidebar" class="sidebar-text">Forms</div>
+                        <div v-if="showSidebar" class="sidebar-text" title="Forms">Forms</div>
                         <i v-if="showSidebar" class="icon"
                             :class="['fas', showForms ? 'fa-chevron-up' : 'fa-chevron-down']"></i>
                     </div>
                     <div v-show="showForms">
-                        <ul class="menu-option">
+                        <ul class="menu-option" :class="{ 'centered': !showSidebar }">
                             <li>
                                 <RouterLink to="intakeInterviewForm" class="form-sidebar-menu"
-                                    active-class="form-active" style="text-decoration: none;" title="participants">
+                                    active-class="form-active" style="text-decoration: none;" title="Intake Interview
+                                            Form">
                                     <div class="form-sidebar-text">
                                         <span v-if="!showSidebar">IIF</span>
                                         <span v-else style="display: flex;">
@@ -113,7 +114,8 @@ const handleLogout = async () => {
 
                             <li>
                                 <RouterLink to="guidanceAdmissionSlip" class="form-sidebar-menu"
-                                    active-class="form-active" style="text-decoration: none;" title="participants">
+                                    active-class="form-active" style="text-decoration: none;"
+                                    title="Guidance Admission">
                                     <div class="form-sidebar-text">
                                         <span v-if="!showSidebar">GAS</span>
                                         <span v-else style="display: flex;">
@@ -126,7 +128,7 @@ const handleLogout = async () => {
 
                             <li>
                                 <RouterLink to="guidanceCallSlip" class="form-sidebar-menu" active-class="form-active"
-                                    style="text-decoration: none;" title="participants">
+                                    style="text-decoration: none;" title="Guidance Call Slip">
                                     <div class="form-sidebar-text">
                                         <span v-if="!showSidebar">GCS</span>
                                         <span v-else style="display: flex;">
@@ -138,7 +140,8 @@ const handleLogout = async () => {
 
                             <li>
                                 <RouterLink to="parentQuestionnaireForm" class="form-sidebar-menu"
-                                    active-class="form-active" style="text-decoration: none;" title="participants">
+                                    active-class="form-active" style="text-decoration: none;"
+                                    title="Parent Questionnaire Form">
                                     <div class="form-sidebar-text">
                                         <span v-if="!showSidebar">PQF</span>
                                         <span v-else style="display: flex;">
@@ -149,7 +152,7 @@ const handleLogout = async () => {
                             </li>
                             <li>
                                 <RouterLink to="referralForm" class="form-sidebar-menu" active-class="form-active"
-                                    style="text-decoration: none;" title="participants">
+                                    style="text-decoration: none;" title="Referral Form">
                                     <div class="form-sidebar-text">
                                         <span v-if="!showSidebar">RF</span>
                                         <span v-else style="display: flex;">
@@ -160,7 +163,8 @@ const handleLogout = async () => {
                             </li>
                             <li>
                                 <RouterLink to="cumulativeRecordForm" class="form-sidebar-menu"
-                                    active-class="form-active" style="text-decoration: none;" title="participants">
+                                    active-class="form-active" style="text-decoration: none;"
+                                    title="Cumulative Record Form">
                                     <div class="form-sidebar-text">
                                         <span v-if="!showSidebar">CRF</span>
                                         <span v-else style="display: flex;">
@@ -171,7 +175,8 @@ const handleLogout = async () => {
                             </li>
                             <li>
                                 <RouterLink to="clientMonitoringForm" class="form-sidebar-menu"
-                                    active-class="form-active" style="text-decoration: none;" title="participants">
+                                    active-class="form-active" style="text-decoration: none;"
+                                    title="Client Monitoring Form">
                                     <div class="form-sidebar-text">
                                         <span v-if="!showSidebar">CMF</span>
                                         <span v-else style="display: flex;">
@@ -190,8 +195,8 @@ const handleLogout = async () => {
             <RouterLink to="" class="sidebar-logo" style="text-decoration: none;">
                 <img loading="lazy" src="../../../../public/external/C-Logo.png" class="img" />
                 <div class="logo-text">
-                    <div class="certicode"><span class="certi">PSHS - </span><span class="code">EVC</span><span
-                            class="certi"> - GCU</span></div>
+                    <div class="phs"><span class="certi">PSHS - </span><span class="code">EVC</span><span class="certi">
+                            - GCU</span></div>
                 </div>
             </RouterLink>
             <div class="menu">
@@ -321,18 +326,35 @@ const handleLogout = async () => {
                 </div>
                 <form class="search-input">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search Participant">
+                        <input type="text" class="form-control" placeholder="Search Participant"
+                            style="border-top-right-radius: 0; border-bottom-right-radius: 0;">
                         <div class="input-group-btn">
-                            <button style="border: 1.5px solid #EEEEEE;;" class="btn btn-default" type="submit">
-                                <i><font-awesome-icon style="color: #000; height: 18px;" class="icon"
+                            <button
+                                style="border: 1.5px solid #EEEEEE; background-color: #2087E4; border-top-left-radius: 0; border-bottom-left-radius: 0;"
+                                class="btn btn-default" type="submit">
+                                <i><font-awesome-icon style="color: white; height: 18px;" class="icon"
                                         :icon="['fas', 'fa-search']" /></i>
                             </button>
                         </div>
                     </div>
                 </form>
-                <div class="logout-button">
-                    <i @click="handleLogout"><font-awesome-icon style="color: #000; height: 18px;" class="icon"
-                            :icon="['fas', 'fa-power-off']" /></i>
+                <div class="dropdown" style="display: flex; justify-content: center; align-items: center;">
+                    <button class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false"
+                        style="display: flex; justify-content: center; align-items: center;">
+                        <span class="dropdown-text">Hi Bogart</span>
+                        <i class="icon fas fa-chevron-down"></i>
+                        <div class="image-container">
+                            <img src="../../../../public/user.jpg" alt="Avatar">
+                        </div>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="#"><i><font-awesome-icon :icon="['fas', 'user']"
+                                    style="margin-right: 15px;" /></i>View Profile</a>
+                        <button style="color: #a5000e;" @click="handleLogout" class="dropdown-item"
+                            href="#"><i><font-awesome-icon class="icon" :icon="['fas', 'fa-power-off']"
+                                    style="margin-right: 15px;" /></i>Logout</button>
+                    </div>
                 </div>
             </nav>
             <div class="wrapper">
@@ -348,6 +370,90 @@ const handleLogout = async () => {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-toggle {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-weight: 600
+}
+
+.dropdown-toggle::after {
+    display: none;
+}
+
+.dropdown-toggle img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.dropdown-toggle .icon {
+    margin-left: 5px;
+    font-size: 10px;
+    margin-right: 10px;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    display: none;
+    min-width: 160px;
+    padding: 10px 0;
+    margin: 2px 0 0;
+    font-size: 14px;
+    text-align: left;
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+.dropdown-item {
+    display: block;
+    width: 100%;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: 400;
+    color: #212529;
+    text-align: inherit;
+    white-space: nowrap;
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
+    transition: background-color 0.15s ease-in-out;
+}
+
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+}
+
+@media (max-width: 360px) {
+    .dropdown-text {
+        display: none;
+    }
+
+    .dropdown-toggle .icon {
+        display: none;
+    }
+
+    .dropdown-toggle img {
+        margin-left: 20px;
+    }
 }
 
 ::-webkit-scrollbar {
@@ -480,43 +586,25 @@ const handleLogout = async () => {
     margin: auto 0;
 }
 
-.logo-text .certicode {
+.logo-text .phs {
     margin-top: 3px;
+    font-family: "Montserrat", sans-serif;
 }
 
-.logo-text .certicode .certi {
+.logo-text .phs .certi {
     color: #000000;
     font-size: 20px;
-    font-weight: 700;
 }
 
-.logo-text .certicode .code {
+.logo-text .phs .code {
     font-size: 20px;
     color: #2087E4;
-    font-weight: 600;
-}
-
-.send-button {
-    border-radius: 8px;
-    background-color: #ffffff27;
-    align-self: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-    font-size: 16px;
-    color: #fff;
-    padding: 8px 20px 13px;
-    cursor: pointer;
-}
-
-.send-button i {
-    margin-top: 5px;
 }
 
 .logout-button {
     border-radius: 8px;
     border: 1.5px solid #EEEEEE;
+    background-color: #2087E4;
     align-self: center;
     display: flex;
     justify-content: center;
@@ -526,7 +614,8 @@ const handleLogout = async () => {
 }
 
 .logout-button:hover {
-    border: 2px solid #929699;
+    border: 1px solid #929699;
+    background-color: #ff2222;
 }
 
 .menu .sidebar-menu {
@@ -596,10 +685,16 @@ const handleLogout = async () => {
     padding: 0;
 }
 
-.forms .menu-option .sidebar-text {
+.forms .centered {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.forms .menu-option .form-sidebar-text {
     font-family: Inter, sans-serif;
-    align-self: start;
-    margin-top: 4px;
+    margin-top: 5px;
     flex-grow: 1;
     flex-basis: auto;
 }

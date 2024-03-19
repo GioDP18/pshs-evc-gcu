@@ -31,6 +31,7 @@ import {
     faFile,
     faTrash,
     faCalendar,
+    faGear,
 } from "@fortawesome/free-solid-svg-icons";
 
 /* add icons to the library */
@@ -61,7 +62,8 @@ library.add(
     faBoxArchive,
     faFile,
     faTrash,
-    faCalendar
+    faCalendar,
+    faGear
 );
 
 import { faFacebookF, faLinkedinIn } from "@fortawesome/free-brands-svg-icons";
