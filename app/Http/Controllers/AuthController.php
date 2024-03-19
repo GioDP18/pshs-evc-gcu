@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Validator;
+use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
@@ -59,7 +60,13 @@ class AuthController extends Controller
         return $this->authService->userprofile();
     }
 
-    public function socialLogin($provider){
+    public function socialLogin($provider)
+    {
         return $this->authService->socialLogin($provider);
+    }
+
+    public function socialLoginCallback($provider)
+    {
+        return $this->authService->authenticateSocialLogin($provider);
     }
 }
