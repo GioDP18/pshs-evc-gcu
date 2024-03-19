@@ -23,5 +23,6 @@ Route::group([
     Route::get('/user-profile', [AuthController::class, 'userProfile']);
 
     // Social login
-    Route::get('/oauth/{provider}', [AuthController::class, 'socialLogin']);
+    Route::get('/auth/{provider}/callback', [AuthController::class, 'socialLoginCallback'])->name('auth.callback');
+    Route::get('/auth/{provider}', [AuthController::class, 'socialLogin']);
 });
