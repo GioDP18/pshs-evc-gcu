@@ -22,7 +22,7 @@ const initializeDataTable = () => {
         <div class="content">
             <div class="column-1">
                 <div class="table-card">
-                    <div class="content-text">Intake Interview Form</div>
+                    <div class="content-text">Cumulative Record Form</div>
                     <table id="dailyTimeLog" class="table table-striped table-hover" width="100%">
                         <thead>
                             <tr>
@@ -115,7 +115,7 @@ const initializeDataTable = () => {
     font: 700 20px Montserrat, sans-serif;
     margin-bottom: 20px;
     border-bottom: 1px solid #2087E4;
-    width: 65px;
+    width: 118px;
     border-bottom-width: 5px;
 }
 

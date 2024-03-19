@@ -8,12 +8,17 @@ import Home from "../Components/Pages/Staff/Home.vue";
 import IntakeInterviewForm from "../Components/Pages/Staff/IntakeInterviewForm.vue";
 import GuidanceAdmissionSlip from "../Components/Pages/Staff/GuidanceAdmissionSlip.vue";
 import GuidanceCallSlip from "../Components/Pages/Staff/GuidanceCallSlip.vue";
+import ParentQuestionnaireForm from "../Components/Pages/Staff/ParentQuestionnaireForm.vue";
+import ReferralForm from "../Components/Pages/Staff/ReferralForm.vue";
+import CumulativeRecordForm from "../Components/Pages/Staff/CumulativeRecordForm.vue";
+import ClientMonitoringForm from "../Components/Pages/Staff/ClientMonitoringForm.vue";
+import RequestForm from "../Components/Pages/Student/RequestForm.vue";
 import Calendar from "../Components/Pages/Staff/Calendar.vue";
+import ProfilePage from "../Components/Pages/Staff/ProfilePage.vue";
 
 // Student
 import StudentView from "../Components/Views/StudentView.vue";
 import StudentHome from "../Components/Pages/Student/StudentHome.vue";
-import RequestForm from "../Components/Pages/Student/RequestForm.vue";
 import NotFound from "../Components/404.vue";
 
 const routes = [
@@ -55,6 +60,31 @@ const routes = [
                 path: "guidanceCallSlip",
                 component: GuidanceCallSlip,
                 name: "staff-guidanceCallSlip",
+            },
+            {
+                path: "parentQuestionnaireForm",
+                component: ParentQuestionnaireForm,
+                name: "staff-parentQuestionnaireForm",
+            },
+            {
+                path: "referralForm",
+                component: ReferralForm,
+                name: "staff-referralForm",
+            },
+            {
+                path: "cumulativeRecordForm",
+                component: CumulativeRecordForm,
+                name: "staff-cumulativeRecordForm",
+            },
+            {
+                path: "clientMonitoringForm",
+                component: ClientMonitoringForm,
+                name: "staff-clientMonitoringForm",
+            },
+            {
+                path: "profilePage",
+                component: ProfilePage,
+                name: "staff-profilePage",
             },
         ],
     },

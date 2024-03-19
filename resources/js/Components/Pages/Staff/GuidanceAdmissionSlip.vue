@@ -22,7 +22,7 @@ const initializeDataTable = () => {
         <div class="content">
             <div class="column-1">
                 <div class="table-card">
-                    <div class="content-text">Students</div>
+                    <div class="content-text">Guidance Admission Slip</div>
                     <table id="dailyTimeLog" class="table table-striped table-hover" width="100%">
                         <thead>
                             <tr>
@@ -111,14 +111,19 @@ const initializeDataTable = () => {
 }
 
 .content-text {
-    color: rgba(60, 54, 51, 0.7);
-    font: 400 20px Inter, sans-serif;
+    color: #000000b3;
+    font: 700 20px Montserrat, sans-serif;
     margin-bottom: 20px;
+    border-bottom: 1px solid #2087E4;
+    width: 98px;
+    border-bottom-width: 5px;
 }
 
 @media (max-width: 991px) {
     .content-text {
         max-width: 100%;
+        width: 100%;
+        border: none;
     }
 }
 
