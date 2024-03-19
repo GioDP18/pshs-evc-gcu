@@ -2,6 +2,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CallendarController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -25,4 +27,9 @@ Route::group([
     // Social login
     Route::get('/auth/{provider}/callback', [AuthController::class, 'socialLoginCallback'])->name('auth.callback');
     Route::get('/auth/{provider}', [AuthController::class, 'socialLogin']);
+
+    // Callendar Schedule
+    Route::get('/get-schedule/{date}', [CallendarController::class, 'getSchedule']);
+    Route::post('/update-schedule', [CallendarController::class, 'updateSchedule']);
+
 });
