@@ -73,8 +73,8 @@ const handleLogout = async () => {
             <RouterLink to="" class="sidebar-logo" style="text-decoration: none;">
                 <img loading="lazy" src="../../../../public/external/C-Logo.png" class="img" />
                 <div v-if="showSidebar" class="logo-text">
-                    <div class="certicode"><span class="certi">PSHS-</span><span class="code">EVC</span><span
-                            class="certi">-GCU</span></div>
+                    <div class="certicode"><span class="certi">PSHS - </span><span class="code">EVC</span><span
+                            class="certi"> - GCU</span></div>
                 </div>
             </RouterLink>
             <div class="menu">
@@ -89,7 +89,8 @@ const handleLogout = async () => {
                     <div v-if="showSidebar" class="sidebar-text">Calendar</div>
                 </RouterLink>
                 <div class="forms">
-                    <div class="forms-header" @click="toggleForms">
+                    <div class="forms-header" @click="toggleForms"
+                        :class="{ 'active': $route.path.startsWith('/staff/intakeInterviewForm') || $route.path.startsWith('/staff/guidanceAdmissionSlip') || $route.path.startsWith('/staff/guidanceCallSlip') }">
                         <i><font-awesome-icon class="icon" :icon="['fas', 'file']" /></i>
                         <div v-if="showSidebar" class="sidebar-text">Forms</div>
                         <i v-if="showSidebar" class="icon"
@@ -99,22 +100,39 @@ const handleLogout = async () => {
                         <ul class="menu-option">
                             <li>
                                 <RouterLink to="intakeInterviewForm" class="form-sidebar-menu"
-                                    style="text-decoration: none;" title="participants">
-                                    <div class="form-sidebar-text">Intake Interview Form</div>
+                                    active-class="form-active" style="text-decoration: none;" title="participants">
+                                    <div class="form-sidebar-text">
+                                        <span v-if="!showSidebar">IIF</span>
+                                        <span v-else style="display: flex;">
+                                            <p style="margin-right: 10px;">•</p>Intake Interview
+                                            Form
+                                        </span>
+                                    </div>
                                 </RouterLink>
                             </li>
 
                             <li>
                                 <RouterLink to="guidanceAdmissionSlip" class="form-sidebar-menu"
-                                    style="text-decoration: none;" title="participants">
-                                    <div class="form-sidebar-text">Guidance Admission Slip</div>
+                                    active-class="form-active" style="text-decoration: none;" title="participants">
+                                    <div class="form-sidebar-text">
+                                        <span v-if="!showSidebar">GAS</span>
+                                        <span v-else style="display: flex;">
+                                            <p style="margin-right: 10px;">•</p>Guidance Admission
+                                            Slip
+                                        </span>
+                                    </div>
                                 </RouterLink>
                             </li>
 
                             <li>
-                                <RouterLink to="guidanceCallSlip" class="form-sidebar-menu"
+                                <RouterLink to="guidanceCallSlip" class="form-sidebar-menu" active-class="form-active"
                                     style="text-decoration: none;" title="participants">
-                                    <div class="form-sidebar-text">Guidance Call Slip</div>
+                                    <div class="form-sidebar-text">
+                                        <span v-if="!showSidebar">GCS</span>
+                                        <span v-else style="display: flex;">
+                                            <p style="margin-right: 10px;">•</p>Guidance Call Slip
+                                        </span>
+                                    </div>
                                 </RouterLink>
                             </li>
                         </ul>
@@ -127,23 +145,71 @@ const handleLogout = async () => {
             <RouterLink to="" class="sidebar-logo" style="text-decoration: none;">
                 <img loading="lazy" src="../../../../public/external/C-Logo.png" class="img" />
                 <div class="logo-text">
-                    <div class="certicode"><span class="certi">Certi</span><span class="code">Code</span></div>
+                    <div class="certicode"><span class="certi">PSHS - </span><span class="code">EVC</span><span
+                            class="certi"> - GCU</span></div>
                 </div>
             </RouterLink>
             <div class="menu">
-                <RouterLink to="dashboard" class="sidebar-menu" active-class="active" style="text-decoration: none;"
+                <RouterLink to="home" class="sidebar-menu" active-class="active" style="text-decoration: none;"
                     title="home">
                     <i><font-awesome-icon style="" class="icon" :icon="['fas', 'fa-home']" /></i>
-                    <div class="sidebar-text">Home</div>
+                    <div v-if="showSidebar" class="sidebar-text">Home</div>
                 </RouterLink>
-                <RouterLink to="participants" class="sidebar-menu" style="text-decoration: none;" title="participants">
-                    <i><font-awesome-icon style="" class="icon" :icon="['fas', 'fa-table-list']" /></i>
-                    <div class="sidebar-text">Participants</div>
+                <RouterLink to="calendar" class="sidebar-menu" active-class="active" style="text-decoration: none;"
+                    title="calendar">
+                    <i><font-awesome-icon class="icon" :icon="['fas', 'calendar']" /></i>
+                    <div v-if="showSidebar" class="sidebar-text">Calendar</div>
                 </RouterLink>
-                <RouterLink to="archive" class="sidebar-menu" style="text-decoration: none;" title="participants">
-                    <i><font-awesome-icon style="" class="icon" :icon="['fas', 'box-archive']" /></i>
-                    <div class="sidebar-text">Archive</div>
-                </RouterLink>
+                <div class="forms">
+                    <div class="forms-header" @click="toggleForms"
+                        :class="{ 'active': $route.path.startsWith('/staff/intakeInterviewForm') || $route.path.startsWith('/staff/guidanceAdmissionSlip') || $route.path.startsWith('/staff/guidanceCallSlip') }">
+                        <i><font-awesome-icon class="icon" :icon="['fas', 'file']" /></i>
+                        <div v-if="showSidebar" class="sidebar-text">Forms</div>
+                        <i v-if="showSidebar" class="icon"
+                            :class="['fas', showForms ? 'fa-chevron-up' : 'fa-chevron-down']"></i>
+                    </div>
+                    <div v-show="showForms">
+                        <ul class="menu-option">
+                            <li>
+                                <RouterLink to="intakeInterviewForm" class="form-sidebar-menu"
+                                    active-class="form-active" style="text-decoration: none;" title="participants">
+                                    <div class="form-sidebar-text">
+                                        <span v-if="!showSidebar">IIF</span>
+                                        <span v-else style="display: flex;">
+                                            <p style="margin-right: 10px;">•</p>Intake Interview
+                                            Form
+                                        </span>
+                                    </div>
+                                </RouterLink>
+                            </li>
+
+                            <li>
+                                <RouterLink to="guidanceAdmissionSlip" class="form-sidebar-menu"
+                                    active-class="form-active" style="text-decoration: none;" title="participants">
+                                    <div class="form-sidebar-text">
+                                        <span v-if="!showSidebar">GAS</span>
+                                        <span v-else style="display: flex;">
+                                            <p style="margin-right: 10px;">•</p>Guidance Admission
+                                            Slip
+                                        </span>
+                                    </div>
+                                </RouterLink>
+                            </li>
+
+                            <li>
+                                <RouterLink to="guidanceCallSlip" class="form-sidebar-menu" active-class="form-active"
+                                    style="text-decoration: none;" title="participants">
+                                    <div class="form-sidebar-text">
+                                        <span v-if="!showSidebar">GCS</span>
+                                        <span v-else style="display: flex;">
+                                            <p style="margin-right: 10px;">•</p>Guidance Call Slip
+                                        </span>
+                                    </div>
+                                </RouterLink>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="main-content">
@@ -194,13 +260,28 @@ const handleLogout = async () => {
     box-sizing: border-box;
 }
 
+.active {
+    background-color: #2087E4;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+}
+
+.form-active {
+    font-weight: 600 !important;
+    color: #474747 !important;
+}
+
+.forms.active {
+    background-color: #2087E4;
+}
+
 .container1 {
     display: flex;
 }
 
 .sidebar {
     box-shadow: 4px 0px 10px 2px rgba(0, 0, 0, 0.25);
-    background-color: #303841;
+    background-color: #ffffff;
     display: flex;
     max-width: 250px;
     height: 100vh;
@@ -211,7 +292,7 @@ const handleLogout = async () => {
 
 .mobile-sidebar {
     box-shadow: 4px 0px 10px 2px rgba(0, 0, 0, 0.25);
-    background-color: #303841;
+    background-color: #ffffff !important;
     display: flex;
     max-width: 250px;
     height: 100vh;
@@ -242,7 +323,7 @@ const handleLogout = async () => {
 }
 
 .sidebar-logo {
-    background-color: #303841;
+    background-color: #ffffff !important;
     display: flex;
     justify-content: center;
     color: var(--Black, #191919);
@@ -276,6 +357,10 @@ const handleLogout = async () => {
 .menu {
     transition: margin-left 0.3s ease;
     margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .logo-text {
@@ -289,15 +374,15 @@ const handleLogout = async () => {
 }
 
 .logo-text .certicode .certi {
-    color: #f1f1f1;
+    color: #000000;
     font-size: 20px;
-    font-weight: bolder;
+    font-weight: 700;
 }
 
 .logo-text .certicode .code {
     font-size: 20px;
-    color: #7AA5D2;
-    font-weight: 400;
+    color: #2087E4;
+    font-weight: 600;
 }
 
 .send-button {
@@ -333,57 +418,74 @@ const handleLogout = async () => {
     border: 2px solid #929699;
 }
 
-.sidebar-menu {
+.menu .sidebar-menu {
     display: flex;
     justify-content: center;
     align-items: center;
     margin-top: 15px;
     gap: 20px;
     font-size: 16px;
-    color: #fff;
-    padding: 8px 25px;
+    color: #9b9b9b;
+    padding: 8px 25px 13px;
     cursor: pointer;
+    width: 95%;
+    border-radius: 8px;
 }
 
 .form-sidebar-menu {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 20px;
-    margin-bottom: -20px;
-    gap: 10px;
+    margin-top: 10px;
     font-size: 16px;
-    color: #fff;
+    color: #9b9b9b;
     padding: 8px 10px;
     cursor: pointer;
+    margin-bottom: -10px;
 }
 
 .forms {
     margin-top: 15px;
-    gap: 20px;
     font-size: 16px;
-    color: #fff;
-    padding: 8px 25px;
+    color: #9b9b9b;
     cursor: pointer;
+    width: 95%;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .forms-header {
     display: flex;
     justify-content: center;
+    padding: 8px 25px 13px;
     align-items: center;
     gap: 23px;
+    width: 100%;
+    border-radius: 8px;
 }
 
 .form-sidebar-text {
     font-family: Inter, sans-serif;
     align-self: start;
-    margin-top: 1px;
-    font-size: 15px;
+    font-size: 14px;
     flex-grow: 1;
     flex-basis: auto;
 }
 
-.sidebar-text {
+.forms ul {
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+}
+
+.forms .menu-option .sidebar-text {
     font-family: Inter, sans-serif;
     align-self: start;
     margin-top: 4px;
