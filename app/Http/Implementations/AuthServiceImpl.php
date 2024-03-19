@@ -5,8 +5,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Validator;
-
+use JWTAuth;
 use App\Http\Services\AuthService;
+use Laravel\Socialite\Facades\Socialite;
 
 Class AuthServiceImpl implements AuthService
 {
@@ -110,7 +111,39 @@ Class AuthServiceImpl implements AuthService
         ]);
     }
 
-    public function socialLogin($provider){
-        
+    public function socialLogin($provider)
+    {
+        return Socialite::driver($provider)->redirect();
     }
+
+    public function authenticateSocialLogin($provider)
+    {
+        try {
+            // Retrieve user information from the social provider.
+            $socialUser = Socialite::driver($provider)->user();
+
+            // Update or create a user record based on the email.
+            $user = User::updateOrCreate(
+                ['email' => $socialUser->email],
+                [
+                    "firstname" => $socialUser->firstname,
+                    "lastname" => $socialUser->lastname,
+                    "{$provider}_id" => $socialUser->id,
+                    "{$provider}_token" => $socialUser->token,
+                ]
+            );
+
+            // Attempt to authenticate the user with JWT.
+            if (! $token = auth()->attempt(['email' => $socialUser->email])) {
+                return response()->json(['error' => 'Unauthorized'], 401);
+            }
+
+            // Return the JWT token or any other data indicating successful login.
+            return $this->createNewToken($token);
+        } catch (\Exception $e) {
+            // Handle exceptions.
+            dd($e->getMessage());
+        }
+    }
+
 }

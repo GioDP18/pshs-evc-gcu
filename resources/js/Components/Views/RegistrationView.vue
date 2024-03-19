@@ -15,18 +15,18 @@
                                     <i class="fa fa-info-circle"></i> {{ errors.firstname }}
                                 </span>
                             </div>
-                            <div class="mb-3 form-input" :class="{ 'has-error': errors.lastname }">
-                                <label for="exampleInputEmail1" class="form-label">Last Name</label>
-                                <input type="text" class="form-control" v-model="formData.lastname">
-                                <span class="error-message" v-if="errors.lastname">
-                                    <i class="fa fa-info-circle"></i> {{ errors.lastname }}
-                                </span>
-                            </div>
                             <div class="mb-3 form-input" :class="{ 'has-error': errors.middlename }">
                                 <label for="exampleInputEmail1" class="form-label">Middle Name</label>
                                 <input type="text" class="form-control" v-model="formData.middlename">
                                 <span class="error-message" v-if="errors.middlename">
                                     <i class="fa fa-info-circle"></i> {{ errors.middlename }}
+                                </span>
+                            </div>
+                            <div class="mb-3 form-input" :class="{ 'has-error': errors.lastname }">
+                                <label for="exampleInputEmail1" class="form-label">Last Name</label>
+                                <input type="text" class="form-control" v-model="formData.lastname">
+                                <span class="error-message" v-if="errors.lastname">
+                                    <i class="fa fa-info-circle"></i> {{ errors.lastname }}
                                 </span>
                             </div>
                             <div class="mb-3 form-input" :class="{ 'has-error': errors.email }">
@@ -252,7 +252,7 @@ const submitForm = async () => {
 
     if (Object.keys(errors.value).length === 0) {
         // console.log('Form submitted:', formData.value);
-        try{
+        try {
             await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/register`, {
                 firstname: formData.value.firstname,
                 lastname: formData.value.lastname,
@@ -267,17 +267,17 @@ const submitForm = async () => {
                 password: formData.value.password,
                 password_confirmation: formData.value.password_confirmation,
             },
-            {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            })
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                })
         }
-        catch(error){
+        catch (error) {
             console.log(error);
         }
     }
-    else{
+    else {
         console.log(errors.value);
     }
 };

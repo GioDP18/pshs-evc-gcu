@@ -3,6 +3,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GenerateController;
+use App\Http\Controllers\CalendarController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +32,13 @@ Route::group([
     Route::post('/generate-intake-interview', [GenerateController::class, 'generateIntInterview']);
     Route::post('/generate-guidance-admission', [GenerateController::class, 'generateGuidAdmission']);
     Route::post('/generate-referral-form', [GenerateController::class, 'generateReferralForm']);
+    Route::get('/auth/{provider}/callback', [AuthController::class, 'socialLoginCallback'])->name('auth.callback');
+    Route::get('/auth/{provider}', [AuthController::class, 'socialLogin']);
+
+    // Callendar Schedule
+    Route::get('/get-schedule/{date}', [CalendarController::class, 'getSchedule']);
+    Route::post('/update-schedule', [CalendarController::class, 'updateSchedule']);
+
 });
 
 

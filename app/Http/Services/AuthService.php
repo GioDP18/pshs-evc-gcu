@@ -2,6 +2,7 @@
 
 namespace App\Http\Services;
 use Illuminate\Http\Request;
+use Laravel\Socialite\Contracts\User;
 
 interface AuthService
 {
@@ -16,4 +17,6 @@ interface AuthService
     public function userProfile();
 
     public function socialLogin($provider);
+
+    public function authenticateSocialLogin($provider);
 }
