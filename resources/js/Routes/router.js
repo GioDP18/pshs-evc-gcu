@@ -15,6 +15,10 @@ import StudentView from "../Components/Views/StudentView.vue";
 import StudentHome from "../Components/Pages/Student/StudentHome.vue";
 import RequestForm from "../Components/Pages/Student/RequestForm.vue";
 import NotFound from "../Components/404.vue";
+import ParentQuestionnaireForm from "../Components/Pages/Staff/ParentQuestionnaireForm.vue";
+import ReferralForm from "../Components/Pages/Staff/ReferralForm.vue";
+import CumulativeRecordForm from "../Components/Pages/Staff/CumulativeRecordForm.vue";
+import ClientMonitoringForm from "../Components/Pages/Staff/ClientMonitoringForm.vue";
 
 const routes = [
     {
@@ -55,6 +59,26 @@ const routes = [
                 path: "guidanceCallSlip",
                 component: GuidanceCallSlip,
                 name: "staff-guidanceCallSlip",
+            },
+            {
+                path: "parentQuestionnaireForm",
+                component: ParentQuestionnaireForm,
+                name: "staff-parentQuestionnaireForm",
+            },
+            {
+                path: "referralForm",
+                component: ReferralForm,
+                name: "staff-referralForm",
+            },
+            {
+                path: "cumulativeRecordForm",
+                component: CumulativeRecordForm,
+                name: "staff-cumulativeRecordForm",
+            },
+            {
+                path: "clientMonitoringForm",
+                component: ClientMonitoringForm,
+                name: "staff-clientMonitoringForm",
             },
         ],
     },

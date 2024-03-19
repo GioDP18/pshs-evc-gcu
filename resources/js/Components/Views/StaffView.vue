@@ -90,7 +90,7 @@ const handleLogout = async () => {
                 </RouterLink>
                 <div class="forms">
                     <div class="forms-header" @click="toggleForms"
-                        :class="{ 'active': $route.path.startsWith('/staff/intakeInterviewForm') || $route.path.startsWith('/staff/guidanceAdmissionSlip') || $route.path.startsWith('/staff/guidanceCallSlip') }">
+                        :class="{ 'active': $route.path.startsWith('/staff/intakeInterviewForm') || $route.path.startsWith('/staff/guidanceAdmissionSlip') || $route.path.startsWith('/staff/guidanceCallSlip') || $route.path.startsWith('/staff/parentQuestionnaireForm') || $route.path.startsWith('/staff/referralForm') || $route.path.startsWith('/staff/cumulativeRecordForm') || $route.path.startsWith('/staff/clientMonitoringForm') }">
                         <i><font-awesome-icon class="icon" :icon="['fas', 'file']" /></i>
                         <div v-if="showSidebar" class="sidebar-text">Forms</div>
                         <i v-if="showSidebar" class="icon"
@@ -131,6 +131,51 @@ const handleLogout = async () => {
                                         <span v-if="!showSidebar">GCS</span>
                                         <span v-else style="display: flex;">
                                             <p style="margin-right: 10px;">•</p>Guidance Call Slip
+                                        </span>
+                                    </div>
+                                </RouterLink>
+                            </li>
+
+                            <li>
+                                <RouterLink to="parentQuestionnaireForm" class="form-sidebar-menu"
+                                    active-class="form-active" style="text-decoration: none;" title="participants">
+                                    <div class="form-sidebar-text">
+                                        <span v-if="!showSidebar">PQF</span>
+                                        <span v-else style="display: flex;">
+                                            <p style="margin-right: 10px;">•</p>Parent Questionnaire Form
+                                        </span>
+                                    </div>
+                                </RouterLink>
+                            </li>
+                            <li>
+                                <RouterLink to="referralForm" class="form-sidebar-menu" active-class="form-active"
+                                    style="text-decoration: none;" title="participants">
+                                    <div class="form-sidebar-text">
+                                        <span v-if="!showSidebar">RF</span>
+                                        <span v-else style="display: flex;">
+                                            <p style="margin-right: 10px;">•</p>Referral Form
+                                        </span>
+                                    </div>
+                                </RouterLink>
+                            </li>
+                            <li>
+                                <RouterLink to="cumulativeRecordForm" class="form-sidebar-menu"
+                                    active-class="form-active" style="text-decoration: none;" title="participants">
+                                    <div class="form-sidebar-text">
+                                        <span v-if="!showSidebar">CRF</span>
+                                        <span v-else style="display: flex;">
+                                            <p style="margin-right: 10px;">•</p>Cumulative Record Form
+                                        </span>
+                                    </div>
+                                </RouterLink>
+                            </li>
+                            <li>
+                                <RouterLink to="clientMonitoringForm" class="form-sidebar-menu"
+                                    active-class="form-active" style="text-decoration: none;" title="participants">
+                                    <div class="form-sidebar-text">
+                                        <span v-if="!showSidebar">CMF</span>
+                                        <span v-else style="display: flex;">
+                                            <p style="margin-right: 10px;">•</p>Client Monitoring Form
                                         </span>
                                     </div>
                                 </RouterLink>
@@ -207,6 +252,51 @@ const handleLogout = async () => {
                                     </div>
                                 </RouterLink>
                             </li>
+
+                            <li>
+                                <RouterLink to="parentQuestionnaireForm" class="form-sidebar-menu"
+                                    active-class="form-active" style="text-decoration: none;" title="participants">
+                                    <div class="form-sidebar-text">
+                                        <span v-if="!showSidebar">PQF</span>
+                                        <span v-else style="display: flex;">
+                                            <p style="margin-right: 10px;">•</p>Parent Questionnaire Form
+                                        </span>
+                                    </div>
+                                </RouterLink>
+                            </li>
+                            <li>
+                                <RouterLink to="referralForm" class="form-sidebar-menu" active-class="form-active"
+                                    style="text-decoration: none;" title="participants">
+                                    <div class="form-sidebar-text">
+                                        <span v-if="!showSidebar">RF</span>
+                                        <span v-else style="display: flex;">
+                                            <p style="margin-right: 10px;">•</p>Referral Form
+                                        </span>
+                                    </div>
+                                </RouterLink>
+                            </li>
+                            <li>
+                                <RouterLink to="cumulativeRecordForm" class="form-sidebar-menu"
+                                    active-class="form-active" style="text-decoration: none;" title="participants">
+                                    <div class="form-sidebar-text">
+                                        <span v-if="!showSidebar">CRF</span>
+                                        <span v-else style="display: flex;">
+                                            <p style="margin-right: 10px;">•</p>Cumulative Record Form
+                                        </span>
+                                    </div>
+                                </RouterLink>
+                            </li>
+                            <li>
+                                <RouterLink to="clientMonitoringForm" class="form-sidebar-menu"
+                                    active-class="form-active" style="text-decoration: none;" title="participants">
+                                    <div class="form-sidebar-text">
+                                        <span v-if="!showSidebar">CMF</span>
+                                        <span v-else style="display: flex;">
+                                            <p style="margin-right: 10px;">•</p>Client Monitoring Form
+                                        </span>
+                                    </div>
+                                </RouterLink>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -260,6 +350,21 @@ const handleLogout = async () => {
     box-sizing: border-box;
 }
 
+::-webkit-scrollbar {
+    width: 2px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #2087E4;
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #0088ff;
+}
+
 .active {
     background-color: #2087E4;
     color: #ffffff !important;
@@ -283,11 +388,14 @@ const handleLogout = async () => {
     box-shadow: 4px 0px 10px 2px rgba(0, 0, 0, 0.25);
     background-color: #ffffff;
     display: flex;
-    max-width: 250px;
+    max-width: 255px;
     height: 100vh;
     flex-direction: column;
     padding: 0px;
     margin: 0px;
+    overflow-y: auto;
+    max-height: 100vh;
+    overflow-x: hidden;
 }
 
 .mobile-sidebar {
@@ -306,6 +414,8 @@ const handleLogout = async () => {
     z-index: 1000;
     /* Ensure it's above other content */
     transition: left 0.3s ease;
+    overflow-y: auto;
+    max-height: 100vh;
     /* Add a smooth transition */
 }
 
@@ -316,6 +426,7 @@ const handleLogout = async () => {
 .main-content {
     margin-left: 0;
     transition: margin-left 0.3s ease;
+    overflow: hidden;
 }
 
 .show-mobile-sidebar {
@@ -491,36 +602,6 @@ const handleLogout = async () => {
     margin-top: 4px;
     flex-grow: 1;
     flex-basis: auto;
-}
-
-.add-button {
-    border-radius: 8px;
-    border: 1.5px solid #fff;
-    align-self: center;
-    display: flex;
-    margin-bottom: 0px;
-    justify-content: center;
-    align-items: center;
-    margin-top: 40px;
-    font-size: 16px;
-    color: #fff;
-    padding: 5px 45px;
-    flex-direction: column;
-    cursor: pointer;
-}
-
-.add {
-    border-radius: 8px;
-    background-color: #fff;
-    align-self: center;
-    z-index: 10;
-    display: flex;
-    width: 109px;
-    max-width: 100%;
-    justify-content: center;
-    align-items: center;
-    margin: 10px 0 -21px;
-    padding: 4px 45px;
 }
 
 .search-input {

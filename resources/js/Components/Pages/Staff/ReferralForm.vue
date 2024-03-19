@@ -22,7 +22,7 @@ const initializeDataTable = () => {
         <div class="content">
             <div class="column-1">
                 <div class="table-card">
-                    <div class="content-text">Intake Interview Form</div>
+                    <div class="content-text">Referral Form</div>
                     <table id="dailyTimeLog" class="table table-striped table-hover" width="100%">
                         <thead>
                             <tr>
