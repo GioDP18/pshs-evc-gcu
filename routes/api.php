@@ -27,13 +27,13 @@ Route::group([
 
     // Social login
     Route::get('/oauth/{provider}', [AuthController::class, 'socialLogin']);
+    Route::get('/auth/{provider}/callback', [AuthController::class, 'socialLoginCallback'])->name('auth.callback');
+    // Route::get('/auth/{provider}', [AuthController::class, 'socialLogin']);
 
     // Generate File
     Route::post('/generate-intake-interview', [GenerateController::class, 'generateIntInterview']);
     Route::post('/generate-guidance-admission', [GenerateController::class, 'generateGuidAdmission']);
     Route::post('/generate-referral-form', [GenerateController::class, 'generateReferralForm']);
-    Route::get('/auth/{provider}/callback', [AuthController::class, 'socialLoginCallback'])->name('auth.callback');
-    Route::get('/auth/{provider}', [AuthController::class, 'socialLogin']);
 
     // Callendar Schedule
     Route::get('/get-schedule/{date}', [CalendarController::class, 'getSchedule']);

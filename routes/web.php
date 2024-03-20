@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/guidance-call-slip', function () {
+    return view('templates.guidance_call_slip');
+});
+
 Route::get('/{path}', function () {
     return view('welcome');
 })->where('path', '.*');
