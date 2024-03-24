@@ -9,7 +9,8 @@ class Calendar extends Model
 {
     protected $fillable = [
         'available_time',
-        'date'
+        'date',
+        'user_id_reserved',
     ];
 
     use HasFactory;

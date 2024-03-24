@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('available_time');
             $table->date('date');
+            $table->foreignId('user_id_reserved')->nullable()->constrained('users');
             $table->timestamps();
         });
     }
