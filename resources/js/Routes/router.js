@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import LoginView from "../Components/Views/LoginView.vue";
 import RegistrationView from "../Components/Views/RegistrationView.vue";
 
-//Staff
+//---------------------------------Staff---------------------------------
 import StaffView from "../Components/Views/StaffView.vue";
 import Home from "../Components/Pages/Staff/Home.vue";
 import ProfilePage from "../Components/Pages/Staff/ProfilePage.vue";
@@ -18,14 +18,29 @@ import ClientMonitoringForm from "../Components/Pages/Staff/Forms/ClientMonitori
 //Fields
 import FieldIntakeInterviewForm from "../Components/Pages/Staff/FillForm/FieldIntakeInterviewForm.vue";
 import FieldGuidanceAdmissionSlip from "../Components/Pages/Staff/FillForm/FieldGuidanceAdmissionSlip.vue";
+import FieldReferralForm from "../Components/Pages/Staff/FillForm/FieldReferralForm.vue";
 
-// Student
+//---------------------------------Student---------------------------------
 import StudentView from "../Components/Views/StudentView.vue";
 import StudentHome from "../Components/Pages/Student/StudentHome.vue";
 import StudentCalendar from "../Components/Pages/Student/StudentCalendar.vue";
-import StudentRequestCummulative from "../Components/Pages/Student/StudentRequestCummulative.vue";
-import StudentRequestClient from "../Components/Pages/Student/StudentRequestClient.vue";
 import StudentProfilePage from "../Components/Pages/Student/StudentProfilePage.vue";
+//Forms
+import StudentCummulativeRecord from "../Components/Pages/Student/Forms/StudentCummulativeRecord.vue";
+import StudentClientMonitoring from "../Components/Pages/Student/Forms/StudentClientMonitoring.vue";
+//Fields
+
+//---------------------------------Parents and Teachers---------------------------------
+import ParentsTeacherView from "../Components/Views/ParentsTeacherView.vue";
+import ParentsTeacherHome from "../Components/Pages/ParentsTeacher/ParentsTeacherHome.vue";
+import ParentsTeacherCalendar from "../Components/Pages/ParentsTeacher/ParentsTeacherCalendar.vue";
+import ParentsTeacherProfilePage from "../Components/Pages/ParentsTeacher/ParentsTeacherProfilePage.vue";
+//Forms
+import ParentsTeacherParentQuestionnaire from "../Components/Pages/ParentsTeacher/Forms/ParentsTeacherParentQuestionnaire.vue";
+import ParentsTeacherReferralForm from "../Components/Pages/ParentsTeacher/Forms/ParentsTeacherReferralForm.vue";
+//Fields
+import ParentsTeacherRequestReferral from "../Components/Pages/ParentsTeacher/FillForm/ParentsTeacherRequestReferral.vue";
+
 import NotFound from "../Components/404.vue";
 
 const routes = [
@@ -43,6 +58,7 @@ const routes = [
         path: "/staff",
         component: StaffView,
         children: [
+            //FORMS
             {
                 path: "home",
                 component: Home,
@@ -88,6 +104,7 @@ const routes = [
                 component: ClientMonitoringForm,
                 name: "staff-clientMonitoringForm",
             },
+            //FIELDS
             {
                 path: "fieldIntakeInterview",
                 component: FieldIntakeInterviewForm,
@@ -97,6 +114,11 @@ const routes = [
                 path: "fieldGuidanceAdmission",
                 component: FieldGuidanceAdmissionSlip,
                 name: "staff-fieldGuidanceAdmission",
+            },
+            {
+                path: "fieldReferralForm",
+                component: FieldReferralForm,
+                name: "staff-fieldReferralForm",
             },
             {
                 path: "profilePage",
@@ -110,29 +132,69 @@ const routes = [
         component: StudentView,
         children: [
             {
-                path: "home",
+                path: "studentHome",
                 component: StudentHome,
-                name: "student-home",
+                name: "student-Home",
             },
             {
                 path: "studentCalendar",
                 component: StudentCalendar,
-                name: "student-studentCalendar",
-            },
-            {
-                path: "studentRequestCummulative",
-                component: StudentRequestCummulative,
-                name: "student-requestFormCummulative",
-            },
-            {
-                path: "studentRequestClient",
-                component: StudentRequestClient,
-                name: "student-requestFormClient",
+                name: "student-Calendar",
             },
             {
                 path: "studentProfilePage",
                 component: StudentProfilePage,
                 name: "student-studentProfilePage",
+            },
+            //FORMS
+            {
+                path: "studentCummulativeRecord",
+                component: StudentCummulativeRecord,
+                name: "student-CummulativeRecord",
+            },
+            {
+                path: "studentClientMonitoring",
+                component: StudentClientMonitoring,
+                name: "student-ClientMonitoring",
+            },
+            //FIELDS
+        ],
+    },
+    {
+        path: "/parentsTeacher",
+        component: ParentsTeacherView,
+        children: [
+            {
+                path: "parentsTeacherhome",
+                component: ParentsTeacherHome,
+                name: "parentsTeacher-Home",
+            },
+            {
+                path: "parentsTeacherCalendar",
+                component: ParentsTeacherCalendar,
+                name: "parentsTeacher-Calendar",
+            },
+            {
+                path: "parentsTeacherProfilePage",
+                component: ParentsTeacherProfilePage,
+                name: "student-ProfilePage",
+            },
+            //FORMS
+            {
+                path: "parentsTeacherParentQuestionnaire",
+                component: ParentsTeacherParentQuestionnaire,
+                name: "parentsTeacher-ParentQuestionnaire",
+            },
+            {
+                path: "parentsTeacherReferralForm",
+                component: ParentsTeacherReferralForm,
+                name: "parentsTeacher-ReferralForm",
+            },
+            //FIELDS
+            {
+                path: "parentsTeacherRequestReferral",
+                component: ParentsTeacherRequestReferral,
+                name: "parentsTeacher-RequestReferral",
             },
         ],
     },
