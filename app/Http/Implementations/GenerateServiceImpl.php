@@ -6,12 +6,13 @@ use App\Http\Services\GenerateService;
 use PhpOffice\PhpWord\TemplateProcessor;
 use PhpOffice\PhpWord\PhpWord;
 use Barryvdh\DomPDF\Facade\Pdf;
+use \ConvertApi\ConvertApi;
 
 Class GenerateServiceImpl implements GenerateService
 {
     public function __construct(){
     }
-    
+
     public function generateIntInterview(Request $request)
     {
         $templateProcessor = new TemplateProcessor(public_path('templates\PSHS-00-F-GCU-01-Ver02-Rev0-Intake-Interview-Form.docx'));
@@ -26,7 +27,13 @@ Class GenerateServiceImpl implements GenerateService
         $newFilePath = public_path('intake_interview\\' . 'John Vincent Ramada' . '.docx');
         $templateProcessor->saveAs($newFilePath);
 
-        return $newFilePath;
+        // $docxFilePath = public_path('example.docx');
+        ConvertApi::setApiSecret('1MDrmpYzrCkI1g04');
+        $result = ConvertApi::convert('pdf', [
+                'File' => $newFilePath,
+            ], 'doc'
+        );
+        $result->saveFiles(public_path('result/output.pdf'));
     }
 
     public function generateGuidAdmission(Request $request)
@@ -58,7 +65,7 @@ Class GenerateServiceImpl implements GenerateService
         $pdf = PDF::loadView('templates.referral_form', $data);
         $newFilePath = public_path('referral_form\\' . 'John Vincent Ramada' . '.pdf');
         $pdf->save($newFilePath);
-        
+
         return response()->json([
             'success' => true,
             'message' => 'Successfully generated referral form',

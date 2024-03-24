@@ -217,9 +217,9 @@ const validateForm = () => {
         errors.value.contact_number = 'Contact_number is required';
     }
 
-    if (!formData.value.id_number) {
-        errors.value.id_number = 'Student ID Number is required';
-    }
+    // if (!formData.value.id_number) {
+    //     errors.value.id_number = 'Student ID Number is required';
+    // }
 
     if (!formData.value.email) {
         errors.value.email = 'Email is required';

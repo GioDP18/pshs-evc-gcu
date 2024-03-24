@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GenerateController;
 use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\RequestsController;
+use App\Http\Controllers\SaveInputsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +40,13 @@ Route::group([
     // Callendar Schedule
     Route::get('/get-schedule/{date}', [CalendarController::class, 'getSchedule']);
     Route::post('/update-schedule', [CalendarController::class, 'updateSchedule']);
+
+    Route::post('/request-form', [RequestsController::class, 'createRequest']);
+
+    Route::post('/submit-intake-interview', [SaveInputsController::class, 'submitIntakeInterview']);
+    Route::post('/submit-guidance-admission-slip', [SaveInputsController::class, 'submitGuidanceAdmissionSlip']);
+    Route::post('/submit-referral-form', [SaveInputsController::class, 'submitReferralForm']);
+
 
 });
 

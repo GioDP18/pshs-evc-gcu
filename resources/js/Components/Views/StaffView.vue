@@ -326,7 +326,7 @@ const handleLogout = async () => {
                 </div>
                 <form class="search-input">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search Participant"
+                        <input type="text" class="form-control" placeholder=""
                             style="border-top-right-radius: 0; border-bottom-right-radius: 0;">
                         <div class="input-group-btn">
                             <button
