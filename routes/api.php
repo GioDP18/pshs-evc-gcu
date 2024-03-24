@@ -40,7 +40,10 @@ Route::group([
     // Callendar Schedule
     Route::get('/get-schedule/{date}', [CalendarController::class, 'getSchedule']);
     Route::post('/update-schedule', [CalendarController::class, 'updateSchedule']);
+    Route::get('/get-available-time-today', [CalendarController::class, 'getAvailableTimeToday']);
+    Route::post('/reserve-consultation', [CalendarController::class, 'reserveConsultation']);
 
+    // Request Forms
     Route::post('/request-form', [RequestsController::class, 'createRequest']);
 
     Route::post('/submit-intake-interview', [SaveInputsController::class, 'submitIntakeInterview']);

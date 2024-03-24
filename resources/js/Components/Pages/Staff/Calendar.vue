@@ -1,6 +1,7 @@
 <template>
     <div class="d-flex gap-5">
-        <div style="width:70%">
+        <div style="width:70%; border:2px solid #67a5fc; border-radius:20px 20px 0 0; overflow:hidden;">
+            <div style="height:30px; background-color:#67a5fc;"></div>
             <el-calendar v-model="value">
                 <template #date-cell="{ data }">
                     <p :class="data.isSelected ? 'is-selected' : ''" @click="handleDateClick(data)">
@@ -36,20 +37,25 @@
         <div style="width:30%">
             <div class="d-flex flex-column gap-3">
                 <div style="width:100%; padding:10px; border-radius:20px; border:2px solid #fbebeb">
-                    <p style="font-weight:bold; color:gray; font-size:15px; opacity:60%">Appoinment</p>
-                    <div class="ml-4">
-                        <p style="font-weight:bold; color:#27516B"><i class="fa-regular fa-clock" style="color:#ED9696"></i> 9:30 am - 11:00 am</p>
-                        <p style="font-weight:bold; color:#27516B"><i class="fa-solid fa-calendar-days" style="color:#ED9696"></i> Mon, 25 March 2024</p>
+                    <p style="font-weight:bold; color:gray; font-size:15px; opacity:60%">Appoinments for today</p>
+                    <div class="ml-4" style="overflow-x: auto;">
+                        <div class="appointment d-flex">
+                           <p style="font-weight:bold; color:#27516B"><i class="fa-regular fa-clock" style="color:#ED9696"></i> 8:00 am - 9:00 am <br> <i class="fa-regular fa-user" style="color:#ED9696"></i> Gio Dela Peña</p>
+                        </div>
+                        <div class="appointment d-flex">
+                           <p style="font-weight:bold; color:#27516B"><i class="fa-regular fa-clock" style="color:#ED9696"></i> 9:00 am - 10:00 am <br> <i class="fa-regular fa-user" style="color:#ED9696"></i> John Vincent Ramada</p>
+                        </div>
+                        <div class="appointment d-flex">
+                           <p style="font-weight:bold; color:#27516B"><i class="fa-regular fa-clock" style="color:#ED9696"></i> 10:00 am - 11:00 am <br> <i class="fa-regular fa-user" style="color:#ED9696"></i> tristan Angelo Narido</p>
+                        </div>
                     </div>
-                    <button class="text-light" style="width:100%; padding:10px; border-radius:30px; background-color:#ED9696; border:1px solid #fbebeb">Reschedule</button>
                 </div>
 
                 <div style="width:100%; padding:10px; border-radius:20px; border:2px solid #fbebeb">
-                    <p style="font-weight:bold; color:gray; font-size:15px; opacity:60%">Available Time</p>
+                    <p style="font-weight:bold; color:gray; font-size:15px; opacity:60%">Available time for today</p>
                     <div class="ml-4">
-                        <p style="font-weight:bold; color:#27516B"><i class="fa-regular fa-clock" style="color:#ED9696"></i> 7:30 am - 8:30 am</p>
-                        <p style="font-weight:bold; color:#27516B"><i class="fa-regular fa-clock" style="color:#ED9696"></i> 1:00 am - 2:00 am</p>
-                        <p style="font-weight:bold; color:#27516B"><i class="fa-regular fa-clock" style="color:#ED9696"></i> 3:30 am - 4:00 am</p>
+                        <p style="font-weight:bold; color:#27516B" v-if="available_time_today.length === 0">No Available time for today.</p>
+                        <p style="font-weight:bold; color:#27516B" v-for="item in available_time_today" :key="item.id"><i class="fa-regular fa-clock" style="color:#ED9696"></i> {{ item.available_time }}</p>
                     </div>
                 </div>
 
@@ -69,7 +75,7 @@
 
 <script setup>
 import axios from 'axios';
-import { ref, reactive } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 
 const value = ref(new Date())
 const modalVisible = ref(false)
@@ -81,6 +87,11 @@ const fixedTimeSlots = [
     '1:00 PM - 2:00 PM', '2:00 PM - 3:00 PM', '3:00 PM - 4:00 PM', '4:00 PM - 5:00 PM'
     // '8AM', '9AM', '10AM', '11AM', '12PM', '1PM', '2PM', '3PM', '4PM', '5PM'
 ]
+const available_time_today = ref([])
+
+onMounted(() => {
+    getTimeAvailableToday();
+})
 
 const handleDateClick = async (data) => {
     selectedTimeSlots.value = []
@@ -104,6 +115,16 @@ const updateSchedule = async () => {
         })
         console.log(response.data);
         modalVisible.value = false
+        available_time_today.value = []
+        getTimeAvailableToday();
+        if(response){
+            swal({
+                title: response.data.message,
+                icon: "success",
+                button: "Okay",
+            });
+        }
+
     } catch (error) {
         console.error(error);
     }
@@ -116,12 +137,31 @@ const handleChange = (time) => {
     } else {
         selectedTimeSlots.value = selectedTimeSlots.value.filter(slot => slot !== time);
     }
-};
+}
+
+const getTimeAvailableToday = async () => {
+    try{
+        const result = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/get-available-time-today`)
+        console.log(result.data)
+        available_time_today.value = result.data.schedule
+    }
+    catch(error){
+        console.error(error);
+    }
+}
 </script>
 
 <style scoped>
 .is-selected {
     background-color: #e6f7ff;
     cursor: pointer;
+}
+
+.appointment::before{
+    content: "";
+    width: 5px;
+    height: 50px;
+    background-color: #75a6ea;
+    margin-right: 7px
 }
 </style>
