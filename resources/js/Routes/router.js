@@ -17,7 +17,7 @@ import CumulativeRecordForm from "../Components/Pages/Staff/Forms/CumulativeReco
 import ClientMonitoringForm from "../Components/Pages/Staff/Forms/ClientMonitoringForm.vue";
 //Fields
 import FieldIntakeInterviewForm from "../Components/Pages/Staff/FillForm/FieldIntakeInterviewForm.vue";
-import FieldGuidanceAdmissionSlip from "../Components/Pages/Staff/FillForm/FieldGuidanceAdmissionSlip.vue";
+import FieldGuidanceCallSlip from "../Components/Pages/Staff/FillForm/FieldGuidanceCallSlip.vue";
 import FieldReferralForm from "../Components/Pages/Staff/FillForm/FieldReferralForm.vue";
 
 //---------------------------------Student---------------------------------
@@ -111,9 +111,9 @@ const routes = [
                 name: "staff-fieldIntakeInterview",
             },
             {
-                path: "fieldGuidanceAdmission",
-                component: FieldGuidanceAdmissionSlip,
-                name: "staff-fieldGuidanceAdmission",
+                path: "fieldGuidanceCall",
+                component: FieldGuidanceCallSlip,
+                name: "staff-fieldGuidanceCallSlip",
             },
             {
                 path: "fieldReferralForm",
