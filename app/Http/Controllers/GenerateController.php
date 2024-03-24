@@ -15,7 +15,7 @@ class GenerateController extends Controller
     public function generateIntInterview(Request $request)
     {
         return $this->generateService->generateIntInterview($request);
-    }
+    }   
 
     public function generateGuidAdmission(Request $request)
     {

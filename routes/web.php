@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\DocxToPdfConversionController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,9 +12,13 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::get('/convert-docx-to-pdf', [DocxToPdfConversionController::class, 'convert']);
 
 Route::get('/guidance-call-slip', function () {
     return view('templates.guidance_call_slip');
+});
+Route::get('/comulative-records-form', function () {
+    return view('templates.comulative_records_form');
 });
 
 Route::get('/{path}', function () {
