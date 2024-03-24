@@ -73,8 +73,7 @@ const handleLogout = async () => {
             <RouterLink to="" class="sidebar-logo" style="text-decoration: none;">
                 <img loading="lazy" src="../../../../public/external/C-Logo.png" class="img" />
                 <div v-if="showSidebar" class="logo-text">
-                    <div class="phs"><span class="certi">PSHS - </span><span class="code">EVC</span><span class="certi">
-                            - GCU</span></div>
+                    <div class="phs"><span class="certi">G</span><span class="code">RASS</span></div>
                 </div>
             </RouterLink>
             <div class="menu">
@@ -195,8 +194,7 @@ const handleLogout = async () => {
             <RouterLink to="" class="sidebar-logo" style="text-decoration: none;">
                 <img loading="lazy" src="../../../../public/external/C-Logo.png" class="img" />
                 <div class="logo-text">
-                    <div class="phs"><span class="certi">PSHS - </span><span class="code">EVC</span><span class="certi">
-                            - GCU</span></div>
+                    <div class="phs"><span class="certi">G</span><span class="code">RASS</span></div>
                 </div>
             </RouterLink>
             <div class="menu">
@@ -324,20 +322,6 @@ const handleLogout = async () => {
                         </span>
                     </button>
                 </div>
-                <form class="search-input">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder=""
-                            style="border-top-right-radius: 0; border-bottom-right-radius: 0;">
-                        <div class="input-group-btn">
-                            <button
-                                style="border: 1.5px solid #EEEEEE; background-color: #2087E4; border-top-left-radius: 0; border-bottom-left-radius: 0;"
-                                class="btn btn-default" type="submit">
-                                <i><font-awesome-icon style="color: white; height: 18px;" class="icon"
-                                        :icon="['fas', 'fa-search']" /></i>
-                            </button>
-                        </div>
-                    </div>
-                </form>
                 <div class="dropdown" style="display: flex; justify-content: center; align-items: center;">
                     <button class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false"
@@ -365,7 +349,7 @@ const handleLogout = async () => {
     </div>
 </template>
 
-<style>
+<style scoped>
 * {
     margin: 0;
     padding: 0;
@@ -504,6 +488,14 @@ const handleLogout = async () => {
     overflow-x: hidden;
 }
 
+.sidebar-text {
+    font-family: Inter, sans-serif;
+    align-self: start;
+    margin-top: 4px;
+    flex-grow: 1;
+    flex-basis: auto;
+}
+
 .mobile-sidebar {
     box-shadow: 4px 0px 10px 2px rgba(0, 0, 0, 0.25);
     background-color: #ffffff !important;
@@ -544,7 +536,7 @@ const handleLogout = async () => {
     display: flex;
     justify-content: center;
     color: var(--Black, #191919);
-    padding: 18px 40px;
+    padding: 18px 55px;
     align-items: center;
     gap: 15px;
     margin-top: 5px;
@@ -641,7 +633,6 @@ const handleLogout = async () => {
     color: #9b9b9b;
     padding: 8px 10px;
     cursor: pointer;
-    margin-bottom: -10px;
 }
 
 .forms {
@@ -697,10 +688,6 @@ const handleLogout = async () => {
     margin-top: 5px;
     flex-grow: 1;
     flex-basis: auto;
-}
-
-.search-input {
-    width: 500px;
 }
 
 .minimized {

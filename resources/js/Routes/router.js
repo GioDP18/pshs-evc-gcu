@@ -5,20 +5,27 @@ import RegistrationView from "../Components/Views/RegistrationView.vue";
 //Staff
 import StaffView from "../Components/Views/StaffView.vue";
 import Home from "../Components/Pages/Staff/Home.vue";
-import IntakeInterviewForm from "../Components/Pages/Staff/IntakeInterviewForm.vue";
-import GuidanceAdmissionSlip from "../Components/Pages/Staff/GuidanceAdmissionSlip.vue";
-import GuidanceCallSlip from "../Components/Pages/Staff/GuidanceCallSlip.vue";
-import ParentQuestionnaireForm from "../Components/Pages/Staff/ParentQuestionnaireForm.vue";
-import ReferralForm from "../Components/Pages/Staff/ReferralForm.vue";
-import CumulativeRecordForm from "../Components/Pages/Staff/CumulativeRecordForm.vue";
-import ClientMonitoringForm from "../Components/Pages/Staff/ClientMonitoringForm.vue";
-import RequestForm from "../Components/Pages/Student/RequestForm.vue";
-import Calendar from "../Components/Pages/Staff/Calendar.vue";
 import ProfilePage from "../Components/Pages/Staff/ProfilePage.vue";
+import Calendar from "../Components/Pages/Staff/Calendar.vue";
+//Forms
+import IntakeInterviewForm from "../Components/Pages/Staff/Forms/IntakeInterviewForm.vue";
+import GuidanceAdmissionSlip from "../Components/Pages/Staff/Forms/GuidanceAdmissionSlip.vue";
+import GuidanceCallSlip from "../Components/Pages/Staff/Forms/GuidanceCallSlip.vue";
+import ParentQuestionnaireForm from "../Components/Pages/Staff/Forms/ParentQuestionnaireForm.vue";
+import ReferralForm from "../Components/Pages/Staff/Forms/ReferralForm.vue";
+import CumulativeRecordForm from "../Components/Pages/Staff/Forms/CumulativeRecordForm.vue";
+import ClientMonitoringForm from "../Components/Pages/Staff/Forms/ClientMonitoringForm.vue";
+//Fields
+import FieldIntakeInterviewForm from "../Components/Pages/Staff/FillForm/FieldIntakeInterviewForm.vue";
+import FieldGuidanceAdmissionSlip from "../Components/Pages/Staff/FillForm/FieldGuidanceAdmissionSlip.vue";
 
 // Student
 import StudentView from "../Components/Views/StudentView.vue";
 import StudentHome from "../Components/Pages/Student/StudentHome.vue";
+import StudentCalendar from "../Components/Pages/Student/StudentCalendar.vue";
+import StudentRequestCummulative from "../Components/Pages/Student/StudentRequestCummulative.vue";
+import StudentRequestClient from "../Components/Pages/Student/StudentRequestClient.vue";
+import StudentProfilePage from "../Components/Pages/Student/StudentProfilePage.vue";
 import NotFound from "../Components/404.vue";
 
 const routes = [
@@ -82,6 +89,16 @@ const routes = [
                 name: "staff-clientMonitoringForm",
             },
             {
+                path: "fieldIntakeInterview",
+                component: FieldIntakeInterviewForm,
+                name: "staff-fieldIntakeInterview",
+            },
+            {
+                path: "fieldGuidanceAdmission",
+                component: FieldGuidanceAdmissionSlip,
+                name: "staff-fieldGuidanceAdmission",
+            },
+            {
                 path: "profilePage",
                 component: ProfilePage,
                 name: "staff-profilePage",
@@ -98,9 +115,24 @@ const routes = [
                 name: "student-home",
             },
             {
-                path: "requestForm",
-                component: RequestForm,
-                name: "student-requestForm",
+                path: "studentCalendar",
+                component: StudentCalendar,
+                name: "student-studentCalendar",
+            },
+            {
+                path: "studentRequestCummulative",
+                component: StudentRequestCummulative,
+                name: "student-requestFormCummulative",
+            },
+            {
+                path: "studentRequestClient",
+                component: StudentRequestClient,
+                name: "student-requestFormClient",
+            },
+            {
+                path: "studentProfilePage",
+                component: StudentProfilePage,
+                name: "student-studentProfilePage",
             },
         ],
     },
