@@ -17,6 +17,10 @@ const toggleForms = () => {
 
 const updateScreenWidth = () => {
     screenWidth.value = window.innerWidth;
+    // Update showSidebar to true if screen width becomes less than 360px
+    if (screenWidth.value < 360) {
+        showSidebar.value = true;
+    }
 };
 
 const toggleSidebar = () => {
@@ -26,19 +30,17 @@ const toggleSidebar = () => {
 const toggleMobileSidebar = () => {
     showMobileSidebar.value = !showMobileSidebar.value;
     const mobileHamburger = document.querySelector("#mobile-hamburger");
-    const searchInput = document.querySelector(".search-input");
-    const logoutButton = document.querySelector(".dropdown");
+    const logoutButton = document.querySelector(".dropdown-image");
 
     if (showMobileSidebar.value) {
         mobileHamburger.style.marginLeft = "250px";
-        searchInput.style.display = "none";
         logoutButton.style.display = "none";
     } else {
         mobileHamburger.style.marginLeft = "0";
-        searchInput.style.display = "block";
-        logoutButton.style.display = "block"
+        logoutButton.style.display = "block";
     }
 };
+
 
 const initializeHamburgers = () => {
     const hamburgers = document.querySelectorAll(".hamburger");
@@ -51,12 +53,27 @@ const initializeHamburgers = () => {
     }
 };
 
+const isSticky = ref(false);
+let lastScrollPosition = 0;
+
+const handleScroll = () => {
+    const scrollPosition = window.scrollY || window.pageYOffset;
+    if (scrollPosition > lastScrollPosition) {
+        isSticky.value = true;
+    } else {
+        isSticky.value = false;
+    }
+    lastScrollPosition = scrollPosition;
+};
+
 onMounted(() => {
     window.addEventListener('resize', updateScreenWidth);
+    window.addEventListener('scroll', handleScroll);
     initializeHamburgers();
 });
 onBeforeUnmount(() => {
     window.removeEventListener('resize', updateScreenWidth);
+    window.removeEventListener('scroll', handleScroll);
 });
 
 
@@ -306,7 +323,7 @@ const handleLogout = async () => {
             </div>
         </div>
         <div class="main-content">
-            <nav class="header sticky-top z-1">
+            <nav class="header" :class="{ 'sticky': isSticky }">
                 <div class="burger-container" v-show="screenWidth > 991">
                     <button class="hamburger hamburger--collapse" type="button" @click="toggleSidebar">
                         <span class="hamburger-box">
@@ -322,7 +339,8 @@ const handleLogout = async () => {
                         </span>
                     </button>
                 </div>
-                <div class="dropdown" style="display: flex; justify-content: center; align-items: center;">
+                <div class="dropdown dropdown-hide dropdown-image" :class="{ 'hidden': showMobileSidebar }"
+                    style="display: flex; justify-content: center; align-items: center;">
                     <button class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false"
                         style="display: flex; justify-content: center; align-items: center;">
@@ -354,6 +372,22 @@ const handleLogout = async () => {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+.sticky .dropdown-hide {
+    display: none !important;
+}
+
+.sticky {
+    animation: slideDown 0.3s ease;
+}
+
+.sticky {
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+    /* Add any additional styles for the sticky header */
 }
 
 .dropdown {
@@ -478,7 +512,8 @@ const handleLogout = async () => {
     box-shadow: 4px 0px 10px 2px rgba(0, 0, 0, 0.25);
     background-color: #ffffff;
     display: flex;
-    max-width: 255px;
+    max-width: 340px;
+    width: 320px;
     height: 100vh;
     flex-direction: column;
     padding: 0px;
@@ -501,6 +536,7 @@ const handleLogout = async () => {
     background-color: #ffffff !important;
     display: flex;
     max-width: 250px;
+    width: 250px;
     height: 100vh;
     flex-direction: column;
     padding: 0px;

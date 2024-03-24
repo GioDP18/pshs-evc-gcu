@@ -76,7 +76,7 @@
 
 <style scoped>
 .container {
-    width: 100%;
+    margin-bottom: 40px;
 }
 
 .container .text-header {
@@ -141,7 +141,6 @@
     }
 
     .container .right {
-        margin-bottom: 10px;
         margin-top: 20px
     }
 

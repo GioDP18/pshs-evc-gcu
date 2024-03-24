@@ -94,19 +94,19 @@ const handleLogout = async () => {
                 </div>
             </RouterLink>
             <div class="menu">
-                <RouterLink to="studentHome" class="sidebar-menu" active-class="active" style="text-decoration: none;"
-                    title="Home">
+                <RouterLink to="parentsTeacherHome" class="sidebar-menu" active-class="active"
+                    style="text-decoration: none;" title="Home">
                     <i><font-awesome-icon style="" class="icon" :icon="['fas', 'fa-home']" /></i>
                     <div v-if="showSidebar" class="sidebar-text">Home</div>
                 </RouterLink>
-                <RouterLink to="studentCalendar" class="sidebar-menu" active-class="active"
+                <RouterLink to="parentsTeacherCalendar" class="sidebar-menu" active-class="active"
                     style="text-decoration: none;" title="Calendar">
                     <i><font-awesome-icon class="icon" :icon="['fas', 'calendar']" /></i>
                     <div v-if="showSidebar" class="sidebar-text">Calendar</div>
                 </RouterLink>
                 <div class="forms">
                     <div class="forms-header" @click="toggleForms"
-                        :class="{ 'active': $route.path.startsWith('/student/studentCummulativeRecord') || $route.path.startsWith('/student/studentClientMonitoring') }">
+                        :class="{ 'active': $route.path.startsWith('/parentsTeacher/parentsTeacherParentQuestionnaire') || $route.path.startsWith('/parentsTeacher/parentsTeacherReferralForm') }">
                         <i><font-awesome-icon class="icon" :icon="['fas', 'file']" /></i>
                         <div v-if="showSidebar" class="sidebar-text" title="Forms">Forms</div>
                         <i v-if="showSidebar" class="icon"
@@ -115,26 +115,26 @@ const handleLogout = async () => {
                     <div v-show="showForms">
                         <ul class="menu-option" :class="{ 'centered': !showSidebar }">
                             <li>
-                                <RouterLink to="studentCummulativeRecord" class="form-sidebar-menu"
+                                <RouterLink to="parentsTeacherParentQuestionnaire" class="form-sidebar-menu"
                                     active-class="form-active" style="text-decoration: none;" title="Intake Interview
                                             Form">
                                     <div class="form-sidebar-text">
-                                        <span v-if="!showSidebar">CRF</span>
+                                        <span v-if="!showSidebar">PQF</span>
                                         <span v-else style="display: flex;">
-                                            <p style="margin-right: 10px;">•</p>Cumulative Record Form
+                                            <p style="margin-right: 10px;">•</p>Parent Questionnaire Form
                                         </span>
                                     </div>
                                 </RouterLink>
                             </li>
 
                             <li>
-                                <RouterLink to="studentClientMonitoring" class="form-sidebar-menu"
+                                <RouterLink to="parentsTeacherReferralForm" class="form-sidebar-menu"
                                     active-class="form-active" style="text-decoration: none;"
                                     title="Guidance Admission">
                                     <div class="form-sidebar-text">
-                                        <span v-if="!showSidebar">CMF</span>
+                                        <span v-if="!showSidebar">RF</span>
                                         <span v-else style="display: flex;">
-                                            <p style="margin-right: 10px;">•</p>Client Monitoring Form
+                                            <p style="margin-right: 10px;">•</p>Referral Form
                                         </span>
                                     </div>
                                 </RouterLink>
@@ -153,19 +153,19 @@ const handleLogout = async () => {
                 </div>
             </RouterLink>
             <div class="menu">
-                <RouterLink to="studentHome" class="sidebar-menu" active-class="active" style="text-decoration: none;"
-                    title="home">
+                <RouterLink to="parentsTeacherHome" class="sidebar-menu" active-class="active"
+                    style="text-decoration: none;" title="home">
                     <i><font-awesome-icon style="" class="icon" :icon="['fas', 'fa-home']" /></i>
                     <div v-if="showSidebar" class="sidebar-text">Home</div>
                 </RouterLink>
-                <RouterLink to="studentCalendar" class="sidebar-menu" active-class="active"
+                <RouterLink to="parentsTeacherCalendar" class="sidebar-menu" active-class="active"
                     style="text-decoration: none;" title="calendar">
                     <i><font-awesome-icon class="icon" :icon="['fas', 'calendar']" /></i>
                     <div v-if="showSidebar" class="sidebar-text">Calendar</div>
                 </RouterLink>
                 <div class="forms">
                     <div class="forms-header" @click="toggleForms"
-                        :class="{ 'active': $route.path.startsWith('/student/studentCummulativeRecord') || $route.path.startsWith('/student/studentClientMonitoring') }">
+                        :class="{ 'active': $route.path.startsWith('/parentsTeacher/parentsTeacherParentQuestionnaire') || $route.path.startsWith('/parentsTeacher/parentsTeacherReferralForm') }">
                         <i><font-awesome-icon class="icon" :icon="['fas', 'file']" /></i>
                         <div v-if="showSidebar" class="sidebar-text" title="Forms">Forms</div>
                         <i v-if="showSidebar" class="icon"
@@ -174,26 +174,26 @@ const handleLogout = async () => {
                     <div v-show="showForms">
                         <ul class="menu-option" :class="{ 'centered': !showSidebar }">
                             <li>
-                                <RouterLink to="studentCummulativeRecord" class="form-sidebar-menu"
+                                <RouterLink to="parentsTeacherParentQuestionnaire" class="form-sidebar-menu"
                                     active-class="form-active" style="text-decoration: none;" title="Intake Interview
                                             Form">
                                     <div class="form-sidebar-text">
-                                        <span v-if="!showSidebar">CRF</span>
+                                        <span v-if="!showSidebar">PQF</span>
                                         <span v-else style="display: flex;">
-                                            <p style="margin-right: 10px;">•</p>Cumulative Record Form
+                                            <p style="margin-right: 10px;">•</p>Parent Questionnaire Form
                                         </span>
                                     </div>
                                 </RouterLink>
                             </li>
 
                             <li>
-                                <RouterLink to="studentClientMonitoring" class="form-sidebar-menu"
+                                <RouterLink to="parentsTeacherReferralForm" class="form-sidebar-menu"
                                     active-class="form-active" style="text-decoration: none;"
                                     title="Guidance Admission">
                                     <div class="form-sidebar-text">
-                                        <span v-if="!showSidebar">CMF</span>
+                                        <span v-if="!showSidebar">RF</span>
                                         <span v-else style="display: flex;">
-                                            <p style="margin-right: 10px;">•</p>Client Monitoring Form
+                                            <p style="margin-right: 10px;">•</p>Referral Form
                                         </span>
                                     </div>
                                 </RouterLink>
@@ -232,7 +232,7 @@ const handleLogout = async () => {
                         </div>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <RouterLink to="studentProfilePage" class="dropdown-item"><i><font-awesome-icon
+                        <RouterLink to="parentsTeacherProfilePage" class="dropdown-item"><i><font-awesome-icon
                                     :icon="['fas', 'user']" style="margin-right: 15px;" /></i>View Profile</RouterLink>
                         <button style="color: #a5000e;" @click="handleLogout" class="dropdown-item"
                             href="#"><i><font-awesome-icon class="icon" :icon="['fas', 'fa-power-off']"
