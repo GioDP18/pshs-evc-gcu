@@ -19,6 +19,7 @@ import ClientMonitoringForm from "../Components/Pages/Staff/Forms/ClientMonitori
 import FieldIntakeInterviewForm from "../Components/Pages/Staff/FillForm/FieldIntakeInterviewForm.vue";
 import FieldGuidanceCallSlip from "../Components/Pages/Staff/FillForm/FieldGuidanceCallSlip.vue";
 import FieldReferralForm from "../Components/Pages/Staff/FillForm/FieldReferralForm.vue";
+import FieldGuidanceAdmission from "../Components/Pages/Staff/FillForm/FieldGuidanceAdmissionSlip.vue";
 
 //---------------------------------Student---------------------------------
 import StudentView from "../Components/Views/StudentView.vue";
@@ -58,7 +59,6 @@ const routes = [
         path: "/staff",
         component: StaffView,
         children: [
-            //FORMS
             {
                 path: "home",
                 component: Home,
@@ -69,6 +69,12 @@ const routes = [
                 component: Calendar,
                 name: "staff-calendar",
             },
+            {
+                path: "profilePage",
+                component: ProfilePage,
+                name: "staff-profilePage",
+            },
+            //FORMS
             {
                 path: "intakeInterviewForm",
                 component: IntakeInterviewForm,
@@ -121,9 +127,9 @@ const routes = [
                 name: "staff-fieldReferralForm",
             },
             {
-                path: "profilePage",
-                component: ProfilePage,
-                name: "staff-profilePage",
+                path: "fieldGuidanceAdmission",
+                component: FieldGuidanceAdmission,
+                name: "staff-fieldGuidanceAdmission",
             },
         ],
     },
