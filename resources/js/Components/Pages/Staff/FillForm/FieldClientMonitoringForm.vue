@@ -1,10 +1,10 @@
 <template>
     <div>
         <div class="container">
-            <div class="text-header">GUIDANCE ADMISSION SLIP</div>
+            <div class="text-header">CLIENT MONITORING FORM</div>
             <div class="left-right">
                 <div class="left">
-                    <div class="mb-3">
+                    <div class="mb-3 d-flex flex-column">
                         <label class="form-label">Campus:</label>
                         <input type="text" class="form-control" required>
                     </div>
@@ -14,17 +14,15 @@
                             <label class="form-label">Name of Student:</label>
                             <input type="text" class="form-control" required>
                         </div>
-                        <div class="col mb-3 ">
+                        <div class="col mb-3">
                             <label class="form-label">Grade & Section:</label>
                             <input type="text" class="form-control" required>
                         </div>
                     </div>
 
-                    <div class="row mb-3">
-                        <div class="col">
-                            <label class="form-label">Dear:</label>
-                            <input type="text" class="form-control" required>
-                        </div>
+                    <div class="mb-3 d-flex flex-column">
+                        <label class="form-label">Adviser:</label>
+                        <input type="text" class="form-control" required>
                     </div>
 
                     <div class="row align">
@@ -33,28 +31,24 @@
                             <input type="date" class="form-control" required>
                         </div>
                         <div class="col mb-3">
-                            <label class="form-label">Time Started:</label>
-                            <input type="time" class="form-control" required>
-                        </div>
-                        <div class="col mb-3">
-                            <label class="form-label">Time Ended:</label>
-                            <input type="time" class="form-control" required>
+                            <label class="form-label">Areas of Concern:</label>
+                            <input type="text" class="form-control" required>
                         </div>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Guidance Counselor / Life Coaches/ Wellness Facilitator:</label>
-                        <input type="text" class="form-control" required>
+                    <div class="mb-3 d-flex flex-column">
+                        <label class="form-label">Signature:</label>
+                        <input type="file" class="form-control" required>
                     </div>
 
                     <div class="row align">
                         <div class="col mb-3">
-                            <label class="form-label">Received by:</label>
+                            <label class="form-label">Action Taken:</label>
                             <input type="text" class="form-control" required>
                         </div>
                         <div class="col mb-3">
-                            <label class="form-label">Signature:</label>
-                            <input type="file" class="form-control" required>
+                            <label class="form-label">Recommendations:</label>
+                            <input type="text" class="form-control" required>
                         </div>
                     </div>
                 </div>

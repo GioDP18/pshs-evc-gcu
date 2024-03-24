@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="container">
-            <div class="text-header">Referral Form</div>
+            <div class="text-header">REFERRAL FORM</div>
             <div class="left-right">
                 <div class="left">
                     <div class="mb-3">
@@ -152,6 +152,7 @@
 @media screen and (max-width:360px) {
     .container .text-header {
         text-align: center;
+        font-size: 20px;
     }
 
     .left-right {
