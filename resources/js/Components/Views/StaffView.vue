@@ -1,106 +1,3 @@
-<script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue';
-import { useRouter } from 'vue-router'
-import axios from 'axios';
-import store from '../../State/index.js';
-
-const router = useRouter();
-
-const showSidebar = ref(true);
-const showMobileSidebar = ref(false);
-const showForms = ref(true); // Control visibility of forms container
-const screenWidth = ref(window.innerWidth);
-
-const toggleForms = () => {
-    showForms.value = !showForms.value;
-};
-
-const updateScreenWidth = () => {
-    screenWidth.value = window.innerWidth;
-    // Update showSidebar to true if screen width becomes less than 360px
-    if (screenWidth.value < 360) {
-        showSidebar.value = true;
-    }
-};
-
-const toggleSidebar = () => {
-    showSidebar.value = !showSidebar.value;
-};
-
-const toggleMobileSidebar = () => {
-    showMobileSidebar.value = !showMobileSidebar.value;
-    const mobileHamburger = document.querySelector("#mobile-hamburger");
-    const logoutButton = document.querySelector(".dropdown-image");
-
-    if (showMobileSidebar.value) {
-        mobileHamburger.style.marginLeft = "250px";
-        logoutButton.style.display = "none";
-    } else {
-        mobileHamburger.style.marginLeft = "0";
-        logoutButton.style.display = "block";
-    }
-};
-
-
-const initializeHamburgers = () => {
-    const hamburgers = document.querySelectorAll(".hamburger");
-    if (hamburgers.length > 0) {
-        hamburgers.forEach(hamburger => {
-            hamburger.addEventListener("click", function () {
-                this.classList.toggle("is-active");
-            }, false);
-        });
-    }
-};
-
-const isSticky = ref(false);
-let lastScrollPosition = 0;
-
-const handleScroll = () => {
-    const scrollPosition = window.scrollY || window.pageYOffset;
-    if (scrollPosition > lastScrollPosition) {
-        isSticky.value = true;
-    } else {
-        isSticky.value = false;
-    }
-    lastScrollPosition = scrollPosition;
-};
-
-onMounted(() => {
-    window.addEventListener('resize', updateScreenWidth);
-    window.addEventListener('scroll', handleScroll);
-    initializeHamburgers();
-});
-onBeforeUnmount(() => {
-    window.removeEventListener('resize', updateScreenWidth);
-    window.removeEventListener('scroll', handleScroll);
-});
-
-
-const handleLogout = async () => {
-    store.commit('setLoading', true);
-    try {
-        const token = localStorage.getItem('token');
-        const headers = { Authorization: `Bearer ${token}` };
-
-        const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/logout`, {}, { headers });
-
-        if (response.status === 200) {
-            localStorage.removeItem('token');
-            localStorage.setItem('valid', false);
-            router.push({ name: 'login' })
-        }
-    }
-    catch (error) {
-        console.log(error);
-    }
-    finally {
-        store.commit('setLoading', false);
-    }
-}
-
-</script>
-
 <template>
     <div class="container1">
         <!-- Web Sidebar -->
@@ -113,7 +10,7 @@ const handleLogout = async () => {
             </RouterLink>
             <div class="menu">
                 <RouterLink to="home" class="sidebar-menu" active-class="active" style="text-decoration: none;"
-                    title="Dashboard">
+                    title="Home">
                     <i><font-awesome-icon class="icon" :icon="['fas', 'chart-simple']" /></i>
                     <div v-if="showSidebar" class="sidebar-text">Dashboard</div>
                 </RouterLink>
@@ -236,7 +133,7 @@ const handleLogout = async () => {
                 <RouterLink to="home" class="sidebar-menu" active-class="active" style="text-decoration: none;"
                     title="home">
                     <i><font-awesome-icon class="icon" :icon="['fas', 'chart-simple']" /></i>
-                    <div v-if="showSidebar" class="sidebar-text">Home</div>
+                    <div v-if="showSidebar" class="sidebar-text">Dashboard</div>
                 </RouterLink>
                 <RouterLink to="calendar" class="sidebar-menu" active-class="active" style="text-decoration: none;"
                     title="calendar">
@@ -362,7 +259,7 @@ const handleLogout = async () => {
                     <button class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false"
                         style="display: flex; justify-content: center; align-items: center;">
-                        <span class="dropdown-text">Hi Bogart</span>
+                        <span class="dropdown-text">{{ firstname }}</span>
                         <i class="icon fas fa-chevron-down"></i>
                         <div class="image-container">
                             <img src="../../../../public/user.jpg" alt="Avatar">
@@ -384,6 +281,122 @@ const handleLogout = async () => {
         </div>
     </div>
 </template>
+
+<script setup>
+import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { useRouter } from 'vue-router'
+import axios from 'axios';
+import store from '../../State/index.js';
+
+const router = useRouter();
+
+const showSidebar = ref(true);
+const showMobileSidebar = ref(false);
+const showForms = ref(true); // Control visibility of forms container
+const screenWidth = ref(window.innerWidth);
+const firstname = ref('');
+
+const toggleForms = () => {
+    showForms.value = !showForms.value;
+};
+
+const updateScreenWidth = () => {
+    screenWidth.value = window.innerWidth;
+    // Update showSidebar to true if screen width becomes less than 360px
+    if (screenWidth.value < 360) {
+        showSidebar.value = true;
+    }
+};
+
+const toggleSidebar = () => {
+    showSidebar.value = !showSidebar.value;
+};
+
+const toggleMobileSidebar = () => {
+    showMobileSidebar.value = !showMobileSidebar.value;
+    const mobileHamburger = document.querySelector("#mobile-hamburger");
+    const logoutButton = document.querySelector(".dropdown-image");
+
+    if (showMobileSidebar.value) {
+        mobileHamburger.style.marginLeft = "250px";
+        logoutButton.style.display = "none";
+    } else {
+        mobileHamburger.style.marginLeft = "0";
+        logoutButton.style.display = "block";
+    }
+};
+
+
+const initializeHamburgers = () => {
+    const hamburgers = document.querySelectorAll(".hamburger");
+    if (hamburgers.length > 0) {
+        hamburgers.forEach(hamburger => {
+            hamburger.addEventListener("click", function () {
+                this.classList.toggle("is-active");
+            }, false);
+        });
+    }
+};
+
+const isSticky = ref(false);
+let lastScrollPosition = 0;
+
+const handleScroll = () => {
+    const scrollPosition = window.scrollY || window.pageYOffset;
+    if (scrollPosition > lastScrollPosition) {
+        isSticky.value = true;
+    } else {
+        isSticky.value = false;
+    }
+    lastScrollPosition = scrollPosition;
+};
+
+onMounted(() => {
+    window.addEventListener('resize', updateScreenWidth);
+    window.addEventListener('scroll', handleScroll);
+    initializeHamburgers();
+    getUserProfile();
+});
+onBeforeUnmount(() => {
+    window.removeEventListener('resize', updateScreenWidth);
+    window.removeEventListener('scroll', handleScroll);
+});
+
+const getUserProfile = async () => {
+    try {
+        const user_id = localStorage.getItem('user_id');
+        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/get-user-data/${user_id}`)
+        console.log(response.data.data.firstname)
+        firstname.value = response.data.data.firstname
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+const handleLogout = async () => {
+    store.commit('setLoading', true);
+    try {
+        const token = localStorage.getItem('token');
+        const headers = { Authorization: `Bearer ${token}` };
+
+        const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/logout`, {}, { headers });
+
+        if (response.status === 200) {
+            localStorage.removeItem('token');
+            localStorage.setItem('valid', false);
+            router.push({ name: 'login' })
+        }
+    }
+    catch (error) {
+        console.log(error);
+    }
+    finally {
+        store.commit('setLoading', false);
+    }
+}
+
+</script>
 
 <style scoped>
 * {
@@ -682,7 +695,6 @@ const handleLogout = async () => {
     cursor: pointer;
     width: 95%;
     border-radius: 8px;
-    font-family: Montserrat, sans-serif;
 }
 
 .form-sidebar-menu {
