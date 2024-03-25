@@ -76,6 +76,10 @@ const initializeDataTable = () => {
 
 
 <style scoped>
+.main-content {
+    width: 100%;
+}
+
 .content {
     background-color: transparent;
     padding: 20px;

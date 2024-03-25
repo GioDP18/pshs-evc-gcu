@@ -1,4 +1,6 @@
 <script setup>
+import DataTable from 'datatables.net-vue3';
+import DataTablesCore from 'datatables.net-bs5';
 import axios from 'axios';
 import { ref, onMounted } from 'vue';
 import $ from 'jquery';
@@ -19,52 +21,50 @@ const initializeDataTable = () => {
 
 <template>
     <div class="main-content">
-        <div class="content">
-            <div class="column-1">
-                <div class="table-card">
-                    <div class="content-text">Referral Form</div>
-                    <table id="dailyTimeLog" class="table table-striped table-hover" width="100%">
-                        <thead>
-                            <tr>
-                                <th>ID Number</th>
-                                <th>Name</th>
-                                <th>Gender</th>
-                                <th>Date</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>123</td>
-                                <td>Bogart The Explorer</td>
-                                <td>Male</td>
-                                <td>July 1, 2002</td>
-                                <td>
-                                    <div class="dropdown">
-                                        <button style="padding-right: 5px;" class="card14 dropdown-toggle" type="button"
-                                            id="sendUserCertDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <span class="send-text">Action</span>
-                                        </button>
-                                        <ul class="dropdown-menu" aria-labelledby="sendUserCertDropdown">
-                                            <li><a class="dropdown-item view" href="#"
-                                                    @click="sendCertificate('certificate1')"><i><font-awesome-icon
-                                                            :icon="['fas', 'eye']"
-                                                            style="margin-right: 10px;" /></i>View</a></li>
-                                            <li><a class="dropdown-item generate" href="#"
-                                                    @click="sendCertificate('certificate2')"><i><font-awesome-icon
-                                                            :icon="['fas', 'file']"
-                                                            style="margin-right: 10px;" /></i>Generate</a></li>
-                                            <li><a class="dropdown-item delete" href="#"
-                                                    @click="sendCertificate('certificate2')"><i><font-awesome-icon
-                                                            :icon="['fas', 'trash']"
-                                                            style="margin-right: 10px;" /></i>Delete</a></li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+        <div class="column-1">
+            <div class="table-card">
+                <div class="content-text">Referral Form</div>
+                <table id="dailyTimeLog" class="table table-striped table-hover" width="100%">
+                    <thead>
+                        <tr>
+                            <th>ID Number</th>
+                            <th>Name</th>
+                            <th>Gender</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>123</td>
+                            <td>Bogart The Explorer</td>
+                            <td>Male</td>
+                            <td>July 1, 2002</td>
+                            <td>
+                                <div class="dropdown">
+                                    <button style="padding-right: 5px;" class="card14 dropdown-toggle" type="button"
+                                        id="sendUserCertDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <span class="send-text">Action</span>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="sendUserCertDropdown">
+                                        <li><a class="dropdown-item view" href="#"
+                                                @click="sendCertificate('certificate1')"><i><font-awesome-icon
+                                                        :icon="['fas', 'eye']"
+                                                        style="margin-right: 10px;" /></i>View</a></li>
+                                        <li><a class="dropdown-item generate" href="#"
+                                                @click="sendCertificate('certificate2')"><i><font-awesome-icon
+                                                        :icon="['fas', 'file']"
+                                                        style="margin-right: 10px;" /></i>Generate</a></li>
+                                        <li><a class="dropdown-item delete" href="#"
+                                                @click="sendCertificate('certificate2')"><i><font-awesome-icon
+                                                        :icon="['fas', 'trash']"
+                                                        style="margin-right: 10px;" /></i>Delete</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -72,9 +72,8 @@ const initializeDataTable = () => {
 
 
 <style scoped>
-.content {
-    background-color: transparent;
-    padding: 20px;
+.main-content {
+    width: 100%;
 }
 
 .column-1 {
