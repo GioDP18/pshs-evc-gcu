@@ -7,7 +7,7 @@ interface GenerateService
 {
     public function __construct();
 
-    public function generateIntInterview(Request $request);
+    public function generateIntInterview(Request $request, $intakeId);
 
     public function generateGuidAdmission(Request $request);
 

@@ -4,30 +4,44 @@ namespace App\Http\Implementations;
 use Illuminate\Http\Request;
 use App\Http\Services\GenerateService;
 use PhpOffice\PhpWord\TemplateProcessor;
-use PhpOffice\PhpWord\PhpWord;
-use Barryvdh\DomPDF\Facade\Pdf;
-use Intervention\Image\ImageManagerStatic;
+use \ConvertApi\ConvertApi;
+use App\Models\IntakeInterviewForm;
+
 
 Class GenerateServiceImpl implements GenerateService
 {
     public function __construct(){
     }
-    
-    public function generateIntInterview(Request $request)
+
+    public function generateIntInterview(Request $request, $intakeId)
     {
+        $intake = IntakeInterviewForm::findOrFail($intakeId);
         $templateProcessor = new TemplateProcessor(public_path('templates\PSHS-00-F-GCU-01-Ver02-Rev0-Intake-Interview-Form.docx'));
-        $templateProcessor->setValue('name', 'John Vincent Ramada');
-        $templateProcessor->setValue('nickName', 'Vincent');
-        $templateProcessor->setValue('elementarySchool', 'trySchool');
-        $templateProcessor->setValue('schoolAddress', 'trySchoolAddress');
-        $templateProcessor->setValue('age', '22');
-        $templateProcessor->setValue('sex', '✔️');
-        $templateProcessor->setValue('dateOfInterview', 'tryDate');
+        $templateProcessor->setValue('name', $intake->name_of_student);
+        $templateProcessor->setValue('nickName', $intake->nickname);
+        $templateProcessor->setValue('elementarySchool', $intake->elementary_school_graduated);
+        $templateProcessor->setValue('schoolAddress', $intake->school_address);
+        $templateProcessor->setValue('age', $intake->age);
+        $templateProcessor->setValue('sex', $intake->sex);
+        $templateProcessor->setValue('dateOfInterview', date('Y-m-d'));
 
         $newFilePath = public_path('intake_interview\\' . 'John Vincent Ramada' . '.docx');
         $templateProcessor->saveAs($newFilePath);
 
-        return $newFilePath;
+        // $docxFilePath = public_path('example.docx');
+        ConvertApi::setApiSecret('1MDrmpYzrCkI1g04');
+        $result = ConvertApi::convert('pdf', [
+                'File' => $newFilePath,
+            ], 'doc'
+        );
+        $pdf_filepath = $result->saveFiles(public_path('intake_interview\\'. 'John Vincent Ramada' . '.pdf'));
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Successfully generated Intake Interview form',
+            'file_path' => $pdf_filepath,
+        ], 201);
+
     }
 
     public function generateGuidAdmission(Request $request)
@@ -45,7 +59,17 @@ Class GenerateServiceImpl implements GenerateService
         $newFilePath = public_path('guidance_admission_slip\\' . 'John Vincent Ramada' . '.docx');
         $templateProcessor->saveAs($newFilePath);
 
-        return $newFilePath;
+        ConvertApi::setApiSecret('1MDrmpYzrCkI1g04');
+        $result = ConvertApi::convert('pdf', [
+                'File' => $newFilePath,
+            ], 'doc'
+        );
+        $result->saveFiles(public_path('guidance_admission_slip\\'. 'John Vincent Ramada' . '.pdf'));
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Successfully generated guidance admission form',
+        ], 201);
     }
 
     public function generateReferralForm(Request $request)
@@ -216,8 +240,18 @@ Class GenerateServiceImpl implements GenerateService
 
         $newFilePath = public_path('referral_form\\' . 'John Vincent Ramada' . '.docx');
         $templateProcessor->saveAs($newFilePath);
+
+        ConvertApi::setApiSecret('1MDrmpYzrCkI1g04');
+        $result = ConvertApi::convert('pdf', [
+                'File' => $newFilePath,
+            ], 'doc'
+        );
+        $result->saveFiles(public_path('referral_form\\'. 'John Vincent Ramada' . '.pdf'));
         
-        return $newFilePath;
+        return response()->json([
+            'success' => true,
+            'message' => 'Successfully generated referral form',
+        ], 201);
     }
 
     public function generateGuidCallSlip(Request $request)
@@ -276,7 +310,17 @@ Class GenerateServiceImpl implements GenerateService
         $newFilePath = public_path('guidance_call_slip\\' . 'John Vincent Ramada' . '.docx');
         $templateProcessor->saveAs($newFilePath);
 
-        return $newFilePath;
+        ConvertApi::setApiSecret('1MDrmpYzrCkI1g04');
+        $result = ConvertApi::convert('pdf', [
+                'File' => $newFilePath,
+            ], 'doc'
+        );
+        $result->saveFiles(public_path('guidance_call_slip\\'. 'John Vincent Ramada' . '.pdf'));
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Successfully generated guidance call slip form',
+        ], 201);
     }
 
     public function generateParentQuestionaire(Request $request)
@@ -286,6 +330,7 @@ Class GenerateServiceImpl implements GenerateService
         $Q1 = 'Yes';
         $Q1_parent = 'Mother';
         $Q2 = 'No';
+        $Q5 = 'Yes';
 
         $templateProcessor->setValue('child-name', 'John Vincent Ramada');
 
@@ -323,14 +368,14 @@ Class GenerateServiceImpl implements GenerateService
         $templateProcessor->setValue('stayed-year', 13);
 
         // question 1.2
-        if($Q1 == 'Yes')
+        if($Q2 == 'Yes')
         {
             $templateProcessor->setValue('1.2yes', '✔️');
         }else
         {
             $templateProcessor->setValue('1.2yes', '');
         }
-        if($Q1 == 'No')
+        if($Q2 == 'No')
         {
             $templateProcessor->setValue('1.2no', '✔️');
         }else
@@ -346,12 +391,41 @@ Class GenerateServiceImpl implements GenerateService
 
         // question 1.3
         $templateProcessor->setValue('1.3', 'example answer');
+
+        // question 1.4
         $templateProcessor->setValue('1.4', 'example answer');
+
+        // question 1.5
+        if($Q5 == 'Yes')
+        {
+            $templateProcessor->setValue('1.5yes', '✔️');
+        }else
+        {
+            $templateProcessor->setValue('1.5yes', '');
+        }
+        if($Q5 == 'No')
+        {
+            $templateProcessor->setValue('1.5no', '✔️');
+        }else
+        {
+            $templateProcessor->setValue('1.5no', '');
+        }
+        $templateProcessor->setValue('1.5often', 'example often');
 
         // file path save
         $newFilePath = public_path('parents_questionaire\\' . 'John Vincent Ramada' . '.docx');
         $templateProcessor->saveAs($newFilePath);
+        
+        ConvertApi::setApiSecret('1MDrmpYzrCkI1g04');
+        $result = ConvertApi::convert('pdf', [
+                'File' => $newFilePath,
+            ], 'doc'
+        );
+        $result->saveFiles(public_path('parents_questionaire\\'. 'John Vincent Ramada' . '.pdf'));
 
-        return $newFilePath;
+        return response()->json([
+            'success' => true,
+            'message' => 'Successfully generated parents questionaire form',
+        ], 201);
     }
 }

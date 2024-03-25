@@ -217,9 +217,9 @@ const validateForm = () => {
         errors.value.contact_number = 'Contact_number is required';
     }
 
-    if (!formData.value.id_number) {
-        errors.value.id_number = 'Student ID Number is required';
-    }
+    // if (!formData.value.id_number) {
+    //     errors.value.id_number = 'Student ID Number is required';
+    // }
 
     if (!formData.value.email) {
         errors.value.email = 'Email is required';
@@ -431,7 +431,8 @@ const prevStep = () => {
 .big-text h1 {
     font-size: 65px;
     color: #2087E4;
-    font-weight: 700
+    font-weight: 900;
+    font-family: Montserrat, sans-serif;
 }
 
 .option-button {
@@ -493,7 +494,7 @@ const prevStep = () => {
         font-size: 55px;
         width: 100%;
         padding-top: 100px;
-        font-weight: 700
+        font-weight: 700;
     }
 
     .option-button {

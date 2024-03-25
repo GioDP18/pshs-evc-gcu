@@ -17,6 +17,10 @@ const toggleForms = () => {
 
 const updateScreenWidth = () => {
     screenWidth.value = window.innerWidth;
+    // Update showSidebar to true if screen width becomes less than 360px
+    if (screenWidth.value < 360) {
+        showSidebar.value = true;
+    }
 };
 
 const toggleSidebar = () => {
@@ -26,19 +30,17 @@ const toggleSidebar = () => {
 const toggleMobileSidebar = () => {
     showMobileSidebar.value = !showMobileSidebar.value;
     const mobileHamburger = document.querySelector("#mobile-hamburger");
-    const searchInput = document.querySelector(".search-input");
-    const logoutButton = document.querySelector(".dropdown");
+    const logoutButton = document.querySelector(".dropdown-image");
 
     if (showMobileSidebar.value) {
         mobileHamburger.style.marginLeft = "250px";
-        searchInput.style.display = "none";
         logoutButton.style.display = "none";
     } else {
         mobileHamburger.style.marginLeft = "0";
-        searchInput.style.display = "block";
-        logoutButton.style.display = "block"
+        logoutButton.style.display = "block";
     }
 };
+
 
 const initializeHamburgers = () => {
     const hamburgers = document.querySelectorAll(".hamburger");
@@ -51,12 +53,27 @@ const initializeHamburgers = () => {
     }
 };
 
+const isSticky = ref(false);
+let lastScrollPosition = 0;
+
+const handleScroll = () => {
+    const scrollPosition = window.scrollY || window.pageYOffset;
+    if (scrollPosition > lastScrollPosition) {
+        isSticky.value = true;
+    } else {
+        isSticky.value = false;
+    }
+    lastScrollPosition = scrollPosition;
+};
+
 onMounted(() => {
     window.addEventListener('resize', updateScreenWidth);
+    window.addEventListener('scroll', handleScroll);
     initializeHamburgers();
 });
 onBeforeUnmount(() => {
     window.removeEventListener('resize', updateScreenWidth);
+    window.removeEventListener('scroll', handleScroll);
 });
 
 
@@ -73,8 +90,7 @@ const handleLogout = async () => {
             <RouterLink to="" class="sidebar-logo" style="text-decoration: none;">
                 <img loading="lazy" src="../../../../public/external/C-Logo.png" class="img" />
                 <div v-if="showSidebar" class="logo-text">
-                    <div class="phs"><span class="certi">PSHS - </span><span class="code">EVC</span><span class="certi">
-                            - GCU</span></div>
+                    <div class="phs"><span class="certi">G</span><span class="code">RASS</span></div>
                 </div>
             </RouterLink>
             <div class="menu">
@@ -195,8 +211,7 @@ const handleLogout = async () => {
             <RouterLink to="" class="sidebar-logo" style="text-decoration: none;">
                 <img loading="lazy" src="../../../../public/external/C-Logo.png" class="img" />
                 <div class="logo-text">
-                    <div class="phs"><span class="certi">PSHS - </span><span class="code">EVC</span><span class="certi">
-                            - GCU</span></div>
+                    <div class="phs"><span class="certi">G</span><span class="code">RASS</span></div>
                 </div>
             </RouterLink>
             <div class="menu">
@@ -308,7 +323,7 @@ const handleLogout = async () => {
             </div>
         </div>
         <div class="main-content">
-            <nav class="header sticky-top z-1">
+            <nav class="header" :class="{ 'sticky': isSticky }">
                 <div class="burger-container" v-show="screenWidth > 991">
                     <button class="hamburger hamburger--collapse" type="button" @click="toggleSidebar">
                         <span class="hamburger-box">
@@ -324,21 +339,8 @@ const handleLogout = async () => {
                         </span>
                     </button>
                 </div>
-                <form class="search-input">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search Participant"
-                            style="border-top-right-radius: 0; border-bottom-right-radius: 0;">
-                        <div class="input-group-btn">
-                            <button
-                                style="border: 1.5px solid #EEEEEE; background-color: #2087E4; border-top-left-radius: 0; border-bottom-left-radius: 0;"
-                                class="btn btn-default" type="submit">
-                                <i><font-awesome-icon style="color: white; height: 18px;" class="icon"
-                                        :icon="['fas', 'fa-search']" /></i>
-                            </button>
-                        </div>
-                    </div>
-                </form>
-                <div class="dropdown" style="display: flex; justify-content: center; align-items: center;">
+                <div class="dropdown dropdown-hide dropdown-image" :class="{ 'hidden': showMobileSidebar }"
+                    style="display: flex; justify-content: center; align-items: center;">
                     <button class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false"
                         style="display: flex; justify-content: center; align-items: center;">
@@ -365,11 +367,27 @@ const handleLogout = async () => {
     </div>
 </template>
 
-<style>
+<style scoped>
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+.sticky .dropdown-hide {
+    display: none !important;
+}
+
+.sticky {
+    animation: slideDown 0.3s ease;
+}
+
+.sticky {
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+    /* Add any additional styles for the sticky header */
 }
 
 .dropdown {
@@ -494,7 +512,8 @@ const handleLogout = async () => {
     box-shadow: 4px 0px 10px 2px rgba(0, 0, 0, 0.25);
     background-color: #ffffff;
     display: flex;
-    max-width: 255px;
+    max-width: 340px;
+    width: 320px;
     height: 100vh;
     flex-direction: column;
     padding: 0px;
@@ -504,11 +523,20 @@ const handleLogout = async () => {
     overflow-x: hidden;
 }
 
+.sidebar-text {
+    font-family: Inter, sans-serif;
+    align-self: start;
+    margin-top: 4px;
+    flex-grow: 1;
+    flex-basis: auto;
+}
+
 .mobile-sidebar {
     box-shadow: 4px 0px 10px 2px rgba(0, 0, 0, 0.25);
     background-color: #ffffff !important;
     display: flex;
     max-width: 250px;
+    width: 250px;
     height: 100vh;
     flex-direction: column;
     padding: 0px;
@@ -544,7 +572,7 @@ const handleLogout = async () => {
     display: flex;
     justify-content: center;
     color: var(--Black, #191919);
-    padding: 18px 40px;
+    padding: 18px 55px;
     align-items: center;
     gap: 15px;
     margin-top: 5px;
@@ -641,7 +669,6 @@ const handleLogout = async () => {
     color: #9b9b9b;
     padding: 8px 10px;
     cursor: pointer;
-    margin-bottom: -10px;
 }
 
 .forms {
@@ -697,10 +724,6 @@ const handleLogout = async () => {
     margin-top: 5px;
     flex-grow: 1;
     flex-basis: auto;
-}
-
-.search-input {
-    width: 500px;
 }
 
 .minimized {

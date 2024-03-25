@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GenerateController;
 use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\RequestsController;
+use App\Http\Controllers\SaveInputsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,9 +29,11 @@ Route::group([
 
     // Social login
     Route::get('/oauth/{provider}', [AuthController::class, 'socialLogin']);
+    Route::get('/auth/{provider}/callback', [AuthController::class, 'socialLoginCallback'])->name('auth.callback');
+    // Route::get('/auth/{provider}', [AuthController::class, 'socialLogin']);
 
     // Generate File
-    Route::post('/generate-intake-interview', [GenerateController::class, 'generateIntInterview']);
+    Route::post('/generate-intake-interview/{intakeId}', [GenerateController::class, 'generateIntInterview']);
     Route::post('/generate-guidance-admission', [GenerateController::class, 'generateGuidAdmission']);
     Route::post('/generate-referral-form', [GenerateController::class, 'generateReferralForm']);
     Route::post('/generate-guidance-call', [GenerateController::class, 'generateGuidCallSlip']);
@@ -40,6 +44,16 @@ Route::group([
     // Callendar Schedule
     Route::get('/get-schedule/{date}', [CalendarController::class, 'getSchedule']);
     Route::post('/update-schedule', [CalendarController::class, 'updateSchedule']);
+    Route::get('/get-available-time-today', [CalendarController::class, 'getAvailableTimeToday']);
+    Route::post('/reserve-consultation', [CalendarController::class, 'reserveConsultation']);
+
+    // Request Forms
+    Route::post('/request-form', [RequestsController::class, 'createRequest']);
+
+    Route::post('/submit-intake-interview', [SaveInputsController::class, 'submitIntakeInterview']);
+    Route::post('/submit-guidance-admission-slip', [SaveInputsController::class, 'submitGuidanceAdmissionSlip']);
+    Route::post('/submit-referral-form', [SaveInputsController::class, 'submitReferralForm']);
+
 
 });
 
