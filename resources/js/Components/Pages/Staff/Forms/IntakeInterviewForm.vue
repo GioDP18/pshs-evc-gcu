@@ -379,7 +379,7 @@ const generateForm = async (form_id) => {
     font: 700 20px Montserrat, sans-serif;
     margin-bottom: 20px;
     border-bottom: 1px solid #2087E4;
-    width: 98px;
+    width: 66px;
     border-bottom-width: 5px;
 }
 
