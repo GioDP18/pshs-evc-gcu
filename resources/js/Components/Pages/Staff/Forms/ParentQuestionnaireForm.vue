@@ -6,11 +6,21 @@ import { ref, onMounted } from 'vue';
 import $ from 'jquery';
 
 const allUsers = ref([]);
+const selectedGrade = ref(null);
+const selectedSection = ref(null);
 
 onMounted(async () => {
     // await getUsers();
     initializeDataTable();
 });
+
+const selectGrade = (grade) => {
+    selectedGrade.value = grade;
+};
+
+const selectSection = (section) => {
+    selectedSection.value = section;
+};
 
 const initializeDataTable = () => {
     $('#dailyTimeLog').DataTable();
