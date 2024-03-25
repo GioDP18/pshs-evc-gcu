@@ -7,5 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Assignment extends Model
 {
+    protected $fillable = [
+        'assignee',
+        'form_name',
+        'due_date',
+    ];
+
     use HasFactory;
 }

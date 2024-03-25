@@ -1,4 +1,6 @@
 <?php
+
+use App\Http\Controllers\AssignmentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -60,6 +62,11 @@ Route::group([
     Route::post('/submit-intake-interview', [SaveInputsController::class, 'submitIntakeInterview']);
     Route::post('/submit-guidance-admission-slip', [SaveInputsController::class, 'submitGuidanceAdmissionSlip']);
     Route::post('/submit-referral-form', [SaveInputsController::class, 'submitReferralForm']);
+
+    // Assignment
+    Route::post('/assign-form', [AssignmentController::class, 'assignForm']);
+    Route::get('/get-assigned-forms/{id}', [AssignmentController::class, 'getAssignedForms']);
+
 
 
 });
