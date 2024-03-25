@@ -1,32 +1,3 @@
-<script setup>
-import DataTable from 'datatables.net-vue3';
-import DataTablesCore from 'datatables.net-bs5';
-import axios from 'axios';
-import { ref, onMounted } from 'vue';
-import $ from 'jquery';
-
-const allUsers = ref([]);
-const selectedGrade = ref(null);
-const selectedSection = ref(null);
-
-onMounted(async () => {
-    // await getUsers();
-    initializeDataTable();
-});
-
-const initializeDataTable = () => {
-    $('#dailyTimeLog').DataTable();
-};
-
-const selectGrade = (grade) => {
-    selectedGrade.value = grade;
-};
-
-const selectSection = (section) => {
-    selectedSection.value = section;
-};
-</script>
-
 <template>
     <div class="main-content">
         <div class="column-1">
@@ -34,14 +5,14 @@ const selectSection = (section) => {
                 <div class="sub-header">
                     <div class="content-text">Client Monitoring Form</div>
                     <div class="buttons">
-                        <button class="create"><i style="margin-right: 5px;"><font-awesome-icon
+                        <button class="create" @click="goToInputs"><i style="margin-right: 5px;"><font-awesome-icon
                                     :icon="['fas', 'pen']" /></i>Create New</button>
                         <button class="assign" data-bs-toggle="modal" data-bs-target="#assign"><i
                                 style="margin-right: 5px;"><font-awesome-icon
                                     :icon="['fas', 'user-plus']" /></i>Assign</button>
                     </div>
                 </div>
-                <table id="dailyTimeLog" class="table table-striped table-hover" width="100%">
+                <table id="table-cmf" class="table table-striped table-hover" width="100%">
                     <thead>
                         <tr>
                             <th>ID Number</th>
@@ -117,7 +88,7 @@ const selectSection = (section) => {
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <table id="dailyTimeLog" class="table table-striped table-hover" width="100%">
+                                <table id="table-cmf" class="table table-striped table-hover" width="100%">
                                     <thead>
                                         <tr>
                                             <th>Name</th>
@@ -227,6 +198,42 @@ const selectSection = (section) => {
         </div>
     </div>
 </template>
+
+<script setup>
+import DataTable from 'datatables.net-vue3';
+import DataTablesCore from 'datatables.net-bs5';
+import axios from 'axios';
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import $ from 'jquery';
+
+const router = useRouter();
+
+const allUsers = ref([]);
+const selectedGrade = ref(null);
+const selectedSection = ref(null);
+
+onMounted(async () => {
+    // await getUsers();
+    initializeDataTable();
+});
+
+const initializeDataTable = () => {
+    $('#table-cmf').DataTable();
+};
+
+const selectGrade = (grade) => {
+    selectedGrade.value = grade;
+};
+
+const selectSection = (section) => {
+    selectedSection.value = section;
+};
+
+const goToInputs = () => {
+    router.push({ name: 'staff-fieldClientMonitoring'})
+}
+</script>
 
 
 <style scoped>

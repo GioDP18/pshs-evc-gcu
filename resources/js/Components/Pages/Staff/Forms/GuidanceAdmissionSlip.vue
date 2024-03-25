@@ -6,7 +6,7 @@
                     <div class="sub-header">
                         <div class="content-text">Guidance Admission Slip</div>
                         <div class="buttons">
-                            <button class="create"><i style="margin-right: 5px;"><font-awesome-icon
+                            <button class="create" @click="goToInputs"><i style="margin-right: 5px;"><font-awesome-icon
                                         :icon="['fas', 'pen']" /></i>Create New</button>
                             <button class="assign" data-bs-toggle="modal" data-bs-target="#assign"><i
                                     style="margin-right: 5px;"><font-awesome-icon
@@ -208,7 +208,10 @@ import DataTable from 'datatables.net-vue3';
 import DataTablesCore from 'datatables.net-bs5';
 import axios from 'axios';
 import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import $ from 'jquery';
+
+const router = useRouter();
 
 const all_data = ref([]);
 const selectedGrade = ref(null);
@@ -262,6 +265,10 @@ const generateForm = async (form_id) => {
     catch (error) {
         console.log(error);
     }
+}
+
+const goToInputs = () => {
+    router.push({ name: 'staff-fieldGuidanceAdmission'})
 }
 
 </script>
