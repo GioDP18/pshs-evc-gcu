@@ -96,8 +96,8 @@ const handleLogout = async () => {
             <div class="menu">
                 <RouterLink to="parentsTeacherHome" class="sidebar-menu" active-class="active"
                     style="text-decoration: none;" title="Home">
-                    <i><font-awesome-icon style="" class="icon" :icon="['fas', 'fa-home']" /></i>
-                    <div v-if="showSidebar" class="sidebar-text">Home</div>
+                    <i><font-awesome-icon class="icon" :icon="['fas', 'chart-simple']" /></i>
+                    <div v-if="showSidebar" class="sidebar-text">Dashboard</div>
                 </RouterLink>
                 <RouterLink to="parentsTeacherCalendar" class="sidebar-menu" active-class="active"
                     style="text-decoration: none;" title="Calendar">
@@ -405,7 +405,7 @@ const handleLogout = async () => {
 }
 
 .sidebar-text {
-    font-family: Inter, sans-serif;
+    font-family: Montserrat, sans-serif;
     align-self: start;
     margin-top: 4px;
     flex-grow: 1;
@@ -536,7 +536,7 @@ const handleLogout = async () => {
     margin-top: 15px;
     gap: 20px;
     font-size: 16px;
-    color: #9b9b9b;
+    color: #2087E4;
     padding: 8px 25px 13px;
     cursor: pointer;
     width: 95%;
@@ -549,7 +549,7 @@ const handleLogout = async () => {
     align-items: center;
     margin-top: 10px;
     font-size: 16px;
-    color: #9b9b9b;
+    color: #2087E4;
     padding: 8px 10px;
     cursor: pointer;
 }
@@ -557,7 +557,7 @@ const handleLogout = async () => {
 .forms {
     margin-top: 15px;
     font-size: 16px;
-    color: #9b9b9b;
+    color: #2087E4;
     cursor: pointer;
     width: 95%;
     border-radius: 8px;

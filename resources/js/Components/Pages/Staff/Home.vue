@@ -260,67 +260,6 @@
     }
 }
 
-@media screen and (max-width: 360px) {
-    .main-content {
-        width: 100%;
-        padding: 0;
-        margin: 0;
-    }
-
-    .content {
-        width: 100%;
-        padding: 0;
-        margin: 0;
-    }
-
-    .table-card {
-        width: 100%;
-        padding: 0;
-        margin: 0;
-    }
-
-    .left-right {
-        width: 100%;
-        flex-direction: column;
-        height: 100%;
-    }
-
-    .left-right .left {
-        width: 100%;
-        flex-direction: column;
-    }
-
-    .left-right .right {
-        width: 100%;
-        flex-direction: column;
-    }
-
-    .left .below-pink {
-        width: 100%;
-        flex-direction: column !important;
-    }
-
-    .below-pink .pink-left {
-        width: 100%;
-    }
-
-    .below-pink .pink-right {
-        display: flex;
-        width: 100%;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .pink-right svg {
-        width: 130px;
-        height: auto;
-    }
-
-    .right .event-card {
-        margin-bottom: 20px;
-    }
-}
-
 .left-right {
     width: 100%;
     height: 85vh;
@@ -452,7 +391,7 @@
     border: 1px solid #b1b1b1;
     border-radius: 15px;
     overflow-y: auto;
-    padding-bottom: 20px
+    padding-bottom: 20px;
 }
 
 .event-card .event-text {
@@ -526,5 +465,57 @@
     font-style: italic;
     width: 114px;
     border-bottom-width: 5px;
+}
+
+@media screen and (max-width: 360px) {
+    .main-content {
+        width: 100%;
+        height: 100%;
+    }
+
+    .table-card {
+        width: 100%;
+    }
+
+    .left-right {
+        width: 100%;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .left-right .left {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .left-right .right {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .left .below-pink {
+        width: 100%;
+        flex-direction: column !important;
+    }
+
+    .below-pink .pink-left {
+        width: 100%;
+    }
+
+    .below-pink .pink-right {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .pink-right svg {
+        width: 130px;
+        height: auto;
+    }
+
+    .right .event-card {
+        margin-bottom: 20px;
+    }
 }
 </style>
