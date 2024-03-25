@@ -128,7 +128,7 @@ const reserveConsultation = async () => {
     try {
         const result = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/reserve-consultation`, {
             calendar_id: chosen_time.value,
-            user_id_reserved: 2
+            user_id_reserved: localStorage.getItem('user_id')
         });
         if(result){
             swal({

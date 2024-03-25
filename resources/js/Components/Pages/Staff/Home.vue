@@ -96,7 +96,7 @@
                         </div>
                     </div>
                     <div class="right">
-                        <div class="event-card">
+                        <div class="event-card" style="padding-bottom: 1rem;">
                             <div class="event-text">Events</div>
                             <div class="event-content">
                                 <div class="event-info">

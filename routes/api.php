@@ -1,4 +1,5 @@
 <?php
+use Illuminate\Support\Facades\File;
 
 use App\Http\Controllers\AssignmentController;
 use Illuminate\Http\Request;
@@ -9,6 +10,7 @@ use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\GetFormsController;
 use App\Http\Controllers\RequestsController;
 use App\Http\Controllers\SaveInputsController;
+use App\Http\Controllers\UserDataController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,7 +30,7 @@ Route::group([
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/refresh', [AuthController::class, 'refresh']);
-    Route::get('/user-profile', [AuthController::class, 'userProfile']);
+    Route::get('/get-user-data/{id}', [UserDataController::class, 'getUserData']);
 
     // Social login
     Route::get('/oauth/{provider}', [AuthController::class, 'socialLogin']);
@@ -70,6 +72,7 @@ Route::group([
     Route::get('/get-assigned-forms/{id}', [AssignmentController::class, 'getAssignedForms']);
 
 
+    
 
 });
 
