@@ -15,6 +15,14 @@ class AssignmentController extends Controller
         return $this->assignmentService->assignForm($request);
     }
 
+    public function bulkAssignFormByGradeLevel(Request $request){
+        return $this->assignmentService->bulkAssignFormByGradeLevel($request);
+    }
+
+    public function bulkAssignFormBySection(Request $request){
+        return $this->assignmentService->bulkAssignFormBySection($request);
+    }
+
     public function getAssignedForms($id){
         return $this->assignmentService->getAssignedForms($id);
     }
