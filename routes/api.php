@@ -36,9 +36,13 @@ Route::group([
     // Route::get('/auth/{provider}', [AuthController::class, 'socialLogin']);
 
     // Generate File
-    Route::post('/generate-intake-interview', [GenerateController::class, 'generateIntInterview']);
-    Route::post('/generate-guidance-admission', [GenerateController::class, 'generateGuidAdmission']);
-    Route::post('/generate-referral-form', [GenerateController::class, 'generateReferralForm']);
+    Route::get('/generate-intake-interview/{id}', [GenerateController::class, 'generateIntInterview']);
+    Route::get('/generate-guidance-admission/{id}', [GenerateController::class, 'generateGuidAdmission']);
+    Route::get('/generate-referral-form', [GenerateController::class, 'generateReferralForm']);
+    Route::get('/generate-guidance-call', [GenerateController::class, 'generateGuidCallSlip']);
+    Route::get('/generate-parent-questionaire', [GenerateController::class, 'generateParentQuestionaire']);
+    Route::get('/auth/{provider}/callback', [AuthController::class, 'socialLoginCallback'])->name('auth.callback');
+    Route::get('/auth/{provider}', [AuthController::class, 'socialLogin']);
 
     // Callendar Schedule
     Route::get('/get-schedule/{date}', [CalendarController::class, 'getSchedule']);

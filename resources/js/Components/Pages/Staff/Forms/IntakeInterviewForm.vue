@@ -81,15 +81,18 @@ const getAllIntakeInterviewForms = async () => {
 
 const generateForm = async (form_id) => {
     try{
-        const resp = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/generate-intake-interview`, {
-            id: form_id
+        const resp = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/generate-intake-interview/${form_id}`, {
+            responseType: 'arraybuffer'
         })
         if(resp.status === 200){
-            swal({
-                title: "Form Generated.",
-                icon: "success",
-                button: "Okay",
-            });
+            var newBlob = new Blob([resp.data], {type: 'application/pdf'})
+
+            console.log(resp.data)
+            const data = window.URL.createObjectURL(newBlob)
+            var link = document.createElement('a')
+            link.href = data
+            link.download = 'Intake_Interview_From' + '.pdf'
+            link.click()
         }
     }
     catch(error){

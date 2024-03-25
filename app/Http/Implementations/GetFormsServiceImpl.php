@@ -13,7 +13,7 @@ Class GetFormsServiceImpl implements GetFormsService
 
     public function getAllIntakeInterviewForms(){
         try{
-            $data = IntakeInterviewForm::with('interviewer_info')->get();
+            $data = IntakeInterviewForm::with('user')->get();
 
             if(!$data){
                 return response()->json([

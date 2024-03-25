@@ -12,18 +12,28 @@ class GenerateController extends Controller
 
     }
 
-    public function generateIntInterview(Request $request)
+    public function generateIntInterview($id)
     {
-        return $this->generateService->generateIntInterview($request);
+        return $this->generateService->generateIntInterview($id);
     }   
 
-    public function generateGuidAdmission(Request $request)
+    public function generateGuidAdmission($id)
     {
-        return $this->generateService->generateGuidAdmission($request);
+        return $this->generateService->generateGuidAdmission($id);
     }
 
     public function generateReferralForm(Request $request)
     {
         return $this->generateService->generateReferralForm($request);
+    }
+
+    public function generateGuidCallSlip(Request $request)
+    {
+        return $this->generateService->generateGuidCallSlip($request);
+    }
+
+    public function generateParentQuestionaire(Request $request)
+    {
+        return $this->generateService->generateParentQuestionaire($request);
     }
 }

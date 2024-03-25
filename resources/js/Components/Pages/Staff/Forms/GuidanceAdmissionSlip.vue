@@ -81,15 +81,18 @@ const getAllGuidanceAdmissionSlips = async () => {
 
 const generateForm = async (form_id) => {
     try{
-        const resp = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/generate-guidance-admission`, {
-            id: form_id
+        const resp = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/generate-guidance-admission/${form_id}`, {
+            responseType: 'arraybuffer'
         })
         if(resp.status === 200){
-            swal({
-                title: "Form Generated.",
-                icon: "success",
-                button: "Okay",
-            });
+            var newBlob = new Blob([resp.data], {type: 'application/pdf'})
+
+            console.log(resp.data)
+            const data = window.URL.createObjectURL(newBlob)
+            var link = document.createElement('a')
+            link.href = data
+            link.download = 'Guidance_Admission_Slip' + '.pdf'
+            link.click()
         }
     }
     catch(error){
