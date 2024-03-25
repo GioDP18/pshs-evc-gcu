@@ -79,6 +79,24 @@ onBeforeUnmount(() => {
 
 const handleLogout = async () => {
     store.commit('setLoading', true);
+    try{
+        const token = localStorage.getItem('token');
+        const headers = { Authorization: `Bearer ${token}` };
+
+        const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/logout`, {}, {headers});
+
+        if(response.status === 200){
+            localStorage.removeItem('token');
+            localStorage.setItem('valid', false);
+            router.push({ name: 'login' })
+        }
+    }
+    catch(error){
+        console.log(error);
+    }
+    finally{
+        store.commit('setLoading', false);
+    }
 }
 
 </script>

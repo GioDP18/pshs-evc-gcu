@@ -115,11 +115,43 @@
                                 class="mb-3 form-input">
                                 <div :class="{ 'has-error': errors.id_number }">
                                     <label for="exampleInputEmail1" class="form-label">Student ID Number</label>
-                                    <input type="email" class="form-control" placeholder="xx-xxxx-xxx"
+                                    <input type="text" class="form-control" placeholder="xx-xxxx-xxx"
                                         v-model="formData.id_number">
                                     <span class="error-message" v-if="errors.id_number">
                                         <i class="fa fa-info-circle"></i> {{ errors.id_number }}
                                     </span>
+                                </div>
+                                <div :class="{ 'has-error': errors.id_number }" style="display:flex; margin-top:10px">
+                                    <div class="col-6">
+                                        <label for="exampleInputEmail1" class="form-label">Grade Level</label>
+                                        <select class="form-select" v-model="grade_level"name="" id="">
+                                            <option value="" selected disabled>Select..</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                            <option value="11">11</option>
+                                            <option value="12">12</option>
+                                        </select>
+                                        <span class="error-message" v-if="errors.id_number">
+                                            <i class="fa fa-info-circle"></i> {{ errors.id_number }}
+                                        </span>
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="exampleInputEmail1" class="form-label">Section</label>
+                                        <select class="form-select" v-model="section" name="" id="">
+                                            <option value="" selected disabled>Select..</option>
+                                            <option value="aaa">aaa</option>
+                                            <option value="bbb">bbb</option>
+                                            <option value="ccc">ccc</option>
+                                            <option value="ddd">ddd</option>
+                                            <option value="eee">eee</option>
+                                            <option value="fff">fff</option>
+                                        </select>
+                                        <span class="error-message" v-if="errors.id_number">
+                                            <i class="fa fa-info-circle"></i> {{ errors.id_number }}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -168,6 +200,8 @@ const formData = ref({
     password_confirmation: '',
     role: '',
     id_number: '',
+    grade_level: '',
+    section: '',
 });
 
 const errors = ref({
@@ -217,9 +251,9 @@ const validateForm = () => {
         errors.value.contact_number = 'Contact_number is required';
     }
 
-    if (!formData.value.id_number) {
-        errors.value.id_number = 'Student ID Number is required';
-    }
+    // if (!formData.value.id_number) {
+    //     errors.value.id_number = 'Student ID Number is required';
+    // }
 
     if (!formData.value.email) {
         errors.value.email = 'Email is required';
@@ -263,6 +297,8 @@ const submitForm = async () => {
                 contact_number: formData.value.contact_number,
                 signature: formData.value.signature,
                 id_number: formData.value.id_number,
+                grade_level: formData.value.grade_level,
+                section: formData.value.section,
                 email: formData.value.email,
                 password: formData.value.password,
                 password_confirmation: formData.value.password_confirmation,

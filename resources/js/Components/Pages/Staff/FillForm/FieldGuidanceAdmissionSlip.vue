@@ -1,77 +1,119 @@
 <template>
     <div>
-        <div class="container">
-            <div class="text-header">GUIDANCE ADMISSION SLIP</div>
-            <div class="left-right">
-                <div class="left">
-                    <div class="mb-3">
-                        <label class="form-label">Campus:</label>
-                        <input type="text" class="form-control" required>
-                    </div>
+        <form @submit.prevent="submitGuidanceAdmissionSlip">
+            <div class="container">
+                <div class="text-header">GUIDANCE ADMISSION SLIP</div>
+                <div class="left-right">
+                    <div class="left">
+                        <div class="mb-3">
+                            <label class="form-label">Campus:</label>
+                            <input type="text" v-model="campus" class="form-control" required>
+                        </div>
 
-                    <div class="row align">
-                        <div class="col mb-3">
-                            <label class="form-label">Name of Student:</label>
-                            <input type="text" class="form-control" required>
+                        <div class="row align">
+                            <div class="col mb-3">
+                                <label class="form-label">Name of Student:</label>
+                                <input type="text" v-model="name_of_student" class="form-control" required>
+                            </div>
+                            <div class="col mb-3 ">
+                                <label class="form-label">Grade & Section:</label>
+                                <input type="text" v-model="grade_and_section" class="form-control" required>
+                            </div>
                         </div>
-                        <div class="col mb-3 ">
-                            <label class="form-label">Grade & Section:</label>
-                            <input type="text" class="form-control" required>
-                        </div>
-                    </div>
 
-                    <div class="row mb-3">
-                        <div class="col">
-                            <label class="form-label">Dear:</label>
-                            <input type="text" class="form-control" required>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label class="form-label">Dear:</label>
+                                <input type="text" v-model="dear" class="form-control" required>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="row align">
-                        <div class="col mb-3">
-                            <label class="form-label">Date:</label>
-                            <input type="date" class="form-control" required>
+                        <div class="row align">
+                            <div class="col mb-3">
+                                <label class="form-label">Last Visited Date:</label>
+                                <input type="date" v-model="last_visited_date" class="form-control" required>
+                            </div>
+                            <div class="col mb-3">
+                                <label class="form-label">Time Started:</label>
+                                <input type="time" v-model="last_visited_time_start" class="form-control" required>
+                            </div>
+                            <div class="col mb-3">
+                                <label class="form-label">Time Ended:</label>
+                                <input type="time" v-model="last_visited_time_end" class="form-control" required>
+                            </div>
                         </div>
-                        <div class="col mb-3">
-                            <label class="form-label">Time Started:</label>
-                            <input type="time" class="form-control" required>
-                        </div>
-                        <div class="col mb-3">
-                            <label class="form-label">Time Ended:</label>
-                            <input type="time" class="form-control" required>
-                        </div>
-                    </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Guidance Counselor / Life Coaches/ Wellness Facilitator:</label>
-                        <input type="text" class="form-control" required>
-                    </div>
+                        <div class="mb-3">
+                            <label class="form-label">Guidance Counselor / Life Coaches/ Wellness Facilitator:</label>
+                            <input type="text" v-model="guidance_counselor" class="form-control" required>
+                        </div>
 
-                    <div class="row align">
-                        <div class="col mb-3">
-                            <label class="form-label">Received by:</label>
-                            <input type="text" class="form-control" required>
-                        </div>
-                        <div class="col mb-3">
-                            <label class="form-label">Signature:</label>
-                            <input type="file" class="form-control" required>
+                        <div class="row align">
+                            <div class="col mb-3">
+                                <label class="form-label">Received by:</label>
+                                <input type="text" v-model="recieved_by" class="form-control" required>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="right d-flex flex-column align-items-end bts">
-                    <div class="col-md-6 mb-2">
-                        <button type="submit" class="btn btn-primary btn-submit">Submit</button>
-                    </div>
-                    <div class="col-md-6">
-                        <button type="button" class="btn btn-outline-primary btn-back">Back</button>
+                    <div class="right d-flex flex-column align-items-end bts">
+                        <div class="col-md-6 mb-2">
+                            <button type="submit" class="btn btn-primary btn-submit">Submit</button>
+                        </div>
+                        <div class="col-md-6">
+                            <button type="button" class="btn btn-outline-primary btn-back">Back</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
 </template>
 
 <script setup>
+import axios from "axios";
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
+const campus = ref("");
+const name_of_student = ref("");
+const grade_and_section = ref("");
+const dear = ref("");
+const last_visited_date = ref("");
+const last_visited_time_start = ref("");
+const last_visited_time_end = ref("");
+const guidance_counselor = ref("");
+const recieved_by = ref("");
+
+
+const submitGuidanceAdmissionSlip = async () => {
+    try{
+        const resp = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/submit-guidance-admission-slip`, {
+            campus: campus.value,
+            name_of_student: name_of_student.value,
+            grade_and_section: grade_and_section.value,
+            dear: dear.value,
+            last_visited_date: last_visited_date.value,
+            last_visited_time_start: last_visited_time_start.value,
+            last_visited_time_end: last_visited_time_end.value,
+            guidance_counselor: guidance_counselor.value,
+            recieved_by: recieved_by.value,
+        })
+        if(resp.status === 200){
+            swal({
+                title: "Form submitted.",
+                icon: "success",
+                button: "Okay",
+            });
+
+            router.push({name: 'staff-guidanceAdmissionSlip'})
+        }
+    }
+    catch(error){
+        console.log(error);
+    }
+}
 </script>
 
 <style scoped>

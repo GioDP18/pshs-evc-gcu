@@ -24,6 +24,8 @@ class User extends Authenticatable implements JWTSubject
         'contact_number',
         'signature',
         'id_number',
+        'grade_level',
+        'section',
         'email',
         'password',
     ];
@@ -60,5 +62,9 @@ class User extends Authenticatable implements JWTSubject
      */
     public function getJWTCustomClaims() {
         return [];
+    }
+
+    public function reservations(){
+        return $this->hasMany(Calendar::class);
     }
 }

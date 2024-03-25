@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
+import store from '../State/index.js'
+import isAuthenticated from "../Middleware/isAuthenticated";
 import LoginView from "../Components/Views/LoginView.vue";
 import RegistrationView from "../Components/Views/RegistrationView.vue";
 
@@ -60,6 +62,7 @@ const routes = [
     {
         path: "/staff",
         component: StaffView,
+        meta: { requiresAuth: true },
         children: [
             {
                 path: "home",
@@ -148,6 +151,7 @@ const routes = [
     {
         path: "/student",
         component: StudentView,
+        meta: { requiresAuth: true },
         children: [
             {
                 path: "studentHome",
@@ -181,6 +185,7 @@ const routes = [
     {
         path: "/parentsTeacher",
         component: ParentsTeacherView,
+        meta: { requiresAuth: true },
         children: [
             {
                 path: "parentsTeacherhome",
@@ -225,6 +230,22 @@ const routes = [
 const router = createRouter({
     history: createWebHistory(),
     routes,
+});
+
+router.beforeEach(async (to, from, next) => {
+    if (to.meta.requiresAuth) {
+        const authenticated = await isAuthenticated();
+
+        if (!authenticated) {
+            console.log("Unauthorized");
+            store.commit('setWarning','Please Login your credentials to continue!')
+            next({ name: "login" });
+        } else {
+            next();
+        }
+    } else {
+        next();
+    }
 });
 
 export default router;
