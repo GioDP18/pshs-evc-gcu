@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('assignee')->constrained('users');
             $table->string('form_name');
+            $table->date('due_date');
             $table->timestamps();
         });
     }
