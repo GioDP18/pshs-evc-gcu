@@ -186,6 +186,10 @@
 <script setup>
 import axios from 'axios';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import store from "../../State/index.js";
+
+const router = useRouter();
 
 const formData = ref({
     firstname: '',
@@ -283,7 +287,7 @@ const chooseSignature = (event) => {
 
 const submitForm = async () => {
     validateForm();
-
+    store.commit('setLoading', true)
     if (Object.keys(errors.value).length === 0) {
         // console.log('Form submitted:', formData.value);
         try {
@@ -303,14 +307,22 @@ const submitForm = async () => {
                 password: formData.value.password,
                 password_confirmation: formData.value.password_confirmation,
             },
-                {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                })
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            .then((response) => {
+                if(response.status === 200){
+                    router.push({ name: 'login'})
+                }
+            })
         }
         catch (error) {
             console.log(error);
+        }
+        finally{
+            store.commit('setLoading', false)
         }
     }
     else {

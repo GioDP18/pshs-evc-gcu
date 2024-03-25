@@ -11,8 +11,8 @@
             <div class="menu">
                 <RouterLink to="home" class="sidebar-menu" active-class="active" style="text-decoration: none;"
                     title="Home">
-                    <i><font-awesome-icon style="" class="icon" :icon="['fas', 'fa-home']" /></i>
-                    <div v-if="showSidebar" class="sidebar-text">Home</div>
+                    <i><font-awesome-icon class="icon" :icon="['fas', 'chart-simple']" /></i>
+                    <div v-if="showSidebar" class="sidebar-text">Dashboard</div>
                 </RouterLink>
                 <RouterLink to="calendar" class="sidebar-menu" active-class="active" style="text-decoration: none;"
                     title="Calendar">
@@ -132,8 +132,8 @@
             <div class="menu">
                 <RouterLink to="home" class="sidebar-menu" active-class="active" style="text-decoration: none;"
                     title="home">
-                    <i><font-awesome-icon style="" class="icon" :icon="['fas', 'fa-home']" /></i>
-                    <div v-if="showSidebar" class="sidebar-text">Home</div>
+                    <i><font-awesome-icon class="icon" :icon="['fas', 'chart-simple']" /></i>
+                    <div v-if="showSidebar" class="sidebar-text">Dashboard</div>
                 </RouterLink>
                 <RouterLink to="calendar" class="sidebar-menu" active-class="active" style="text-decoration: none;"
                     title="calendar">
@@ -363,35 +363,35 @@ onBeforeUnmount(() => {
 });
 
 const getUserProfile = async () => {
-    try{
+    try {
         const user_id = localStorage.getItem('user_id');
         const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/get-user-data/${user_id}`)
         console.log(response.data.data.firstname)
         firstname.value = response.data.data.firstname
     }
-    catch(error){
+    catch (error) {
         console.log(error);
     }
 }
 
 const handleLogout = async () => {
     store.commit('setLoading', true);
-    try{
+    try {
         const token = localStorage.getItem('token');
         const headers = { Authorization: `Bearer ${token}` };
 
-        const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/logout`, {}, {headers});
+        const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/logout`, {}, { headers });
 
-        if(response.status === 200){
+        if (response.status === 200) {
             localStorage.removeItem('token');
             localStorage.setItem('valid', false);
             router.push({ name: 'login' })
         }
     }
-    catch(error){
+    catch (error) {
         console.log(error);
     }
-    finally{
+    finally {
         store.commit('setLoading', false);
     }
 }
@@ -559,7 +559,7 @@ const handleLogout = async () => {
 }
 
 .sidebar-text {
-    font-family: Inter, sans-serif;
+    font-family: Montserrat, sans-serif;
     align-self: start;
     margin-top: 4px;
     flex-grow: 1;
@@ -690,7 +690,7 @@ const handleLogout = async () => {
     margin-top: 15px;
     gap: 20px;
     font-size: 16px;
-    color: #9b9b9b;
+    color: #2087E4;
     padding: 8px 25px 13px;
     cursor: pointer;
     width: 95%;
@@ -703,7 +703,7 @@ const handleLogout = async () => {
     align-items: center;
     margin-top: 10px;
     font-size: 16px;
-    color: #9b9b9b;
+    color: #2087E4;
     padding: 8px 10px;
     cursor: pointer;
 }
@@ -711,7 +711,7 @@ const handleLogout = async () => {
 .forms {
     margin-top: 15px;
     font-size: 16px;
-    color: #9b9b9b;
+    color: #2087E4;
     cursor: pointer;
     width: 95%;
     border-radius: 8px;
