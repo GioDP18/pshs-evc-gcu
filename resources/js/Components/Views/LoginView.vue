@@ -29,6 +29,7 @@
             </div>
             <div class="login-right">
                 <div class="white-box">
+                    <h6 v-if="$store.state.warning !== null" class="text-danger">{{ $store.state.warning }}</h6>
                     <div class="login-text">
                         <h1>Log In</h1>
                     </div>
@@ -68,6 +69,9 @@
 <script setup>
 import axios from 'axios';
 import { ref } from 'vue';
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 const formData = ref({
     email: '',
@@ -106,12 +110,41 @@ const submitForm = async () => {
                 email: formData.value.email,
                 password: formData.value.password
             })
-                .then((response) => {
-                    console.log(response);
-                })
+            .then((response) => {
+                if(response.status === 200){
+                    localStorage.setItem('user_id', response.data.user.id);
+                    localStorage.setItem('token', response.data.access_token);
+                    localStorage.setItem('valid', true);
+                    switch(response.data.user.role){
+                        case 'gcu_staff':
+                            localStorage.setItem('role', 'gcu_staff');
+                            router.push({ name: 'staff-home' })
+                            break;
+                        case'student':
+                            localStorage.setItem('role','student');
+                            router.push({ name: 'student-Home' })
+                            break;
+                        case 'teacher':
+                            localStorage.setItem('role', 'teacher');
+                            router.push({ name: 'parentsTeacher-Home' })
+                            break;
+                        case 'parent':
+                            localStorage.setItem('role', 'parent');
+                            router.push({ name: 'parentsTeacher-Home' })
+                            break;
+
+                        default:
+                            router.push({ name: 'login' })
+                            break;
+                    }
+                }
+            })
         }
         catch (error) {
             console.log(error);
+        }
+        finally{
+
         }
     }
 };

@@ -14,4 +14,8 @@ class AssignmentController extends Controller
     public function assignForm(Request $request){
         return $this->assignmentService->assignForm($request);
     }
+
+    public function getAssignedForms($id){
+        return $this->assignmentService->getAssignedForms($id);
+    }
 }
