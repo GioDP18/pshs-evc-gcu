@@ -89,15 +89,6 @@ Class AuthServiceImpl implements AuthService
     }
 
     /**
-     * Get the authenticated User.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function userProfile() {
-        return response()->json(auth()->user());
-    }
-
-    /**
      * Get the token array structure.
      *
      * @param  string $token

@@ -10,9 +10,7 @@
                         <a class="list-group-item list-group-item-action active" data-toggle="list"
                             href="#account-general">General</a>
                         <a class="list-group-item list-group-item-action" data-toggle="list"
-                            href="#account-change-password">Change password</a>
-                        <a class="list-group-item list-group-item-action" data-toggle="list"
-                            href="#account-info">Info</a>
+                            href="#account-info">Account Info</a>
                     </div>
                 </div>
                 <div class="col-md-9">
@@ -20,7 +18,7 @@
                         <div class="tab-pane fade active show" id="account-general">
                             <div class="card-body media align-items-center mr-2" style="background-color: white;">
                                 <div class="image-container">
-                                    <img :src="imagePreview" v-if="imagePreview" alt="Preview" class="d-block ui-w-80">
+                                    <img :src="image_preview" v-if="image_preview" alt="Preview" class="d-block ui-w-80">
                                 </div>
                                 <div class="media-body ml-4">
                                     <label class="btn btn-outline-primary">
@@ -61,11 +59,11 @@
                                 <div class="form-group">
                                     <label class="form-label">Current password</label>
                                     <div class="input-group">
-                                        <input :type="showCurrentPassword ? 'text' : 'password'" class="form-control"
-                                            v-model="currentPassword">
+                                        <input :type="show_current_password ? 'text' : 'password'" class="form-control"
+                                            v-model="current_password">
                                         <div class="input-group-append">
-                                            <span class="input-group-text" @click="toggleCurrentPasswordVisibility">
-                                                <i v-if="showCurrentPassword" class="fa fa-eye-slash"></i>
+                                            <span class="input-group-text" @click="toggleCurrent_passwordVisibility">
+                                                <i v-if="show_current_password" class="fa fa-eye-slash"></i>
                                                 <i v-else class="fa fa-eye"></i>
                                             </span>
                                         </div>
@@ -73,13 +71,13 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">New password</label>
-                                    <input type="password" class="form-control" v-model="newPassword">
+                                    <input type="password" class="form-control" v-model="new_password">
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">Repeat new password</label>
-                                    <input type="password" class="form-control" v-model="repeatPassword"
+                                    <input type="password" class="form-control" v-model="repeat_password"
                                         @input="checkPasswordMatch">
-                                    <small v-if="passwordsMatch === false" class="text-danger">Passwords do not
+                                    <small v-if="passwords_match === false" class="text-danger">Passwords do not
                                         match</small>
                                 </div>
                             </div>
@@ -118,40 +116,69 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import axios from "axios";
+import { ref, onMounted } from 'vue';
 
-const currentPassword = ref('');
-const newPassword = ref('');
-const repeatPassword = ref('');
-const passwordsMatch = ref(true);
-const showCurrentPassword = ref(false);
-const imagePreview = ref(null);
-const fileInputRef = ref(null);
+const firstname = ref('');
+const middlename = ref('');
+const lastname = ref('');
+const sex = ref('');
+const date_of_birth = ref('');
+const role = ref('');
+const contact_number = ref('');
+const signature = ref('');
+const id_number = ref('');
+const grade_level = ref('');
+const section = ref('');
+const email = ref('');
+const current_password = ref('');
+const new_password = ref('');
+const repeat_password = ref('');
+const passwords_match = ref(true);
+const show_current_password = ref(false);
+const image_preview = ref(null);
+const file_inputRef = ref(null);
+
+onMounted(() => {
+    getUserProfile();
+})
 
 function previewImage(event) {
     const file = event.target.files[0];
     if (file) {
         const reader = new FileReader();
         reader.onload = () => {
-            imagePreview.value = reader.result;
+            image_preview.value = reader.result;
         };
         reader.readAsDataURL(file);
     }
 }
 
 function resetImage() {
-    imagePreview.value = null;
-    if (fileInputRef.value) {
-        fileInputRef.value.value = '';
+    image_preview.value = null;
+    if (file_inputRef.value) {
+        file_inputRef.value.value = '';
     }
 }
 
-function toggleCurrentPasswordVisibility() {
-    showCurrentPassword.value = !showCurrentPassword.value;
+function toggleCurrent_passwordVisibility() {
+    show_current_password.value = !show_current_password.value;
 }
 
 function checkPasswordMatch() {
-    passwordsMatch.value = newPassword.value === repeatPassword.value;
+    passwords_match.value = new_password.value === repeat_password.value;
+}
+
+const getUserProfile = async () => {
+    try {
+        const user_id = localStorage.getItem('user_id');
+        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/get-user-data/${user_id}`)
+        console.log(response.data.data.firstname)
+        firstname.value = response.data.data.firstname
+    }
+    catch (error) {
+        console.log(error);
+    }
 }
 </script>
 
