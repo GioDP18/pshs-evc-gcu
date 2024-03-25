@@ -95,9 +95,9 @@ const handleLogout = async () => {
             </RouterLink>
             <div class="menu">
                 <RouterLink to="studentHome" class="sidebar-menu" active-class="active" style="text-decoration: none;"
-                    title="Home">
-                    <i><font-awesome-icon style="" class="icon" :icon="['fas', 'fa-home']" /></i>
-                    <div v-if="showSidebar" class="sidebar-text">Home</div>
+                    title="Dashboard">
+                    <i><font-awesome-icon class="icon" :icon="['fas', 'chart-simple']" /></i>
+                    <div v-if="showSidebar" class="sidebar-text">Dashboard</div>
                 </RouterLink>
                 <RouterLink to="studentCalendar" class="sidebar-menu" active-class="active"
                     style="text-decoration: none;" title="Calendar">
@@ -155,8 +155,8 @@ const handleLogout = async () => {
             <div class="menu">
                 <RouterLink to="studentHome" class="sidebar-menu" active-class="active" style="text-decoration: none;"
                     title="home">
-                    <i><font-awesome-icon style="" class="icon" :icon="['fas', 'fa-home']" /></i>
-                    <div v-if="showSidebar" class="sidebar-text">Home</div>
+                    <i><font-awesome-icon class="icon" :icon="['fas', 'chart-simple']" /></i>
+                    <div v-if="showSidebar" class="sidebar-text">Dashboard</div>
                 </RouterLink>
                 <RouterLink to="studentCalendar" class="sidebar-menu" active-class="active"
                     style="text-decoration: none;" title="calendar">
@@ -405,7 +405,7 @@ const handleLogout = async () => {
 }
 
 .sidebar-text {
-    font-family: Inter, sans-serif;
+    font-family: Montserrat, sans-serif;
     align-self: start;
     margin-top: 4px;
     flex-grow: 1;
