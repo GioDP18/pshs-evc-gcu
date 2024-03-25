@@ -121,7 +121,7 @@ Class CalendarServiceImpl implements CalendarService
 
     public function getAppointmentsToday(Request $request){
         try{
-            $result = Calendar::with('reserved_user')->where('date', date('Y-m-d'))->where('user_id_reserved', !null)->get();
+            $result = Calendar::with('reserved_user')->where('date', date('Y-m-d'))->where('user_id_reserved', '<>', null)->get();
 
             if(!$result){
                 return response()->json([
