@@ -13,14 +13,17 @@ Class SaveInputsServiceImpl implements SaveInputsService
 {
     public function submitIntakeInterview(Request $request){
         $data  = IntakeInterviewForm::create([
-            'user_id' => $request->user_id,
+            // 'user_id' => $request->user_id,
+            'campus' => $request->campus,
             'name_of_student' => $request->name_of_student,
             'nickname' => $request->nickname,
             'elementary_school_graduated' => $request->elementary_school_graduated,
             'school_address' => $request->school_address,
             'age' => $request->age,
             'sex' => $request->sex,
-            'date_of_interview' => $request->date_of_interview
+            'date_of_interview' => $request->date_of_interview,
+            'notes' => $request->notes,
+            'interviewer' => $request->interviewer
         ]);
 
         if(!$data){
@@ -40,6 +43,7 @@ Class SaveInputsServiceImpl implements SaveInputsService
     public function submitGuidanceAdmissionSlip(Request $request){
         $data = GuidanceAdmissionSlip::create([
             'user_id' => $request->user_id,
+            'campus' => $request->campus,
             'name_of_student' => $request->name_of_student,
             'grade_and_section' => $request->grade_and_section,
             'dear' => $request->dear,

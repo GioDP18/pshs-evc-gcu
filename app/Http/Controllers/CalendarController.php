@@ -55,4 +55,8 @@ class CalendarController extends Controller
         return $this->calendarService->reserveConsultation($request);
     }
 
+    public function getAppointmentsToday(Request $request){
+        return $this->calendarService->getAppointmentsToday($request);
+    }
+
 }
