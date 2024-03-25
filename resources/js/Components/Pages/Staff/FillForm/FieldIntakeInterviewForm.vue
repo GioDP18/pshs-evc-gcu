@@ -2,7 +2,7 @@
     <div>
         <div class="container">
             <div class="text-header">
-                Intake Interview Form
+                INTAKE INTERVIEW FORM
             </div>
             <div class="left-right">
                 <div class="left">
@@ -128,6 +128,7 @@
 @media screen and (max-width:360px) {
     .container .text-header {
         text-align: center;
+        font-size: 20px;
     }
 
     .left-right {

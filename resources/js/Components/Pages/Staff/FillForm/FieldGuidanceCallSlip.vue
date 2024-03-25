@@ -9,12 +9,12 @@
                         <input type="text" class="form-control" id="campus" required>
                     </div>
 
-                    <div class="row mb-3">
-                        <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
                             <label for="date" class="form-label">Date:</label>
                             <input type="date" class="form-control" id="date" required>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6 mb-3">
                             <label for="time" class="form-label">Time:</label>
                             <input type="time" class="form-control" id="time" required>
                         </div>
@@ -114,6 +114,10 @@
     border-radius: 10px;
 }
 
+.left .notbold {
+    font-weight: normal;
+}
+
 .container .right {
     width: 10%;
 }
@@ -144,6 +148,7 @@
 @media screen and (max-width:360px) {
     .container .text-header {
         text-align: center;
+        font-size: 20px;
     }
 
     .left-right {
