@@ -65,6 +65,8 @@ Route::group([
 
     // Assignment
     Route::post('/assign-form', [AssignmentController::class, 'assignForm']);
+    Route::post('/bulk-assign-form-by-grade-level', [AssignmentController::class, 'bulkAssignFormByGradeLevel']);
+    Route::post('/bulk-assign-form-by-section', [AssignmentController::class, 'bulkAssignFormBySection']);
     Route::get('/get-assigned-forms/{id}', [AssignmentController::class, 'getAssignedForms']);
 
 

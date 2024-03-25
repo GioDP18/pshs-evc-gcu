@@ -46,6 +46,8 @@ Class AuthServiceImpl implements AuthService
             'contact_number' => 'required|string|min:11',
             'signature' => 'required|image|mimes:jpeg,png,jpg,gif',
             'id_number' => 'nullable|regex:/^\w{2}-\w{4}-\w{3}$/',
+            'grade_level' => 'nullable|integer',
+            'section' => 'nullable|string',
             'email' => 'required|string|email|max:100|unique:users',
             'password' => 'required|string|confirmed|min:6',
         ]);
