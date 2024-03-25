@@ -61,4 +61,8 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims() {
         return [];
     }
+
+    public function reservations(){
+        return $this->hasMany(Calendar::class);
+    }
 }

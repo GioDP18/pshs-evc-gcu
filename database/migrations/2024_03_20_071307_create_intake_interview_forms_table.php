@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('intake_interview_forms', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
+            // $table->foreignId('user_id')->constrained();
+            $table->string('campus');
             $table->string('name_of_student');
             $table->string('nickname');
             $table->string('elementary_school_graduated');
@@ -21,6 +22,8 @@ return new class extends Migration
             $table->string('age');
             $table->string('sex');
             $table->string('date_of_interview');
+            $table->text('notes')->nullable();
+            $table->foreignId('interviewer')->constrained('users');
             $table->timestamps();
         });
     }
