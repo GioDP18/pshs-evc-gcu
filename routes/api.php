@@ -32,6 +32,8 @@ Route::group([
     Route::post('/generate-intake-interview', [GenerateController::class, 'generateIntInterview']);
     Route::post('/generate-guidance-admission', [GenerateController::class, 'generateGuidAdmission']);
     Route::post('/generate-referral-form', [GenerateController::class, 'generateReferralForm']);
+    Route::post('/generate-guidance-call', [GenerateController::class, 'generateGuidCallSlip']);
+    Route::post('/generate-parent-questionaire', [GenerateController::class, 'generateParentQuestionaire']);
     Route::get('/auth/{provider}/callback', [AuthController::class, 'socialLoginCallback'])->name('auth.callback');
     Route::get('/auth/{provider}', [AuthController::class, 'socialLogin']);
 

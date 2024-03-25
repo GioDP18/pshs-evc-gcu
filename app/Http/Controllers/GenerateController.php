@@ -26,4 +26,14 @@ class GenerateController extends Controller
     {
         return $this->generateService->generateReferralForm($request);
     }
+
+    public function generateGuidCallSlip(Request $request)
+    {
+        return $this->generateService->generateGuidCallSlip($request);
+    }
+
+    public function generateParentQuestionaire(Request $request)
+    {
+        return $this->generateService->generateParentQuestionaire($request);
+    }
 }
