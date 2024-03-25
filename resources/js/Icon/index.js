@@ -32,6 +32,8 @@ import {
     faTrash,
     faCalendar,
     faGear,
+    faUserClock,
+    faPen,
 } from "@fortawesome/free-solid-svg-icons";
 
 /* add icons to the library */
@@ -63,7 +65,9 @@ library.add(
     faFile,
     faTrash,
     faCalendar,
-    faGear
+    faGear,
+    faUserClock,
+    faPen
 );
 
 import { faFacebookF, faLinkedinIn } from "@fortawesome/free-brands-svg-icons";

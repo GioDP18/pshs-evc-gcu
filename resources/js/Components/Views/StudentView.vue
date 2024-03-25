@@ -443,6 +443,7 @@ const handleLogout = async () => {
     transition: margin-left 0.3s ease;
     overflow: hidden;
     padding: 0 20px 0;
+    width: 100%;
 }
 
 .show-mobile-sidebar {
@@ -535,7 +536,7 @@ const handleLogout = async () => {
     margin-top: 15px;
     gap: 20px;
     font-size: 16px;
-    color: #9b9b9b;
+    color: #2087E4;
     padding: 8px 25px 13px;
     cursor: pointer;
     width: 95%;
@@ -548,7 +549,7 @@ const handleLogout = async () => {
     align-items: center;
     margin-top: 10px;
     font-size: 16px;
-    color: #9b9b9b;
+    color: #2087E4;
     padding: 8px 10px;
     cursor: pointer;
 }
@@ -556,7 +557,7 @@ const handleLogout = async () => {
 .forms {
     margin-top: 15px;
     font-size: 16px;
-    color: #9b9b9b;
+    color: #2087E4;
     cursor: pointer;
     width: 95%;
     border-radius: 8px;

@@ -443,6 +443,7 @@ const handleLogout = async () => {
     transition: margin-left 0.3s ease;
     overflow: hidden;
     padding: 0 20px 0;
+    width: 100%;
 }
 
 .show-mobile-sidebar {
