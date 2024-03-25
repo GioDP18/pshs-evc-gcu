@@ -208,6 +208,7 @@ import { useRouter } from 'vue-router';
 import $ from 'jquery';
 import DataTable from 'datatables.net-vue3';
 import DataTablesCore from 'datatables.net-bs5';
+import store from "../../../../State/index.js";
 
 const router = useRouter();
 
@@ -245,6 +246,7 @@ const getAllIntakeInterviewForms = async () => {
 }
 
 const generateForm = async (form_id) => {
+    store.commit('setLoading', true)
     try {
         const resp = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/generate-intake-interview/${form_id}`, {
             responseType: 'arraybuffer'
@@ -262,6 +264,9 @@ const generateForm = async (form_id) => {
     }
     catch (error) {
         console.log(error);
+    }
+    finally{
+        store.commit('setLoading', false)
     }
 }
 

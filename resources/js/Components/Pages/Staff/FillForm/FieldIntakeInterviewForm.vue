@@ -77,6 +77,7 @@
 import axios from "axios";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import store from "../../../../State/index.js"
 
 const router = useRouter();
 
@@ -95,6 +96,7 @@ const interviewer = ref("");
 
 
 const submitIntakeInterview = async () => {
+    store.commit('setLoading', true)
     try{
         const result = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/submit-intake-interview`, {
             campus: campus.value,
@@ -114,6 +116,9 @@ const submitIntakeInterview = async () => {
     }
     catch(error){
         console.log(error);
+    }
+    finally{
+        store.commit('setLoading', false)
     }
 }
 
