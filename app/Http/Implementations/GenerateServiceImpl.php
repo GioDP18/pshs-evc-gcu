@@ -6,6 +6,7 @@ use App\Http\Services\GenerateService;
 use PhpOffice\PhpWord\TemplateProcessor;
 use \ConvertApi\ConvertApi;
 use App\Models\IntakeInterviewForm;
+use Illuminate\Support\Facades\Response;
 
 
 Class GenerateServiceImpl implements GenerateService
@@ -34,13 +35,9 @@ Class GenerateServiceImpl implements GenerateService
                 'File' => $newFilePath,
             ], 'doc'
         );
-        $pdf_filepath = $result->saveFiles(public_path('intake_interview\\'. 'John Vincent Ramada' . '.pdf'));
+        $result->saveFiles(public_path('intake_interview\\'. 'John Vincent Ramada' . '.pdf'));
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Successfully generated Intake Interview form',
-            'file_path' => $pdf_filepath,
-        ], 201);
+        return Response::download(public_path('intake_interview\\' . 'John Vincent Ramada' . '.pdf'));
 
     }
 
