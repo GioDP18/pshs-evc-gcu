@@ -6,6 +6,7 @@ use App\Http\Services\GenerateService;
 use PhpOffice\PhpWord\TemplateProcessor;
 use \ConvertApi\ConvertApi;
 use App\Models\IntakeInterviewForm;
+use App\Models\GuidanceAdmissionSlip;
 use Illuminate\Support\Facades\Response;
 
 
@@ -14,44 +15,48 @@ Class GenerateServiceImpl implements GenerateService
     public function __construct(){
     }
 
-    public function generateIntInterview(Request $request, $intakeId)
+    public function generateIntInterview($id)
     {
-        $intake = IntakeInterviewForm::findOrFail($intakeId);
-        $templateProcessor = new TemplateProcessor(public_path('templates\PSHS-00-F-GCU-01-Ver02-Rev0-Intake-Interview-Form.docx'));
-        $templateProcessor->setValue('name', $intake->name_of_student);
-        $templateProcessor->setValue('nickName', $intake->nickname);
-        $templateProcessor->setValue('elementarySchool', $intake->elementary_school_graduated);
-        $templateProcessor->setValue('schoolAddress', $intake->school_address);
-        $templateProcessor->setValue('age', $intake->age);
-        $templateProcessor->setValue('sex', $intake->sex);
-        $templateProcessor->setValue('dateOfInterview', date('Y-m-d'));
+            $intake = IntakeInterviewForm::findOrFail($id);
+            $templateProcessor = new TemplateProcessor(public_path('templates\PSHS-00-F-GCU-01-Ver02-Rev0-Intake-Interview-Form.docx'));
+            $templateProcessor->setValue('name', $intake->name_of_student);
+            $templateProcessor->setValue('nickName', $intake->nickname);
+            $templateProcessor->setValue('elementarySchool', $intake->elementary_school_graduated);
+            $templateProcessor->setValue('schoolAddress', $intake->school_address);
+            $templateProcessor->setValue('age', $intake->age);
+            $templateProcessor->setValue('sex', $intake->sex);
+            $templateProcessor->setValue('dateOfInterview', date('Y-m-d'));
 
-        $newFilePath = public_path('intake_interview\\' . 'John Vincent Ramada' . '.docx');
-        $templateProcessor->saveAs($newFilePath);
+            $newFilePath = public_path('intake_interview\\' . 'John Vincent Ramada' . '.docx');
+            $templateProcessor->saveAs($newFilePath);
 
-        // $docxFilePath = public_path('example.docx');
-        ConvertApi::setApiSecret('1MDrmpYzrCkI1g04');
-        $result = ConvertApi::convert('pdf', [
-                'File' => $newFilePath,
-            ], 'doc'
-        );
-        $result->saveFiles(public_path('intake_interview\\'. 'John Vincent Ramada' . '.pdf'));
+            // $docxFilePath = public_path('example.docx');
+            ConvertApi::setApiSecret('1MDrmpYzrCkI1g04');
+            $result = ConvertApi::convert('pdf', [
+                    'File' => $newFilePath,
+                ], 'doc'
+            );
+            $result->saveFiles(public_path('intake_interview\\'. 'John Vincent Ramada' . '.pdf'));
 
-        return Response::download(public_path('intake_interview\\' . 'John Vincent Ramada' . '.pdf'));
-
+            $headers = [
+                'Content-Type' => 'application/pdf',
+            ];
+            return response()->download(public_path('intake_interview\\' . 'John Vincent Ramada' . '.pdf'));
+            
     }
 
-    public function generateGuidAdmission(Request $request)
+    public function generateGuidAdmission($id)
     {
+        $admission = GuidanceAdmissionSlip::findOrFail($id);
         $templateProcessor = new TemplateProcessor(public_path('templates\PSHS-00-F-GCU-05-Ver02-Rev0-Guidance-Admission-Slip.docx'));
-        $templateProcessor->setValue('name', 'John Vincent Ramada');
-        $templateProcessor->setValue('grade-section', 'example grade and section');
-        $templateProcessor->setValue('name-teacher', 'example teacher name');
-        $templateProcessor->setValue('date', date('Y-m-d'));
-        $templateProcessor->setValue('time-start', date('H:i:s'));
-        $templateProcessor->setValue('time-end', date('H:i:s'));
-        $templateProcessor->setValue('counselor', 'example counselor name');
-        $templateProcessor->setValue('teacher', 'example teacher name');
+        $templateProcessor->setValue('name', $admission->name_of_student);
+        $templateProcessor->setValue('grade-section', $admission->grade_and_section);
+        $templateProcessor->setValue('name-teacher', $admission->dear);
+        $templateProcessor->setValue('date', $admission->last_visited_date);
+        $templateProcessor->setValue('time-start', $admission->last_visited_time_start);
+        $templateProcessor->setValue('time-end', $admission->last_visited_time_end);
+        $templateProcessor->setValue('counselor', $admission->guidance_counselor);
+        $templateProcessor->setValue('teacher', $admission->dear);
 
         $newFilePath = public_path('guidance_admission_slip\\' . 'John Vincent Ramada' . '.docx');
         $templateProcessor->saveAs($newFilePath);
@@ -63,10 +68,7 @@ Class GenerateServiceImpl implements GenerateService
         );
         $result->saveFiles(public_path('guidance_admission_slip\\'. 'John Vincent Ramada' . '.pdf'));
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Successfully generated guidance admission form',
-        ], 201);
+        return response()->download(public_path('guidance_admission_slip\\' . 'John Vincent Ramada' . '.pdf'));
     }
 
     public function generateReferralForm(Request $request)

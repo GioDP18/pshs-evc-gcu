@@ -13,4 +13,6 @@ interface CalendarService
     public function getAvailableTimeToday();
 
     public function reserveConsultation(Request $request);
+
+    public function getAppointmentsToday(Request $request);
 }

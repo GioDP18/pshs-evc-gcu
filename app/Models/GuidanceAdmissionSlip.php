@@ -9,6 +9,7 @@ class GuidanceAdmissionSlip extends Model
 {
     protected $fillable = [
         'user_id',
+        'campus',
         'name_of_student',
         'grade_and_section',
         'dear',

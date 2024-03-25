@@ -2,76 +2,121 @@
     <div>
         <div class="container">
             <div class="text-header">
-                Intake Interview Form
+                INTAKE INTERVIEW FORM
             </div>
-            <div class="left-right">
-                <div class="left">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="campus">Campus:</label>
-                                <input type="text" class="form-control" id="campus" required>
+            <form @submit.prevent="submitIntakeInterview">
+                <div class="left-right">
+                    <div class="left">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="campus">Campus:</label>
+                                    <input type="text" v-model="campus" class="form-control" id="campus" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="studentName">Name of Student:</label>
+                                    <input type="text" v-model="name_of_student" class="form-control" id="studentName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="nickname">Nickname:</label>
+                                    <input type="text" v-model="nickname" class="form-control" id="nickname" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="elementarySchool">Elementary School Graduated From:</label>
+                                    <input type="text" v-model="elementary_school_graduated" class="form-control" id="elementarySchool" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="schoolAddress">School Address:</label>
+                                    <input type="text" v-model="school_address" class="form-control" id="schoolAddress" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="age">Age:</label>
+                                    <input type="text" v-model="age" class="form-control" id="age" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="sex">Sex:</label>
+                                    <select class="form-control" v-model="sex" id="sex" required>
+                                        <option value="">Select Sex</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="dateOfInterview">Date of Interview:</label>
+                                    <input type="date" v-model="date_of_interview" class="form-control" id="dateOfInterview" required>
+                                </div>
                             </div>
                             <div class="form-group">
-                                <label for="studentName">Name of Student:</label>
-                                <input type="text" class="form-control" id="studentName" required>
+                                <label for="interviewedBy">Interviewed By:</label>
+                                <input type="text" v-model="interviewer" class="form-control" id="interviewedBy" required>
                             </div>
                             <div class="form-group">
-                                <label for="nickname">Nickname:</label>
-                                <input type="text" class="form-control" id="nickname" required>
+                                <label for="comments">Notes:</label>
+                                <textarea class="form-control" v-model="notes" id="comments" rows="3"></textarea>
                             </div>
-                            <div class="form-group">
-                                <label for="elementarySchool">Elementary School Graduated From:</label>
-                                <input type="text" class="form-control" id="elementarySchool" required>
-                            </div>
+                        </div>
+                    </div>
+                    <div class="right d-flex flex-column align-items-end bts">
+                        <div class="col-md-6 mb-2">
+                            <button type="submit" class="btn btn-primary btn-submit">Submit</button>
                         </div>
                         <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="schoolAddress">School Address:</label>
-                                <input type="text" class="form-control" id="schoolAddress" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="age">Age:</label>
-                                <input type="text" class="form-control" id="age" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="sex">Sex:</label>
-                                <select class="form-control" id="sex" required>
-                                    <option value="">Select Sex</option>
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
-                                    <option value="other">Other</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="dateOfInterview">Date of Interview:</label>
-                                <input type="date" class="form-control" id="dateOfInterview" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="interviewedBy">Interviewed By:</label>
-                            <input type="text" class="form-control" id="interviewedBy" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="comments">Purpose:</label>
-                            <textarea class="form-control" id="comments" rows="3" required></textarea>
+                            <button type="button" class="btn btn-outline-primary btn-back">Back</button>
                         </div>
                     </div>
                 </div>
-                <div class="right d-flex flex-column align-items-end bts">
-                    <div class="col-md-6 mb-2">
-                        <button type="submit" class="btn btn-primary btn-submit">Submit</button>
-                    </div>
-                    <div class="col-md-6">
-                        <button type="button" class="btn btn-outline-primary btn-back">Back</button>
-                    </div>
-                </div>
-            </div>
+            </form>
         </div>
     </div>
 </template>
 
 <script setup>
+import axios from "axios";
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
+const campus = ref("");
+const name_of_student = ref("");
+const nickname = ref("");
+const elementary_school_graduated = ref("");
+const school_address = ref("");
+const age = ref("");
+const sex = ref("");
+const date_of_interview = ref("");
+const notes = ref("");
+const interviewer = ref("");
+
+
+
+
+const submitIntakeInterview = async () => {
+    try{
+        const result = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/submit-intake-interview`, {
+            campus: campus.value,
+            name_of_student: name_of_student.value,
+            nickname: nickname.value,
+            elementary_school_graduated: elementary_school_graduated.value,
+            school_address: school_address.value,
+            age: age.value,
+            sex: sex.value,
+            date_of_interview: date_of_interview.value,
+            notes: notes.value,
+            interviewer: interviewer.value,
+        })
+        if(result.status === 200){
+            router.push({name: 'staff-intakeInterviewForm'})
+        }
+    }
+    catch(error){
+        console.log(error);
+    }
+}
+
 </script>
 
 <style scoped>
@@ -128,6 +173,7 @@
 @media screen and (max-width:360px) {
     .container .text-header {
         text-align: center;
+        font-size: 20px;
     }
 
     .left-right {

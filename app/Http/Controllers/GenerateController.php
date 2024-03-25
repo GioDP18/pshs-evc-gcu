@@ -12,14 +12,14 @@ class GenerateController extends Controller
 
     }
 
-    public function generateIntInterview(Request $request, $intakeId)
+    public function generateIntInterview($id)
     {
-        return $this->generateService->generateIntInterview($request, $intakeId);
+        return $this->generateService->generateIntInterview($id);
     }   
 
-    public function generateGuidAdmission(Request $request)
+    public function generateGuidAdmission($id)
     {
-        return $this->generateService->generateGuidAdmission($request);
+        return $this->generateService->generateGuidAdmission($id);
     }
 
     public function generateReferralForm(Request $request)

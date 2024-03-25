@@ -20,6 +20,7 @@ import FieldIntakeInterviewForm from "../Components/Pages/Staff/FillForm/FieldIn
 import FieldGuidanceCallSlip from "../Components/Pages/Staff/FillForm/FieldGuidanceCallSlip.vue";
 import FieldReferralForm from "../Components/Pages/Staff/FillForm/FieldReferralForm.vue";
 import FieldGuidanceAdmission from "../Components/Pages/Staff/FillForm/FieldGuidanceAdmissionSlip.vue";
+import FieldClientMonitoringForm from "../Components/Pages/Staff/FillForm/FieldClientMonitoringForm.vue";
 
 //---------------------------------Student---------------------------------
 import StudentView from "../Components/Views/StudentView.vue";
@@ -130,6 +131,11 @@ const routes = [
                 path: "fieldGuidanceAdmission",
                 component: FieldGuidanceAdmission,
                 name: "staff-fieldGuidanceAdmission",
+            },
+            {
+                path: "fieldClientMonitoring",
+                component: FieldClientMonitoringForm,
+                name: "staff-fieldClientMonitoring",
             },
         ],
     },

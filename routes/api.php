@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GenerateController;
 use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\GetFormsController;
 use App\Http\Controllers\RequestsController;
 use App\Http\Controllers\SaveInputsController;
 
@@ -33,11 +34,11 @@ Route::group([
     // Route::get('/auth/{provider}', [AuthController::class, 'socialLogin']);
 
     // Generate File
-    Route::post('/generate-intake-interview/{intakeId}', [GenerateController::class, 'generateIntInterview']);
-    Route::post('/generate-guidance-admission', [GenerateController::class, 'generateGuidAdmission']);
-    Route::post('/generate-referral-form', [GenerateController::class, 'generateReferralForm']);
-    Route::post('/generate-guidance-call', [GenerateController::class, 'generateGuidCallSlip']);
-    Route::post('/generate-parent-questionaire', [GenerateController::class, 'generateParentQuestionaire']);
+    Route::get('/generate-intake-interview/{id}', [GenerateController::class, 'generateIntInterview']);
+    Route::get('/generate-guidance-admission/{id}', [GenerateController::class, 'generateGuidAdmission']);
+    Route::get('/generate-referral-form', [GenerateController::class, 'generateReferralForm']);
+    Route::get('/generate-guidance-call', [GenerateController::class, 'generateGuidCallSlip']);
+    Route::get('/generate-parent-questionaire', [GenerateController::class, 'generateParentQuestionaire']);
     Route::get('/auth/{provider}/callback', [AuthController::class, 'socialLoginCallback'])->name('auth.callback');
     Route::get('/auth/{provider}', [AuthController::class, 'socialLogin']);
 
@@ -46,10 +47,16 @@ Route::group([
     Route::post('/update-schedule', [CalendarController::class, 'updateSchedule']);
     Route::get('/get-available-time-today', [CalendarController::class, 'getAvailableTimeToday']);
     Route::post('/reserve-consultation', [CalendarController::class, 'reserveConsultation']);
+    Route::get('/get-appointments-today', [CalendarController::class, 'getAppointmentsToday']);
 
     // Request Forms
     Route::post('/request-form', [RequestsController::class, 'createRequest']);
 
+    // Get All Forms
+    Route::get('/get-all-intake-interview-forms', [GetFormsController::class, 'getAllIntakeInterviewForms']);
+    Route::get('/get-all-guidance-admission-slips', [GetFormsController::class, 'getAllGuidanceAdmissionSlips']);
+
+    // Submit Forms
     Route::post('/submit-intake-interview', [SaveInputsController::class, 'submitIntakeInterview']);
     Route::post('/submit-guidance-admission-slip', [SaveInputsController::class, 'submitGuidanceAdmissionSlip']);
     Route::post('/submit-referral-form', [SaveInputsController::class, 'submitReferralForm']);

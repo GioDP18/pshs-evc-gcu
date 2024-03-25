@@ -1,44 +1,25 @@
-<script setup>
-import axios from 'axios';
-import { ref, onMounted } from 'vue';
-import $ from 'jquery';
-
-const allUsers = ref([]);
-
-onMounted(async () => {
-    // await getUsers();
-    initializeDataTable();
-});
-
-const initializeDataTable = () => {
-    $('#dailyTimeLog').DataTable();
-};
-
-</script>
-
-
 <template>
     <div class="main-content">
         <div class="content">
             <div class="column-1">
                 <div class="table-card">
                     <div class="content-text">Guidance Admission Slip</div>
-                    <table id="dailyTimeLog" class="table table-striped table-hover" width="100%">
+                    <table id="table-guidance-admission" class="table table-striped table-hover" width="100%">
                         <thead>
                             <tr>
-                                <th>ID Number</th>
-                                <th>Name</th>
-                                <th>Gender</th>
-                                <th>Date</th>
+                                <th>Campus</th>
+                                <th>Name of student</th>
+                                <th>Grade & Section</th>
+                                <th>Last visited</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>123</td>
-                                <td>Bogart The Explorer</td>
-                                <td>Male</td>
-                                <td>July 1, 2002</td>
+                            <tr v-for="data in all_data" :key="data.id">
+                                <td>{{ data.campus }}</td>
+                                <td>{{ data.name_of_student }}</td>
+                                <td>{{ data.grade_and_section }}</td>
+                                <td>{{ data.last_visited_date }} {{ data.lalst_visited_time_start }} - {{ data.lalst_visited_time_end }}</td>
                                 <td>
                                     <div class="dropdown">
                                         <button style="padding-right: 5px;" class="card14 dropdown-toggle" type="button"
@@ -51,7 +32,7 @@ const initializeDataTable = () => {
                                                             :icon="['fas', 'eye']"
                                                             style="margin-right: 10px;" /></i>View</a></li>
                                             <li><a class="dropdown-item generate" href="#"
-                                                    @click="sendCertificate('certificate2')"><i><font-awesome-icon
+                                                    @click="generateForm(data.id)"><i><font-awesome-icon
                                                             :icon="['fas', 'file']"
                                                             style="margin-right: 10px;" /></i>Generate</a></li>
                                             <li><a class="dropdown-item delete" href="#"
@@ -69,6 +50,57 @@ const initializeDataTable = () => {
         </div>
     </div>
 </template>
+
+<script setup>
+import axios from 'axios';
+import { ref, onMounted } from 'vue';
+import $ from 'jquery';
+
+const all_data = ref([]);
+
+onMounted(async () => {
+    // await getUsers();
+    initializeDataTable();
+    getAllGuidanceAdmissionSlips();
+});
+
+const initializeDataTable = () => {
+    $('#table-guidance-admission').DataTable();
+};
+
+const getAllGuidanceAdmissionSlips = async () => {
+    try{
+        const resp = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/get-all-guidance-admission-slips`);
+
+        all_data.value = resp.data.data;
+    }
+    catch(error){
+        console.log(error);
+    }
+}
+
+const generateForm = async (form_id) => {
+    try{
+        const resp = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/generate-guidance-admission/${form_id}`, {
+            responseType: 'arraybuffer'
+        })
+        if(resp.status === 200){
+            var newBlob = new Blob([resp.data], {type: 'application/pdf'})
+
+            console.log(resp.data)
+            const data = window.URL.createObjectURL(newBlob)
+            var link = document.createElement('a')
+            link.href = data
+            link.download = 'Guidance_Admission_Slip' + '.pdf'
+            link.click()
+        }
+    }
+    catch(error){
+        console.log(error);
+    }
+}
+
+</script>
 
 
 <style scoped>
