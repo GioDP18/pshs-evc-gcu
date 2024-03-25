@@ -9,6 +9,10 @@ use Illuminate\Http\Request;
 
 Class CalendarServiceImpl implements CalendarService
 {
+    public function __construct(){
+        date_default_timezone_set('Asia/Manila');
+    }
+
     public function getSchedule($date){
         try{
             $schedule = Calendar::where('date', $date)->get();
@@ -76,7 +80,7 @@ Class CalendarServiceImpl implements CalendarService
 
             return response()->json([
                 "success"=> true,
-                "message"=> "Fetched available time for today",
+                "message"=> date('Y-m-d'),
                 "schedule" => $schedule
             ], 200);
         }
