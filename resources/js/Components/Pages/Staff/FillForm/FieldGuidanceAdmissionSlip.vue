@@ -73,6 +73,7 @@
 import axios from "axios";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import store from "../../../../State/index.js";
 
 const router = useRouter();
 
@@ -88,6 +89,7 @@ const recieved_by = ref("");
 
 
 const submitGuidanceAdmissionSlip = async () => {
+    store.commit('setLoading', true)
     try{
         const resp = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/submit-guidance-admission-slip`, {
             campus: campus.value,
@@ -112,6 +114,9 @@ const submitGuidanceAdmissionSlip = async () => {
     }
     catch(error){
         console.log(error);
+    }
+    finally{
+        store.commit('setLoading', false)
     }
 }
 </script>

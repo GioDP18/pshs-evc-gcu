@@ -36,6 +36,7 @@ import {
     faPen,
     faChartLine,
     faChartSimple,
+    faUserGroup,
 } from "@fortawesome/free-solid-svg-icons";
 
 /* add icons to the library */
@@ -71,6 +72,8 @@ library.add(
     faUserClock,
     faChartLine,
     faPen,
+    faUserGroup,
+    faUsers,
     faChartSimple
 );
 

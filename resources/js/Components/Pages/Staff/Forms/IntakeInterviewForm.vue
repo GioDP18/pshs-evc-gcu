@@ -6,7 +6,7 @@
                     <div class="sub-header">
                         <div class="content-text">Intake Interview Form</div>
                         <div class="buttons">
-                            <button class="create"><i style="margin-right: 5px;"><font-awesome-icon
+                            <button class="create" @click="goToInputs"><i style="margin-right: 5px;"><font-awesome-icon
                                         :icon="['fas', 'pen']" /></i>Create New</button>
                             <button class="assign" data-bs-toggle="modal" data-bs-target="#assign"><i
                                     style="margin-right: 5px;"><font-awesome-icon
@@ -54,6 +54,7 @@
                             </tr>
                         </tbody>
                     </table>
+
                     <!-- Assign Modal -->
                     <div class="modal fade" id="assign" tabindex="-1" aria-labelledby="exampleModalLabel"
                         aria-hidden="true">
@@ -65,13 +66,21 @@
                                         aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" id="basic-addon1">Due Date</span>
+                                        <input type="date" v-model="due_date" class="form-control" placeholder=""
+                                            aria-label="Username" aria-describedby="basic-addon1">
+                                    </div>
                                     <div class="options">
                                         <button class="individual" data-bs-toggle="modal"
-                                            data-bs-target="#individual">Individual</button>
+                                            data-bs-target="#individual"><i><font-awesome-icon
+                                                    :icon="['fas', 'user']" /></i>Individual</button>
                                         <button class="section" data-bs-toggle="modal"
-                                            data-bs-target="#section">Section</button>
+                                            data-bs-target="#section"><i><font-awesome-icon
+                                                    :icon="['fas', 'user-group']" /></i>Section</button>
                                         <button class="batch" data-bs-toggle="modal"
-                                            data-bs-target="#batch">Batch</button>
+                                            data-bs-target="#batch"><i><font-awesome-icon
+                                                    :icon="['fas', 'users']" /></i>Batch</button>
                                     </div>
                                 </div>
                             </div>
@@ -89,23 +98,23 @@
                                         aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <table id="dailyTimeLog" class="table table-striped table-hover" width="100%">
+                                    <table id="table-intake" class="table table-striped table-hover" width="100%">
                                         <thead>
                                             <tr>
-                                                <th>Name</th>
+                                                <th>Name of student</th>
                                                 <th>Grade</th>
                                                 <th>Section</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>Bogart The Explorer</td>
-                                                <td>9</td>
-                                                <td>Zigzag</td>
+                                            <tr v-for="item in users" :key="item.id">
+                                                <td>{{ item.firstname }} {{ item.middlename }} {{ item.firstname }}</td>
+                                                <td>{{ item.grade }}</td>
+                                                <td>{{ item.section }}</td>
                                                 <td>
                                                     <button style="padding-right: 5px;" class="card14" type="button"
-                                                        aria-expanded="false">
+                                                        aria-expanded="false" @click="assign(item.id)">
                                                         <span class="send-text"><i
                                                                 style="margin-right: 5px;"><font-awesome-icon
                                                                     :icon="['fas', 'paper-plane']" /></i>Send</span>
@@ -132,28 +141,27 @@
                                 <div class="modal-body">
                                     <div class="dropdown" style="width: 100%;">
                                         <button style="width: 100%;" class="btn btn-primary dropdown-toggle"
-                                            type="button" id="dropdownMenuButton" data-toggle="dropdown"
-                                            aria-haspopup="true" aria-expanded="false">
-                                            {{ selectedGrade || 'Grade' }}
+                                            type="button" id="dropdownGrade" data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">
+                                            {{ selectedGrade ? 'Grade ' + selectedGrade : 'Grade' }}
                                         </button>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"
-                                            style="width: 100%;">
-                                            <a class="dropdown-item" href="#" @click="selectGrade(1)">1</a>
-                                            <a class="dropdown-item" href="#" @click="selectGrade(2)">2</a>
-                                            <a class="dropdown-item" href="#" @click="selectGrade(3)">3</a>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownGrade" style="width: 100%;">
+                                            <a class="dropdown-item" href="#" @click="selectGrade(1)">Grade 1</a>
+                                            <a class="dropdown-item" href="#" @click="selectGrade(2)">Grade 2</a>
+                                            <a class="dropdown-item" href="#" @click="selectGrade(3)">Grade 3</a>
                                         </div>
                                     </div>
-                                    <div class="dropdown" style="width: 100%; margin-top: 20px;">
+                                    <div v-if="selectedGrade" class="dropdown" style="width: 100%; margin-top: 20px;">
                                         <button style="width: 100%;" class="btn btn-primary dropdown-toggle"
-                                            type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                                            type="button" id="dropdownSection" data-toggle="dropdown"
                                             aria-haspopup="true" aria-expanded="false">
                                             {{ selectedSection || 'Section' }}
                                         </button>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"
+                                        <div class="dropdown-menu" aria-labelledby="dropdownSection"
                                             style="width: 100%;">
-                                            <a class="dropdown-item" href="#" @click="selectSection('Yes')">Yes</a>
-                                            <a class="dropdown-item" href="#" @click="selectSection('No')">No</a>
-                                            <a class="dropdown-item" href="#" @click="selectSection('Maybe')">Maybe</a>
+                                            <a class="dropdown-item" href="#"
+                                                v-for="section in getSections(selectedGrade)" :key="section"
+                                                @click="selectSection(section)">{{ section }}</a>
                                         </div>
                                     </div>
                                 </div>
@@ -170,7 +178,7 @@
                         <div class="modal-dialog modal-sm">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">By Section</h5>
+                                    <h5 class="modal-title" id="exampleModalLabel">By Batch</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </div>
@@ -183,14 +191,17 @@
                                         </button>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"
                                             style="width: 100%;">
-                                            <a class="dropdown-item" href="#" @click="selectGrade(1)">1</a>
-                                            <a class="dropdown-item" href="#" @click="selectGrade(2)">2</a>
-                                            <a class="dropdown-item" href="#" @click="selectGrade(3)">3</a>
+                                            <a class="dropdown-item" href="#" @click="selectGrade(7)">7</a>
+                                            <a class="dropdown-item" href="#" @click="selectGrade(8)">8</a>
+                                            <a class="dropdown-item" href="#" @click="selectGrade(9)">9</a>
+                                            <a class="dropdown-item" href="#" @click="selectGrade(10)">10</a>
+                                            <a class="dropdown-item" href="#" @click="selectGrade(11)">11</a>
+                                            <a class="dropdown-item" href="#" @click="selectGrade(12)">12</a>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="modal-footer" style="display: flex; justify-content: center;">
-                                    <button type="button" class="btn btn-primary">Send</button>
+                                    <button type="button" class="btn btn-primary" @click="assignByBatch">Send</button>
                                 </div>
                             </div>
                         </div>
@@ -202,66 +213,45 @@
 </template>
 
 <script setup>
-import axios from 'axios';
-import { ref, onMounted } from 'vue';
-import $ from 'jquery';
 import DataTable from 'datatables.net-vue3';
 import DataTablesCore from 'datatables.net-bs5';
+import axios from 'axios';
+import { ref, onMounted, computed } from 'vue';
+import $ from 'jquery';
 
-const all_data = ref([]);
+const allUsers = ref([]);
 const selectedGrade = ref(null);
 const selectedSection = ref(null);
 
 onMounted(async () => {
-    // await getUsers();
     initializeDataTable();
-    getAllIntakeInterviewForms();
 });
+
+const initializeDataTable = () => {
+    $('#dailyTimeLog').DataTable();
+};
 
 const selectGrade = (grade) => {
     selectedGrade.value = grade;
+    selectedSection.value = null; // Reset selected section when grade changes
 };
 
 const selectSection = (section) => {
     selectedSection.value = section;
 };
 
-const initializeDataTable = () => {
-    $('#table-intake').DataTable();
+const getSections = (grade) => {
+    // Dummy data, replace with actual data retrieval based on grade
+    if (grade === 1) {
+        return ['Section A', 'Section B', 'Section C'];
+    } else if (grade === 2) {
+        return ['Section X', 'Section Y', 'Section Z'];
+    } else if (grade === 3) {
+        return ['Section I', 'Section II', 'Section III'];
+    } else {
+        return [];
+    }
 };
-
-const getAllIntakeInterviewForms = async () => {
-    try {
-        const resp = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/get-all-intake-interview-forms`)
-
-        all_data.value = resp.data.data;
-    }
-    catch (error) {
-        console.log(error);
-    }
-}
-
-const generateForm = async (form_id) => {
-    try {
-        const resp = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/generate-intake-interview/${form_id}`, {
-            responseType: 'arraybuffer'
-        })
-        if (resp.status === 200) {
-            var newBlob = new Blob([resp.data], { type: 'application/pdf' })
-
-            console.log(resp.data)
-            const data = window.URL.createObjectURL(newBlob)
-            var link = document.createElement('a')
-            link.href = data
-            link.download = 'Intake_Interview_From' + '.pdf'
-            link.click()
-        }
-    }
-    catch (error) {
-        console.log(error);
-    }
-}
-
 </script>
 
 <style scoped>
@@ -294,12 +284,16 @@ const generateForm = async (form_id) => {
 
 .options button {
     width: 30%;
-    height: 40px;
+    height: 60px;
     border: none;
     border-radius: 5px;
     color: white;
     font-weight: 500;
     font-size: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .options .individual,

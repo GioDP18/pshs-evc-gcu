@@ -51,14 +51,6 @@ class AuthController extends Controller
     public function refresh() {
         return $this->authService->refresh();
     }
-    /**
-     * Get the authenticated User.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function userProfile() {
-        return $this->authService->userprofile();
-    }
 
     public function socialLogin($provider)
     {

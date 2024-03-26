@@ -66,7 +66,7 @@ Class AuthServiceImpl implements AuthService
         return response()->json([
             'message' => 'User successfully registered',
             'user' => $user
-        ], 201);
+        ], 200);
     }
 
     /**
@@ -86,15 +86,6 @@ Class AuthServiceImpl implements AuthService
      */
     public function refresh() {
         return $this->createNewToken(auth()->refresh());
-    }
-
-    /**
-     * Get the authenticated User.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function userProfile() {
-        return response()->json(auth()->user());
     }
 
     /**

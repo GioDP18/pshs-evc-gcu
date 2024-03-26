@@ -23,8 +23,7 @@ class IntakeInterviewForm extends Model
 
     use HasFactory;
 
-    public function interviewer_info()
-    {
+    public function interviewer_info(){
         return $this->belongsTo(User::class, 'interviewer');
     }
 }

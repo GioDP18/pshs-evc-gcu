@@ -16,6 +16,6 @@ class Calendar extends Model
     use HasFactory;
 
     public function reserved_user(){
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id_reserved');
     }
 }

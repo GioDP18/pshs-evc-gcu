@@ -1,32 +1,3 @@
-<script setup>
-import DataTable from 'datatables.net-vue3';
-import DataTablesCore from 'datatables.net-bs5';
-import axios from 'axios';
-import { ref, onMounted } from 'vue';
-import $ from 'jquery';
-
-const allUsers = ref([]);
-const selectedGrade = ref(null);
-const selectedSection = ref(null);
-
-onMounted(async () => {
-    // await getUsers();
-    initializeDataTable();
-});
-
-const initializeDataTable = () => {
-    $('#dailyTimeLog').DataTable();
-};
-
-const selectGrade = (grade) => {
-    selectedGrade.value = grade;
-};
-
-const selectSection = (section) => {
-    selectedSection.value = section;
-};
-</script>
-
 <template>
     <div class="main-content">
         <div class="column-1">
@@ -34,14 +5,14 @@ const selectSection = (section) => {
                 <div class="sub-header">
                     <div class="content-text">Client Monitoring Form</div>
                     <div class="buttons">
-                        <button class="create"><i style="margin-right: 5px;"><font-awesome-icon
+                        <button class="create" @click="goToInputs"><i style="margin-right: 5px;"><font-awesome-icon
                                     :icon="['fas', 'pen']" /></i>Create New</button>
                         <button class="assign" data-bs-toggle="modal" data-bs-target="#assign"><i
                                 style="margin-right: 5px;"><font-awesome-icon
                                     :icon="['fas', 'user-plus']" /></i>Assign</button>
                     </div>
                 </div>
-                <table id="dailyTimeLog" class="table table-striped table-hover" width="100%">
+                <table id="table-cmf" class="table table-striped table-hover" width="100%">
                     <thead>
                         <tr>
                             <th>ID Number</th>
@@ -96,10 +67,14 @@ const selectSection = (section) => {
                             <div class="modal-body">
                                 <div class="options">
                                     <button class="individual" data-bs-toggle="modal"
-                                        data-bs-target="#individual">Individual</button>
+                                        data-bs-target="#individual"><i><font-awesome-icon
+                                                :icon="['fas', 'user']" /></i>Individual</button>
                                     <button class="section" data-bs-toggle="modal"
-                                        data-bs-target="#section">Section</button>
-                                    <button class="batch" data-bs-toggle="modal" data-bs-target="#batch">Batch</button>
+                                        data-bs-target="#section"><i><font-awesome-icon
+                                                :icon="['fas', 'user-group']" /></i>Section</button>
+                                    <button class="batch" data-bs-toggle="modal"
+                                        data-bs-target="#batch"><i><font-awesome-icon
+                                                :icon="['fas', 'users']" /></i>Batch</button>
                                 </div>
                             </div>
                         </div>
@@ -117,7 +92,7 @@ const selectSection = (section) => {
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <table id="dailyTimeLog" class="table table-striped table-hover" width="100%">
+                                <table id="table-cmf" class="table table-striped table-hover" width="100%">
                                     <thead>
                                         <tr>
                                             <th>Name</th>
@@ -160,28 +135,25 @@ const selectSection = (section) => {
                             <div class="modal-body">
                                 <div class="dropdown" style="width: 100%;">
                                     <button style="width: 100%;" class="btn btn-primary dropdown-toggle" type="button"
-                                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                        id="dropdownGrade" data-toggle="dropdown" aria-haspopup="true"
                                         aria-expanded="false">
-                                        {{ selectedGrade || 'Grade' }}
+                                        {{ selectedGrade ? 'Grade ' + selectedGrade : 'Grade' }}
                                     </button>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"
-                                        style="width: 100%;">
-                                        <a class="dropdown-item" href="#" @click="selectGrade(1)">1</a>
-                                        <a class="dropdown-item" href="#" @click="selectGrade(2)">2</a>
-                                        <a class="dropdown-item" href="#" @click="selectGrade(3)">3</a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownGrade" style="width: 100%;">
+                                        <a class="dropdown-item" href="#" @click="selectGrade(1)">Grade 1</a>
+                                        <a class="dropdown-item" href="#" @click="selectGrade(2)">Grade 2</a>
+                                        <a class="dropdown-item" href="#" @click="selectGrade(3)">Grade 3</a>
                                     </div>
                                 </div>
-                                <div class="dropdown" style="width: 100%; margin-top: 20px;">
+                                <div v-if="selectedGrade" class="dropdown" style="width: 100%; margin-top: 20px;">
                                     <button style="width: 100%;" class="btn btn-primary dropdown-toggle" type="button"
-                                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                        id="dropdownSection" data-toggle="dropdown" aria-haspopup="true"
                                         aria-expanded="false">
                                         {{ selectedSection || 'Section' }}
                                     </button>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"
-                                        style="width: 100%;">
-                                        <a class="dropdown-item" href="#" @click="selectSection('Yes')">Yes</a>
-                                        <a class="dropdown-item" href="#" @click="selectSection('No')">No</a>
-                                        <a class="dropdown-item" href="#" @click="selectSection('Maybe')">Maybe</a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownSection" style="width: 100%;">
+                                        <a class="dropdown-item" href="#" v-for="section in getSections(selectedGrade)"
+                                            :key="section" @click="selectSection(section)">{{ section }}</a>
                                     </div>
                                 </div>
                             </div>
@@ -191,6 +163,7 @@ const selectSection = (section) => {
                         </div>
                     </div>
                 </div>
+
 
                 <!-- Batch Modal -->
                 <div class="modal fade" id="batch" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -228,6 +201,47 @@ const selectSection = (section) => {
     </div>
 </template>
 
+<script setup>
+import DataTable from 'datatables.net-vue3';
+import DataTablesCore from 'datatables.net-bs5';
+import axios from 'axios';
+import { ref, onMounted, computed } from 'vue';
+import $ from 'jquery';
+
+const allUsers = ref([]);
+const selectedGrade = ref(null);
+const selectedSection = ref(null);
+
+onMounted(async () => {
+    initializeDataTable();
+});
+
+const initializeDataTable = () => {
+    $('#dailyTimeLog').DataTable();
+};
+
+const selectGrade = (grade) => {
+    selectedGrade.value = grade;
+    selectedSection.value = null; // Reset selected section when grade changes
+};
+
+const selectSection = (section) => {
+    selectedSection.value = section;
+};
+
+const getSections = (grade) => {
+    // Dummy data, replace with actual data retrieval based on grade
+    if (grade === 1) {
+        return ['Section A', 'Section B', 'Section C'];
+    } else if (grade === 2) {
+        return ['Section X', 'Section Y', 'Section Z'];
+    } else if (grade === 3) {
+        return ['Section I', 'Section II', 'Section III'];
+    } else {
+        return [];
+    }
+};
+</script>
 
 <style scoped>
 .main-content {
@@ -253,12 +267,16 @@ const selectSection = (section) => {
 
 .options button {
     width: 30%;
-    height: 40px;
+    height: 60px;
     border: none;
     border-radius: 5px;
     color: white;
     font-weight: 500;
     font-size: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .options .individual,

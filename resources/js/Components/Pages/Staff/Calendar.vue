@@ -39,14 +39,8 @@
                 <div style="width:100%; padding:10px; border-radius:20px; border:2px solid #fbebeb">
                     <p style="font-weight:bold; color:gray; font-size:15px; opacity:60%">Appoinments for today</p>
                     <div class="ml-4" style="overflow-x: auto;">
-                        <div class="appointment d-flex">
-                           <p style="font-weight:bold; color:#27516B"><i class="fa-regular fa-clock" style="color:#ED9696"></i> 8:00 am - 9:00 am <br> <i class="fa-regular fa-user" style="color:#ED9696"></i> Gio Dela Peña</p>
-                        </div>
-                        <div class="appointment d-flex">
-                           <p style="font-weight:bold; color:#27516B"><i class="fa-regular fa-clock" style="color:#ED9696"></i> 9:00 am - 10:00 am <br> <i class="fa-regular fa-user" style="color:#ED9696"></i> John Vincent Ramada</p>
-                        </div>
-                        <div class="appointment d-flex">
-                           <p style="font-weight:bold; color:#27516B"><i class="fa-regular fa-clock" style="color:#ED9696"></i> 10:00 am - 11:00 am <br> <i class="fa-regular fa-user" style="color:#ED9696"></i> tristan Angelo Narido</p>
+                        <div class="appointment d-flex" v-for="item in appointments_today" :key="item.id">
+                           <p style="font-weight:bold; color:#27516B"><i class="fa-regular fa-clock" style="color:#ED9696"></i> {{ item.available_time }} <br> <i class="fa-regular fa-user" style="color:#ED9696"></i> {{ item.reserved_user.firstname }} {{ item.reserved_user.lastname }}</p>
                         </div>
                     </div>
                 </div>
@@ -81,6 +75,7 @@ const value = ref(new Date())
 const modalVisible = ref(false)
 const selectedDate = ref(null)
 const selectedTimeSlots = ref([])
+const user_id_reserved = ref([])
 const availableTimeSlots = reactive([])
 const fixedTimeSlots = [
     '8:00 AM - 9:00 AM', '9:00 AM - 10:00 AM', '10:00 AM - 11:00 AM', '11:00 AM - 12:00 PM',
@@ -97,6 +92,7 @@ onMounted(() => {
 
 const handleDateClick = async (data) => {
     selectedTimeSlots.value = []
+    user_id_reserved.value = []
     try {
         const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/get-schedule/${data.day}`)
         console.log(response.data);
@@ -113,7 +109,8 @@ const updateSchedule = async () => {
     try {
         const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/update-schedule`, {
             available_time: selectedTimeSlots.value,
-            date: selectedDate.value
+            date: selectedDate.value,
+            user_id_reserved: user_id_reserved.value,
         })
         console.log(response.data);
         modalVisible.value = false
@@ -156,7 +153,7 @@ const getAppointmentsToday = async () => {
     try{
         const result = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/get-appointments-today`)
         console.log(result.data)
-        appointments_today.value = result.data
+        appointments_today.value = result.data.appointments
     }
     catch(error){
         console.error(error);

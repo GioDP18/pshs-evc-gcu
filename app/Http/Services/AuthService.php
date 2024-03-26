@@ -14,8 +14,6 @@ interface AuthService
 
     public function refresh();
 
-    public function userProfile();
-
     public function socialLogin($provider);
 
     public function authenticateSocialLogin($provider);
