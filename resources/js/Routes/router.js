@@ -27,10 +27,11 @@ import FieldParentQuestionnaire from "../Components/Pages/Staff/FillForm/FieldPa
 //Requests
 import RequestIntakeInterview from "../Components/Pages/Staff/Requests/RequestIntakeInterview.vue";
 import RequestGuidanceAdmission from "../Components/Pages/Staff/Requests/RequestGuidanceAdmission.vue";
-// import RequestGuidanceCallSlip from "../Components/Pages/Staff/Requests/RequestGuidanceCallSlip.vue";
-// import RequestParentQuestionnaire from "../Components/Pages/Staff/Requests/RequestParentQuestionnaire.vue";
-// import RequestReferral from "../Components/Pages/Staff/Requests/RequestReferral.vue";
-// import RequestCumulativeRecord from "../Components/Pages/Staff/Requests/RequestCumulativeRecord.vue";
+import RequestGuidanceCall from "../Components/Pages/Staff/Requests/RequestGuidanceCall.vue";
+import RequestClientMonitoring from "../Components/Pages/Staff/Requests/RequestClientMonitoring.vue";
+import RequestParentQuestionnaire from "../Components/Pages/Staff/Requests/RequestParentQuestionnaire.vue";
+import RequestReferralForm from "../Components/Pages/Staff/Requests/RequestReferralForm.vue";
+import RequestCumulativeRecord from "../Components/Pages/Staff/Requests/RequestCumulativeRecord.vue";
 
 //---------------------------------Student---------------------------------
 import StudentView from "../Components/Views/StudentView.vue";
@@ -163,6 +164,31 @@ const routes = [
                 path: "requestGuidanceAdmission",
                 component: RequestGuidanceAdmission,
                 name: "staff-requestGuidanceAdmission",
+            },
+            {
+                path: "requestClientMonitoring",
+                component: RequestClientMonitoring,
+                name: "staff-requestClientMonitoring",
+            },
+            {
+                path: "requestGuidanceCall",
+                component: RequestGuidanceCall,
+                name: "staff-requestGuidanceCall",
+            },
+            {
+                path: "requestParentQuestionnaire",
+                component: RequestParentQuestionnaire,
+                name: "staff-requestParentQuestionnaire",
+            },
+            {
+                path: "requestReferralForm",
+                component: RequestReferralForm,
+                name: "staff-requestReferralForm",
+            },
+            {
+                path: "requestCumulativeRecord",
+                component: RequestCumulativeRecord,
+                name: "staff-requestCumulativeRecord",
             },
         ],
     },
