@@ -4,6 +4,7 @@ namespace App\Http\Implementations;
 
 
 use App\Http\Services\RequestsService;
+use App\Models\IntakeInterviewForm;
 use App\Models\Requests;
 use Illuminate\Http\Request;
 
@@ -39,9 +40,9 @@ Class RequestsServiceImpl implements RequestsService
         }
     }
 
-    public function approveRequest(Request $request){
+    public function approveRequest($id){
         try{
-            $data = Request::find($request->id)->update([
+            $data = Requests::find($id)->update([
                 'status' => 'approved',
             ]);
 
@@ -55,6 +56,31 @@ Class RequestsServiceImpl implements RequestsService
             return response()->json([
                 "success" => true,
                 "message" => "Request approved!",
+                "data" => $data
+            ], 200);
+        }
+        catch (\Exception $error){
+            return response()->json([
+                "success"=> false,
+                "message"=> $error->getMessage()
+            ]);
+        }
+    }
+
+    public function getIntakeInterviewFormRequest(){
+        try{
+            $data = Requests::with('user')->where('status', 'pending')->where('form_name', 'Intake Interview Form')->get();
+
+            if(!$data){
+                return response()->json([
+                    "success" => false,
+                    "message" => "Internal Server Error.",
+                ], 500);
+            }
+
+            return response()->json([
+                "success" => true,
+                "message" => "Success",
                 "data" => $data
             ], 200);
         }
