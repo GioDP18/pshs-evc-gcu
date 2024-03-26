@@ -10,6 +10,8 @@
                         <button class="assign" data-bs-toggle="modal" data-bs-target="#assign"><i
                                 style="margin-right: 5px;"><font-awesome-icon
                                     :icon="['fas', 'user-plus']" /></i>Assign</button>
+                        <button class="create" @click="goToInputs"><i style="margin-right: 5px;"><font-awesome-icon
+                                    :icon="['fas', 'bell']" /></i>Requests</button>
                     </div>
                 </div>
                 <table id="table-cmf" class="table table-striped table-hover" width="100%">
@@ -206,7 +208,10 @@ import DataTable from 'datatables.net-vue3';
 import DataTablesCore from 'datatables.net-bs5';
 import axios from 'axios';
 import { ref, onMounted, computed } from 'vue';
+import { useRouter } from 'vue-router';
 import $ from 'jquery';
+
+const router = useRouter();
 
 const allUsers = ref([]);
 const selectedGrade = ref(null);
@@ -217,12 +222,12 @@ onMounted(async () => {
 });
 
 const initializeDataTable = () => {
-    $('#dailyTimeLog').DataTable();
+    $('#tale-cmf').DataTable();
 };
 
 const selectGrade = (grade) => {
     selectedGrade.value = grade;
-    selectedSection.value = null; // Reset selected section when grade changes
+    selectedSection.value = null;
 };
 
 const selectSection = (section) => {
@@ -230,7 +235,6 @@ const selectSection = (section) => {
 };
 
 const getSections = (grade) => {
-    // Dummy data, replace with actual data retrieval based on grade
     if (grade === 1) {
         return ['Section A', 'Section B', 'Section C'];
     } else if (grade === 2) {
@@ -241,6 +245,10 @@ const getSections = (grade) => {
         return [];
     }
 };
+
+const goToInputs = () => {
+    router.push({ name: 'staff-fieldClientMonitoring' })
+}
 </script>
 
 <style scoped>
@@ -296,14 +304,16 @@ const getSections = (grade) => {
 }
 
 .sub-header .buttons {
-    gap: 3%;
+    gap: 8px;
     display: flex;
-    width: 25%;
+    align-items: center;
+    justify-content: end;
+    width: 100%;
 }
 
 .sub-header button {
     border: none;
-    width: 190px;
+    width: 120px;
     border-radius: 5px;
     height: 40px;
     color: white;

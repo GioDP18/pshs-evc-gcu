@@ -11,6 +11,8 @@
                             <button class="assign" data-bs-toggle="modal" data-bs-target="#assign"><i
                                     style="margin-right: 5px;"><font-awesome-icon
                                         :icon="['fas', 'user-plus']" /></i>Assign</button>
+                            <button class="create"><i style="margin-right: 5px;"><font-awesome-icon
+                                        :icon="['fas', 'bell']" /></i>Requests</button>
                         </div>
                     </div>
                     <table id="table-intake" class="table table-striped table-hover" width="100%">
@@ -54,6 +56,7 @@
                             </tr>
                         </tbody>
                     </table>
+
                     <!-- Assign Modal -->
                     <div class="modal fade" id="assign" tabindex="-1" aria-labelledby="exampleModalLabel"
                         aria-hidden="true">
@@ -65,17 +68,16 @@
                                         aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <div class="input-group mb-3">
-                                        <span class="input-group-text" id="basic-addon1">Due Date</span>
-                                        <input type="date" v-model="due_date" class="form-control" placeholder="" aria-label="Username" aria-describedby="basic-addon1">
-                                    </div>
                                     <div class="options">
                                         <button class="individual" data-bs-toggle="modal"
-                                            data-bs-target="#individual">Individual</button>
+                                            data-bs-target="#individual"><i><font-awesome-icon
+                                                    :icon="['fas', 'user']" /></i>Individual</button>
                                         <button class="section" data-bs-toggle="modal"
-                                            data-bs-target="#section">Section</button>
+                                            data-bs-target="#section"><i><font-awesome-icon
+                                                    :icon="['fas', 'user-group']" /></i>Section</button>
                                         <button class="batch" data-bs-toggle="modal"
-                                            data-bs-target="#batch">Batch</button>
+                                            data-bs-target="#batch"><i><font-awesome-icon
+                                                    :icon="['fas', 'users']" /></i>Batch</button>
                                     </div>
                                 </div>
                             </div>
@@ -136,33 +138,32 @@
                                 <div class="modal-body">
                                     <div class="dropdown" style="width: 100%;">
                                         <button style="width: 100%;" class="btn btn-primary dropdown-toggle"
-                                            type="button" id="dropdownMenuButton" data-toggle="dropdown"
-                                            aria-haspopup="true" aria-expanded="false">
-                                            {{ selectedGrade || 'Grade' }}
+                                            type="button" id="dropdownGrade" data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">
+                                            {{ selectedGrade ? 'Grade ' + selectedGrade : 'Grade' }}
                                         </button>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"
-                                            style="width: 100%;">
-                                            <a class="dropdown-item" href="#" @click="selectGrade(1)">1</a>
-                                            <a class="dropdown-item" href="#" @click="selectGrade(2)">2</a>
-                                            <a class="dropdown-item" href="#" @click="selectGrade(3)">3</a>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownGrade" style="width: 100%;">
+                                            <a class="dropdown-item" href="#" @click="selectGrade(1)">Grade 1</a>
+                                            <a class="dropdown-item" href="#" @click="selectGrade(2)">Grade 2</a>
+                                            <a class="dropdown-item" href="#" @click="selectGrade(3)">Grade 3</a>
                                         </div>
                                     </div>
-                                    <div class="dropdown" style="width: 100%; margin-top: 20px;">
+                                    <div v-if="selectedGrade" class="dropdown" style="width: 100%; margin-top: 20px;">
                                         <button style="width: 100%;" class="btn btn-primary dropdown-toggle"
-                                            type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                                            type="button" id="dropdownSection" data-toggle="dropdown"
                                             aria-haspopup="true" aria-expanded="false">
                                             {{ selectedSection || 'Section' }}
                                         </button>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"
+                                        <div class="dropdown-menu" aria-labelledby="dropdownSection"
                                             style="width: 100%;">
-                                            <a class="dropdown-item" href="#" @click="selectSection('Yes')">Yes</a>
-                                            <a class="dropdown-item" href="#" @click="selectSection('No')">No</a>
-                                            <a class="dropdown-item" href="#" @click="selectSection('Maybe')">Maybe</a>
+                                            <a class="dropdown-item" href="#"
+                                                v-for="section in getSections(selectedGrade)" :key="section"
+                                                @click="selectSection(section)">{{ section }}</a>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="modal-footer" style="display: flex; justify-content: center;">
-                                    <button type="button" class="btn btn-primary" @click="assignBySection">Send</button>
+                                    <button type="button" class="btn btn-primary">Send</button>
                                 </div>
                             </div>
                         </div>
@@ -220,12 +221,13 @@ import store from "../../../../State/index.js";
 const router = useRouter();
 
 const all_data = ref([]);
-const selectedGrade = ref(null);
-const selectedSection = ref(null);
 const users = ref([]);
 const due_date = ref(null);
 const bySection = ref(null);
 const byBatch = ref(null);
+const selectedGrade = ref(null);
+const selectedSection = ref(null);
+
 
 onMounted(async () => {
     initializeDataTable();
@@ -233,16 +235,30 @@ onMounted(async () => {
     getAllUsers();
 });
 
+const initializeDataTable = () => {
+    $('#table-intake').DataTable();
+};
+
 const selectGrade = (grade) => {
     selectedGrade.value = grade;
+    selectedSection.value = null; // Reset selected section when grade changes
 };
 
 const selectSection = (section) => {
     selectedSection.value = section;
 };
 
-const initializeDataTable = () => {
-    $('#table-intake').DataTable();
+const getSections = (grade) => {
+    // Dummy data, replace with actual data retrieval based on grade
+    if (grade === 1) {
+        return ['Section A', 'Section B', 'Section C'];
+    } else if (grade === 2) {
+        return ['Section X', 'Section Y', 'Section Z'];
+    } else if (grade === 3) {
+        return ['Section I', 'Section II', 'Section III'];
+    } else {
+        return [];
+    }
 };
 
 const getAllIntakeInterviewForms = async () => {
@@ -276,7 +292,7 @@ const generateForm = async (form_id) => {
     catch (error) {
         console.log(error);
     }
-    finally{
+    finally {
         store.commit('setLoading', false)
     }
 }
@@ -356,7 +372,7 @@ const assignByBatch = async () => {
 }
 
 const goToInputs = () => {
-    router.push({ name: 'staff-fieldIntakeInterview'})
+    router.push({ name: 'staff-fieldIntakeInterview' })
 }
 
 </script>
@@ -391,12 +407,16 @@ const goToInputs = () => {
 
 .options button {
     width: 30%;
-    height: 40px;
+    height: 60px;
     border: none;
     border-radius: 5px;
     color: white;
     font-weight: 500;
     font-size: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .options .individual,
@@ -416,14 +436,16 @@ const goToInputs = () => {
 }
 
 .sub-header .buttons {
-    gap: 3%;
+    gap: 8px;
     display: flex;
-    width: 25%;
+    align-items: center;
+    justify-content: end;
+    width: 100%;
 }
 
 .sub-header button {
     border: none;
-    width: 190px;
+    width: 120px;
     border-radius: 5px;
     height: 40px;
     color: white;
@@ -476,7 +498,7 @@ const goToInputs = () => {
     font: 700 20px Montserrat, sans-serif;
     margin-bottom: 20px;
     border-bottom: 1px solid #2087E4;
-    width: 98px;
+    width: 65px;
     border-bottom-width: 5px;
 }
 

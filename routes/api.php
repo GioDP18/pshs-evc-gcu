@@ -56,6 +56,7 @@ Route::group([
 
     // Request Forms
     Route::post('/request-form', [RequestsController::class, 'createRequest']);
+    Route::post('/approve-request', [RequestsController::class, 'approveRequest']);
 
     // Get All Forms
     Route::get('/get-all-intake-interview-forms', [GetFormsController::class, 'getAllIntakeInterviewForms']);
