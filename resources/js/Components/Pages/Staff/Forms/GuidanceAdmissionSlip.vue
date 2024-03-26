@@ -11,6 +11,8 @@
                             <button class="assign" data-bs-toggle="modal" data-bs-target="#assign"><i
                                     style="margin-right: 5px;"><font-awesome-icon
                                         :icon="['fas', 'user-plus']" /></i>Assign</button>
+                            <button class="create" @click="goToInputs"><i style="margin-right: 5px;"><font-awesome-icon
+                                        :icon="['fas', 'bell']" /></i>Requests</button>
                         </div>
                     </div>
                     <table id="table-guidance-admission" class="table table-striped table-hover" width="100%">
@@ -306,14 +308,16 @@ const getSections = (grade) => {
 }
 
 .sub-header .buttons {
-    gap: 3%;
+    gap: 8px;
     display: flex;
-    width: 25%;
+    align-items: center;
+    justify-content: end;
+    width: 100%;
 }
 
 .sub-header button {
     border: none;
-    width: 190px;
+    width: 120px;
     border-radius: 5px;
     height: 40px;
     color: white;
