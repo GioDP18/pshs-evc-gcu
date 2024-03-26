@@ -31,6 +31,7 @@ Route::group([
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/refresh', [AuthController::class, 'refresh']);
     Route::get('/get-user-data/{id}', [UserDataController::class, 'getUserData']);
+    Route::get('/get-all-users', [UserDataController::class, 'getAllUsers']);
 
     // Social login
     Route::get('/oauth/{provider}', [AuthController::class, 'socialLogin']);

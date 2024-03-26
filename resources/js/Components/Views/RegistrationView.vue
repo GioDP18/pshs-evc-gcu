@@ -124,7 +124,7 @@
                                 <div :class="{ 'has-error': errors.id_number }" style="display:flex; margin-top:10px">
                                     <div class="col-6">
                                         <label for="exampleInputEmail1" class="form-label">Grade Level</label>
-                                        <select class="form-select" v-model="grade_level"name="" id="">
+                                        <select class="form-select" v-model="grade_level" name="" id="">
                                             <option value="" selected disabled>Select..</option>
                                             <option value="7">7</option>
                                             <option value="8">8</option>
@@ -353,6 +353,17 @@ const prevStep = () => {
 </script>
 
 <style scoped>
+.register-container {
+    background-image: url('../../../../public/external/Background.png');
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .has-error input {
     border-color: red;
 }
@@ -399,6 +410,7 @@ const prevStep = () => {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    background-color: white;
 }
 
 .white-box .register-text {

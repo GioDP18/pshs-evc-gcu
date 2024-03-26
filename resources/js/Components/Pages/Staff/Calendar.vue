@@ -75,6 +75,7 @@ const value = ref(new Date())
 const modalVisible = ref(false)
 const selectedDate = ref(null)
 const selectedTimeSlots = ref([])
+const user_id_reserved = ref([])
 const availableTimeSlots = reactive([])
 const fixedTimeSlots = [
     '8:00 AM - 9:00 AM', '9:00 AM - 10:00 AM', '10:00 AM - 11:00 AM', '11:00 AM - 12:00 PM',
@@ -91,6 +92,7 @@ onMounted(() => {
 
 const handleDateClick = async (data) => {
     selectedTimeSlots.value = []
+    user_id_reserved.value = []
     try {
         const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/get-schedule/${data.day}`)
         console.log(response.data);
@@ -107,7 +109,8 @@ const updateSchedule = async () => {
     try {
         const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/update-schedule`, {
             available_time: selectedTimeSlots.value,
-            date: selectedDate.value
+            date: selectedDate.value,
+            user_id_reserved: user_id_reserved.value,
         })
         console.log(response.data);
         modalVisible.value = false
