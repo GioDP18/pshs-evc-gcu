@@ -1,31 +1,12 @@
-<script setup>
-import axios from 'axios';
-import { ref, onMounted } from 'vue';
-import $ from 'jquery';
-
-const allUsers = ref([]);
-
-onMounted(async () => {
-    // await getUsers();
-    initializeDataTable();
-});
-
-const initializeDataTable = () => {
-    $('#dailyTimeLog').DataTable();
-};
-
-</script>
-
-
 <template>
     <div class="main-content">
         <div class="content">
             <div class="table-card">
                 <div class="sub-header">
                     <div class="content-text">Cumulative Record Form</div>
-                    <button>Request Form</button>
+                    <button @click="handleRequest">Request Form</button>
                 </div>
-                <table id="dailyTimeLog" class="table table-striped table-hover" width="100%">
+                <table id="table-cmf" class="table table-striped table-hover" width="100%">
                     <thead>
                         <tr>
                             <th>ID Number</th>
@@ -70,6 +51,57 @@ const initializeDataTable = () => {
         </div>
     </div>
 </template>
+
+<script setup>
+import axios from 'axios';
+import { ref, onMounted } from 'vue';
+import $ from 'jquery';
+
+const allUsers = ref([]);
+
+onMounted(async () => {
+    // await getUsers();
+    initializeDataTable();
+});
+
+const initializeDataTable = () => {
+    $('#table-cmf').DataTable();
+};
+
+const createRequest = async () => {
+    try{
+        const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/request-form`, {
+            form_name: 'Cumulative Records Form',
+            user_id: localStorage.getItem('user_id')
+        });
+        console.log(response.data);
+        if(response.status === 200){
+            swal({
+                title: "Request sent.",
+                icon: "success",
+                button: "Okay",
+            });
+        }
+    }
+    catch(error){
+        console.log(error);
+    }
+}
+
+const handleRequest = () => {
+    swal({
+        title: "Request Cumulative Form?",
+        icon: "info",
+        buttons: true,
+    })
+    .then((willDelete) => {
+        if (willDelete) {
+            createRequest();
+        }
+    });
+};
+
+</script>
 
 
 <style scoped>
