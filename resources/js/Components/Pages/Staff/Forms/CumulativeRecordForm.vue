@@ -358,6 +358,8 @@ const getSections = (grade) => {
         max-width: 100%;
         margin-top: 7px;
         white-space: initial;
+        justify-content: center;
+        align-items: center;
     }
 }
 
