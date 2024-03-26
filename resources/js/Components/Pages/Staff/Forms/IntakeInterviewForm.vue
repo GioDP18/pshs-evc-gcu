@@ -11,7 +11,7 @@
                             <button class="assign" data-bs-toggle="modal" data-bs-target="#assign"><i
                                     style="margin-right: 5px;"><font-awesome-icon
                                         :icon="['fas', 'user-plus']" /></i>Assign</button>
-                            <button class="create" @click="goToInputs"><i style="margin-right: 5px;"><font-awesome-icon
+                            <button class="create"><i style="margin-right: 5px;"><font-awesome-icon
                                         :icon="['fas', 'bell']" /></i>Requests</button>
                         </div>
                     </div>
@@ -68,11 +68,6 @@
                                         aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <div class="input-group mb-3">
-                                        <span class="input-group-text" id="basic-addon1">Due Date</span>
-                                        <input type="date" v-model="due_date" class="form-control" placeholder=""
-                                            aria-label="Username" aria-describedby="basic-addon1">
-                                    </div>
                                     <div class="options">
                                         <button class="individual" data-bs-toggle="modal"
                                             data-bs-target="#individual"><i><font-awesome-icon
@@ -215,22 +210,33 @@
 </template>
 
 <script setup>
+import axios from 'axios';
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import $ from 'jquery';
 import DataTable from 'datatables.net-vue3';
 import DataTablesCore from 'datatables.net-bs5';
-import axios from 'axios';
-import { ref, onMounted, computed } from 'vue';
-import $ from 'jquery';
+import store from "../../../../State/index.js";
 
-const allUsers = ref([]);
+const router = useRouter();
+
+const all_data = ref([]);
+const users = ref([]);
+const due_date = ref(null);
+const bySection = ref(null);
+const byBatch = ref(null);
 const selectedGrade = ref(null);
 const selectedSection = ref(null);
 
+
 onMounted(async () => {
     initializeDataTable();
+    getAllIntakeInterviewForms();
+    getAllUsers();
 });
 
 const initializeDataTable = () => {
-    $('#dailyTimeLog').DataTable();
+    $('#table-intake').DataTable();
 };
 
 const selectGrade = (grade) => {
@@ -254,6 +260,121 @@ const getSections = (grade) => {
         return [];
     }
 };
+
+const getAllIntakeInterviewForms = async () => {
+    try {
+        const resp = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/get-all-intake-interview-forms`)
+
+        all_data.value = resp.data.data;
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+const generateForm = async (form_id) => {
+    store.commit('setLoading', true)
+    try {
+        const resp = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/generate-intake-interview/${form_id}`, {
+            responseType: 'arraybuffer'
+        })
+        if (resp.status === 200) {
+            var newBlob = new Blob([resp.data], { type: 'application/pdf' })
+
+            console.log(resp.data)
+            const data = window.URL.createObjectURL(newBlob)
+            var link = document.createElement('a')
+            link.href = data
+            link.download = 'Intake_Interview_From' + '.pdf'
+            link.click()
+        }
+    }
+    catch (error) {
+        console.log(error);
+    }
+    finally {
+        store.commit('setLoading', false)
+    }
+}
+
+const getAllUsers = async () => {
+    try {
+        const resp = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/get-all-users`)
+
+        users.value = resp.data.data;
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+const assign = async (id) => {
+    try {
+        const resp = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/assign-form`, {
+            assignee: id,
+            form_name: 'Intake Interview Form',
+            due_date: due_date.value
+        })
+        if (resp.status === 200) {
+            console.log(resp.data);
+            swal({
+                title: "Assigned successfully.",
+                icon: "success",
+                button: "Okay",
+            });
+        }
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+const assignBySection = async () => {
+    try {
+        const resp = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/bulk-assign-form-by-section`, {
+            section: selectedSection.value,
+            form_name: 'Intake Interview Form',
+            due_date: due_date.value
+        })
+        if (resp.status === 200) {
+            console.log(resp.data);
+            swal({
+                title: "Assigned successfully.",
+                icon: "success",
+                button: "Okay",
+            });
+        }
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+const assignByBatch = async () => {
+    try {
+        const resp = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/bulk-assign-form-by-grade-level`, {
+            grade_level: selectedGrade.value,
+            form_name: 'Intake Interview Form',
+            due_date: due_date.value
+        })
+        if (resp.status === 200) {
+            console.log(resp.data);
+            swal({
+                title: "Assigned successfully.",
+                icon: "success",
+                button: "Okay",
+            });
+        }
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+const goToInputs = () => {
+    router.push({ name: 'staff-fieldIntakeInterview' })
+}
+
 </script>
 
 <style scoped>
@@ -377,7 +498,7 @@ const getSections = (grade) => {
     font: 700 20px Montserrat, sans-serif;
     margin-bottom: 20px;
     border-bottom: 1px solid #2087E4;
-    width: 66px;
+    width: 65px;
     border-bottom-width: 5px;
 }
 

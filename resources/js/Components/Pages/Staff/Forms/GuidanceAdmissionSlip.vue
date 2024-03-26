@@ -11,7 +11,7 @@
                             <button class="assign" data-bs-toggle="modal" data-bs-target="#assign"><i
                                     style="margin-right: 5px;"><font-awesome-icon
                                         :icon="['fas', 'user-plus']" /></i>Assign</button>
-                            <button class="create" @click="goToInputs"><i style="margin-right: 5px;"><font-awesome-icon
+                            <button class="create"><i style="margin-right: 5px;"><font-awesome-icon
                                         :icon="['fas', 'bell']" /></i>Requests</button>
                         </div>
                     </div>
@@ -211,20 +211,22 @@
 import DataTable from 'datatables.net-vue3';
 import DataTablesCore from 'datatables.net-bs5';
 import axios from 'axios';
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import $ from 'jquery';
+import store from "../../../../State/index.js";
 
-const allUsers = ref([]);
+const router = useRouter();
+
+const all_data = ref([]);
 const selectedGrade = ref(null);
 const selectedSection = ref(null);
 
 onMounted(async () => {
+    // await getUsers();
     initializeDataTable();
+    getAllGuidanceAdmissionSlips();
 });
-
-const initializeDataTable = () => {
-    $('#dailyTimeLog').DataTable();
-};
 
 const selectGrade = (grade) => {
     selectedGrade.value = grade;
@@ -234,6 +236,46 @@ const selectGrade = (grade) => {
 const selectSection = (section) => {
     selectedSection.value = section;
 };
+
+const initializeDataTable = () => {
+    $('#table-guidance-admission').DataTable();
+};
+
+const getAllGuidanceAdmissionSlips = async () => {
+    try {
+        const resp = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/get-all-guidance-admission-slips`);
+
+        all_data.value = resp.data.data;
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+const generateForm = async (form_id) => {
+    store.commit('setLoading', true)
+    try {
+        const resp = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/generate-guidance-admission/${form_id}`, {
+            responseType: 'arraybuffer'
+        })
+        if (resp.status === 200) {
+            var newBlob = new Blob([resp.data], { type: 'application/pdf' })
+
+            console.log(resp.data)
+            const data = window.URL.createObjectURL(newBlob)
+            var link = document.createElement('a')
+            link.href = data
+            link.download = 'Guidance_Admission_Slip' + '.pdf'
+            link.click()
+        }
+    }
+    catch (error) {
+        console.log(error);
+    }
+    finally {
+        store.commit('setLoading', false)
+    }
+}
 
 const getSections = (grade) => {
     // Dummy data, replace with actual data retrieval based on grade
@@ -247,7 +289,13 @@ const getSections = (grade) => {
         return [];
     }
 };
+
+const goToInputs = () => {
+    router.push({ name: 'staff-fieldGuidanceAdmission' })
+}
+
 </script>
+
 
 <style scoped>
 .main-content {
