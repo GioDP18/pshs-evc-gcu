@@ -3,6 +3,7 @@
         <div class="login-content">
             <div class="login-left">
                 <div class="banner">
+                    <RouterLink to="/about" class="about">About</RouterLink>
                     <div class="big-text">
                         <h1>
                             THE PSHS-EVC GCU WELCOMES YOU!
@@ -115,45 +116,42 @@ const submitForm = async () => {
                 email: formData.value.email,
                 password: formData.value.password
             })
-            .then((response) => {
-                if(response.status === 200){
-                    localStorage.setItem('user_id', response.data.user.id);
-                    localStorage.setItem('token', response.data.access_token);
-                    localStorage.setItem('valid', true);
-                    switch(response.data.user.role){
-                        case 'gcu_staff':
-                            localStorage.setItem('role', 'gcu_staff');
-                            router.push({ name: 'staff-home' })
-                            break;
-                        case'student':
-                            localStorage.setItem('role','student');
-                            router.push({ name: 'student-Home' })
-                            break;
-                        case 'teacher':
-                            localStorage.setItem('role', 'teacher');
-                            router.push({ name: 'parentsTeacher-Home' })
-                            break;
-                        case 'parent':
-                            localStorage.setItem('role', 'parent');
-                            router.push({ name: 'parentsTeacher-Home' })
-                            break;
+                .then((response) => {
+                    if (response.status === 200) {
+                        localStorage.setItem('user_id', response.data.user.id);
+                        localStorage.setItem('token', response.data.access_token);
+                        localStorage.setItem('valid', true);
+                        switch (response.data.user.role) {
+                            case 'gcu_staff':
+                                localStorage.setItem('role', 'gcu_staff');
+                                router.push({ name: 'staff-home' })
+                                break;
+                            case 'student':
+                                localStorage.setItem('role', 'student');
+                                router.push({ name: 'student-Home' })
+                                break;
+                            case 'teacher':
+                                localStorage.setItem('role', 'teacher');
+                                router.push({ name: 'parentsTeacher-Home' })
+                                break;
+                            case 'parent':
+                                localStorage.setItem('role', 'parent');
+                                router.push({ name: 'parentsTeacher-Home' })
+                                break;
 
-                        default:
-                            router.push({ name: 'login' })
-                            break;
+                            default:
+                                router.push({ name: 'login' })
+                                break;
+                        }
                     }
-                }
-                else{
-                    store.commit('setWarning','Invalid Credentials! Please try again.')
-                }
-            })
+                })
         }
         catch (error) {
             console.log(error);
-            store.commit('setWarning','Invalid Credentials! Please try again.')
+            store.commit('setWarning', 'Invalid Credentials! Please try again.')
         }
-        finally{
-            store.commit('setLoading', false)
+        finally {
+
         }
     }
 };
@@ -181,6 +179,17 @@ const viaGoogle = async () => {
 </script>
 
 <style scoped>
+.login-container {
+    background-image: url('../../../../public/external/Background.png');
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .has-error input {
     border-color: red;
 }
@@ -225,13 +234,22 @@ const viaGoogle = async () => {
     flex-direction: column;
 }
 
+.banner .about {
+    font-family: Montserrat, sans-serif;
+    color: #2087E4;
+    font-weight: 400;
+    text-decoration: none;
+}
+
 .banner .big-text {
     width: 95%;
     height: 80%;
+    display: flex;
+    align-items: center;
 }
 
 .big-text h1 {
-    font-size: 65px;
+    font-size: 58px;
     color: #2087E4;
     font-weight: 700;
     font-family: Montserrat, sans-serif;
@@ -247,7 +265,7 @@ const viaGoogle = async () => {
 .option-button button {
     height: 6vh;
     border-radius: 20px;
-    background-color: transparent;
+    background-color: white;
     border: 1px solid #2087E4;
     font-weight: 700;
     color: #343470;
@@ -288,6 +306,7 @@ const viaGoogle = async () => {
     box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;
     width: 65%;
     border-radius: 20px;
+    background-color: white;
     height: 75%;
     display: flex;
     justify-content: center;
