@@ -144,9 +144,12 @@
                                         {{ selectedGrade ? 'Grade ' + selectedGrade : 'Grade' }}
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownGrade" style="width: 100%;">
-                                        <a class="dropdown-item" href="#" @click="selectGrade(1)">Grade 1</a>
-                                        <a class="dropdown-item" href="#" @click="selectGrade(2)">Grade 2</a>
-                                        <a class="dropdown-item" href="#" @click="selectGrade(3)">Grade 3</a>
+                                        <a class="dropdown-item" href="#" @click="selectGrade(7)">Grade 7</a>
+                                        <a class="dropdown-item" href="#" @click="selectGrade(8)">Grade 8</a>
+                                        <a class="dropdown-item" href="#" @click="selectGrade(9)">Grade 9</a>
+                                        <a class="dropdown-item" href="#" @click="selectGrade(10)">Grade 10</a>
+                                        <a class="dropdown-item" href="#" @click="selectGrade(11)">Grade 11</a>
+                                        <a class="dropdown-item" href="#" @click="selectGrade(12)">Grade 12</a>
                                     </div>
                                 </div>
                                 <div v-if="selectedGrade" class="dropdown" style="width: 100%; margin-top: 20px;">
@@ -275,12 +278,18 @@ const generateForm = async (form_id) => {
 
 const getSections = (grade) => {
     // Dummy data, replace with actual data retrieval based on grade
-    if (grade === 1) {
-        return ['Section A', 'Section B', 'Section C'];
-    } else if (grade === 2) {
-        return ['Section X', 'Section Y', 'Section Z'];
-    } else if (grade === 3) {
-        return ['Section I', 'Section II', 'Section III'];
+    if (grade === 7) {
+        return ['Diamond', 'Emerald', 'Ruby'];
+    } else if (grade === 8) {
+        return ['Sampaguita', 'Jasmine', 'Camia'];
+    } else if (grade === 9) {
+        return ['Sodium', 'Rubidium', 'Potassium'];
+    } else if (grade === 10) {
+        return ['Proton', 'Electron', 'Neutron'];
+    } else if (grade === 11) {
+        return ['A', 'B', 'C'];
+    } else if (grade === 12) {
+        return ['A', 'B', 'C'];
     } else {
         return [];
     }
