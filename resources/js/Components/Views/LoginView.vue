@@ -151,7 +151,7 @@ const submitForm = async () => {
             store.commit('setWarning', 'Invalid Credentials! Please try again.')
         }
         finally {
-
+            store.commit('setLoading', false)
         }
     }
 };

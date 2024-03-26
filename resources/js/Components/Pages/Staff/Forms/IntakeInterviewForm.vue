@@ -54,7 +54,6 @@
                             </tr>
                         </tbody>
                     </table>
-
                     <!-- Assign Modal -->
                     <div class="modal fade" id="assign" tabindex="-1" aria-labelledby="exampleModalLabel"
                         aria-hidden="true">
@@ -68,19 +67,15 @@
                                 <div class="modal-body">
                                     <div class="input-group mb-3">
                                         <span class="input-group-text" id="basic-addon1">Due Date</span>
-                                        <input type="date" v-model="due_date" class="form-control" placeholder=""
-                                            aria-label="Username" aria-describedby="basic-addon1">
+                                        <input type="date" v-model="due_date" class="form-control" placeholder="" aria-label="Username" aria-describedby="basic-addon1">
                                     </div>
                                     <div class="options">
                                         <button class="individual" data-bs-toggle="modal"
-                                            data-bs-target="#individual"><i><font-awesome-icon
-                                                    :icon="['fas', 'user']" /></i>Individual</button>
+                                            data-bs-target="#individual">Individual</button>
                                         <button class="section" data-bs-toggle="modal"
-                                            data-bs-target="#section"><i><font-awesome-icon
-                                                    :icon="['fas', 'user-group']" /></i>Section</button>
+                                            data-bs-target="#section">Section</button>
                                         <button class="batch" data-bs-toggle="modal"
-                                            data-bs-target="#batch"><i><font-awesome-icon
-                                                    :icon="['fas', 'users']" /></i>Batch</button>
+                                            data-bs-target="#batch">Batch</button>
                                     </div>
                                 </div>
                             </div>
@@ -141,32 +136,33 @@
                                 <div class="modal-body">
                                     <div class="dropdown" style="width: 100%;">
                                         <button style="width: 100%;" class="btn btn-primary dropdown-toggle"
-                                            type="button" id="dropdownGrade" data-toggle="dropdown" aria-haspopup="true"
-                                            aria-expanded="false">
-                                            {{ selectedGrade ? 'Grade ' + selectedGrade : 'Grade' }}
+                                            type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                                            aria-haspopup="true" aria-expanded="false">
+                                            {{ selectedGrade || 'Grade' }}
                                         </button>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownGrade" style="width: 100%;">
-                                            <a class="dropdown-item" href="#" @click="selectGrade(1)">Grade 1</a>
-                                            <a class="dropdown-item" href="#" @click="selectGrade(2)">Grade 2</a>
-                                            <a class="dropdown-item" href="#" @click="selectGrade(3)">Grade 3</a>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"
+                                            style="width: 100%;">
+                                            <a class="dropdown-item" href="#" @click="selectGrade(1)">1</a>
+                                            <a class="dropdown-item" href="#" @click="selectGrade(2)">2</a>
+                                            <a class="dropdown-item" href="#" @click="selectGrade(3)">3</a>
                                         </div>
                                     </div>
-                                    <div v-if="selectedGrade" class="dropdown" style="width: 100%; margin-top: 20px;">
+                                    <div class="dropdown" style="width: 100%; margin-top: 20px;">
                                         <button style="width: 100%;" class="btn btn-primary dropdown-toggle"
-                                            type="button" id="dropdownSection" data-toggle="dropdown"
+                                            type="button" id="dropdownMenuButton" data-toggle="dropdown"
                                             aria-haspopup="true" aria-expanded="false">
                                             {{ selectedSection || 'Section' }}
                                         </button>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownSection"
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"
                                             style="width: 100%;">
-                                            <a class="dropdown-item" href="#"
-                                                v-for="section in getSections(selectedGrade)" :key="section"
-                                                @click="selectSection(section)">{{ section }}</a>
+                                            <a class="dropdown-item" href="#" @click="selectSection('Yes')">Yes</a>
+                                            <a class="dropdown-item" href="#" @click="selectSection('No')">No</a>
+                                            <a class="dropdown-item" href="#" @click="selectSection('Maybe')">Maybe</a>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="modal-footer" style="display: flex; justify-content: center;">
-                                    <button type="button" class="btn btn-primary">Send</button>
+                                    <button type="button" class="btn btn-primary" @click="assignBySection">Send</button>
                                 </div>
                             </div>
                         </div>
@@ -213,45 +209,156 @@
 </template>
 
 <script setup>
+import axios from 'axios';
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import $ from 'jquery';
 import DataTable from 'datatables.net-vue3';
 import DataTablesCore from 'datatables.net-bs5';
-import axios from 'axios';
-import { ref, onMounted, computed } from 'vue';
-import $ from 'jquery';
+import store from "../../../../State/index.js";
 
-const allUsers = ref([]);
+const router = useRouter();
+
+const all_data = ref([]);
 const selectedGrade = ref(null);
 const selectedSection = ref(null);
+const users = ref([]);
+const due_date = ref(null);
+const bySection = ref(null);
+const byBatch = ref(null);
 
 onMounted(async () => {
     initializeDataTable();
+    getAllIntakeInterviewForms();
+    getAllUsers();
 });
-
-const initializeDataTable = () => {
-    $('#dailyTimeLog').DataTable();
-};
 
 const selectGrade = (grade) => {
     selectedGrade.value = grade;
-    selectedSection.value = null; // Reset selected section when grade changes
 };
 
 const selectSection = (section) => {
     selectedSection.value = section;
 };
 
-const getSections = (grade) => {
-    // Dummy data, replace with actual data retrieval based on grade
-    if (grade === 1) {
-        return ['Section A', 'Section B', 'Section C'];
-    } else if (grade === 2) {
-        return ['Section X', 'Section Y', 'Section Z'];
-    } else if (grade === 3) {
-        return ['Section I', 'Section II', 'Section III'];
-    } else {
-        return [];
-    }
+const initializeDataTable = () => {
+    $('#table-intake').DataTable();
 };
+
+const getAllIntakeInterviewForms = async () => {
+    try {
+        const resp = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/get-all-intake-interview-forms`)
+
+        all_data.value = resp.data.data;
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+const generateForm = async (form_id) => {
+    store.commit('setLoading', true)
+    try {
+        const resp = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/generate-intake-interview/${form_id}`, {
+            responseType: 'arraybuffer'
+        })
+        if (resp.status === 200) {
+            var newBlob = new Blob([resp.data], { type: 'application/pdf' })
+
+            console.log(resp.data)
+            const data = window.URL.createObjectURL(newBlob)
+            var link = document.createElement('a')
+            link.href = data
+            link.download = 'Intake_Interview_From' + '.pdf'
+            link.click()
+        }
+    }
+    catch (error) {
+        console.log(error);
+    }
+    finally{
+        store.commit('setLoading', false)
+    }
+}
+
+const getAllUsers = async () => {
+    try {
+        const resp = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/get-all-users`)
+
+        users.value = resp.data.data;
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+const assign = async (id) => {
+    try {
+        const resp = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/assign-form`, {
+            assignee: id,
+            form_name: 'Intake Interview Form',
+            due_date: due_date.value
+        })
+        if (resp.status === 200) {
+            console.log(resp.data);
+            swal({
+                title: "Assigned successfully.",
+                icon: "success",
+                button: "Okay",
+            });
+        }
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+const assignBySection = async () => {
+    try {
+        const resp = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/bulk-assign-form-by-section`, {
+            section: selectedSection.value,
+            form_name: 'Intake Interview Form',
+            due_date: due_date.value
+        })
+        if (resp.status === 200) {
+            console.log(resp.data);
+            swal({
+                title: "Assigned successfully.",
+                icon: "success",
+                button: "Okay",
+            });
+        }
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+const assignByBatch = async () => {
+    try {
+        const resp = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/bulk-assign-form-by-grade-level`, {
+            grade_level: selectedGrade.value,
+            form_name: 'Intake Interview Form',
+            due_date: due_date.value
+        })
+        if (resp.status === 200) {
+            console.log(resp.data);
+            swal({
+                title: "Assigned successfully.",
+                icon: "success",
+                button: "Okay",
+            });
+        }
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+const goToInputs = () => {
+    router.push({ name: 'staff-fieldIntakeInterview'})
+}
+
 </script>
 
 <style scoped>
@@ -284,16 +391,12 @@ const getSections = (grade) => {
 
 .options button {
     width: 30%;
-    height: 60px;
+    height: 40px;
     border: none;
     border-radius: 5px;
     color: white;
     font-weight: 500;
     font-size: 15px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
 }
 
 .options .individual,
@@ -373,7 +476,7 @@ const getSections = (grade) => {
     font: 700 20px Montserrat, sans-serif;
     margin-bottom: 20px;
     border-bottom: 1px solid #2087E4;
-    width: 66px;
+    width: 98px;
     border-bottom-width: 5px;
 }
 
