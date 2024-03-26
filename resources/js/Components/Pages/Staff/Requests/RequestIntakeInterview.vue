@@ -81,6 +81,23 @@ const acceptRequest = async (id) => {
         console.log(error);
     }
 }
+
+const rejectRequest = async (id) => {
+    try{
+        const response = await axios.put(`${import.meta.env.VITE_BASE_URL}/api/v1/reject-request/${id}`);
+        if(response.status === 200){
+            swal({
+                title: response.data.message,
+                icon: "success",
+                button: "Okay",
+            });
+        }
+        getRequests();
+    }
+    catch(error){
+        console.log(error);
+    }
+}
 </script>
 
 <style scoped>

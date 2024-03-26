@@ -19,6 +19,10 @@ class RequestsController extends Controller
         return $this->requestsService->approveRequest($id);
     }
 
+    public function rejectRequest($id){
+        return $this->requestsService->rejectRequest($id);
+    }
+
     public function getIntakeInterviewFormRequest(){
         return $this->requestsService->getIntakeInterviewFormRequest();
     }

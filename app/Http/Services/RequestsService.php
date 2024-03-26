@@ -10,5 +10,7 @@ interface RequestsService
 
     public function approveRequest($id);
 
+    public function rejectRequest($id);
+
     public function getIntakeInterviewFormRequest();
 }

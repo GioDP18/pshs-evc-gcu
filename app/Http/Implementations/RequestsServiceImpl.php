@@ -67,6 +67,33 @@ Class RequestsServiceImpl implements RequestsService
         }
     }
 
+    public function rejectRequest($id){
+        try{
+            $data = Requests::find($id)->update([
+                'status' => 'rejected',
+            ]);
+
+            if(!$data){
+                return response()->json([
+                    "success" => false,
+                    "message" => "Internal Server Error.",
+                ], 500);
+            }
+
+            return response()->json([
+                "success" => true,
+                "message" => "Request approved!",
+                "data" => $data
+            ], 200);
+        }
+        catch (\Exception $error){
+            return response()->json([
+                "success"=> false,
+                "message"=> $error->getMessage()
+            ]);
+        }
+    }
+
     public function getIntakeInterviewFormRequest(){
         try{
             $data = Requests::with('user')->where('status', 'pending')->where('form_name', 'Intake Interview Form')->get();
