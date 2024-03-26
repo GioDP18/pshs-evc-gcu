@@ -3,10 +3,10 @@
         <!-- Web Sidebar -->
         <div class="sidebar sticky-top" v-show="screenWidth > 991" :class="{ 'minimized': !showSidebar }">
             <RouterLink to="" class="sidebar-logo" style="text-decoration: none;">
-                <img loading="lazy" src="../../../../public/external/C-Logo.png" class="img" />
-                <div v-if="showSidebar" class="logo-text">
+                <img loading="lazy" src="../../../../public/external/logo.png" class="img" />
+                <!-- <div v-if="showSidebar" class="logo-text">
                     <div class="phs"><span class="certi">G</span><span class="code">RASS</span></div>
-                </div>
+                </div> -->
             </RouterLink>
             <div class="menu">
                 <RouterLink to="home" class="sidebar-menu" active-class="active" style="text-decoration: none;"
@@ -31,13 +31,13 @@
                         <ul class="menu-option" :class="{ 'centered': !showSidebar }">
                             <li>
                                 <RouterLink to="intakeInterviewForm" class="form-sidebar-menu"
-                                    active-class="form-active" style="text-decoration: none;" title="Intake Interview
-                                            Form">
+                                    active-class="form-active"
+                                    :class="{ 'form-active': $route.path.startsWith('/staff/requestIntakeInterview') || $route.path.startsWith('/staff/fieldIntakeInterview') }"
+                                    style="text-decoration: none;" title="Intake Interview Form">
                                     <div class="form-sidebar-text">
                                         <span v-if="!showSidebar">IIF</span>
                                         <span v-else style="display: flex;">
-                                            <p style="margin-right: 10px;">•</p>Intake Interview
-                                            Form
+                                            <p style="margin-right: 10px;">•</p>Intake Interview Form
                                         </span>
                                     </div>
                                 </RouterLink>
@@ -45,8 +45,9 @@
 
                             <li>
                                 <RouterLink to="guidanceAdmissionSlip" class="form-sidebar-menu"
-                                    active-class="form-active" style="text-decoration: none;"
-                                    title="Guidance Admission">
+                                    active-class="form-active"
+                                    :class="{ 'form-active': $route.path.startsWith('/staff/requestGuidanceAdmission') || $route.path.startsWith('/staff/fieldGuidanceAdmission') }"
+                                    style="text-decoration: none;" title="Guidance Admission">
                                     <div class="form-sidebar-text">
                                         <span v-if="!showSidebar">GAS</span>
                                         <span v-else style="display: flex;">
@@ -59,6 +60,7 @@
 
                             <li>
                                 <RouterLink to="guidanceCallSlip" class="form-sidebar-menu" active-class="form-active"
+                                    :class="{ 'form-active': $route.path.startsWith('/staff/requestGuidanceCall') || $route.path.startsWith('/staff/fieldGuidanceCall') }"
                                     style="text-decoration: none;" title="Guidance Call Slip">
                                     <div class="form-sidebar-text">
                                         <span v-if="!showSidebar">GCS</span>
@@ -71,8 +73,9 @@
 
                             <li>
                                 <RouterLink to="parentQuestionnaireForm" class="form-sidebar-menu"
-                                    active-class="form-active" style="text-decoration: none;"
-                                    title="Parent Questionnaire Form">
+                                    active-class="form-active"
+                                    :class="{ 'form-active': $route.path.startsWith('/staff/requestParentQuestionnaire') || $route.path.startsWith('/staff/fieldParentQuestionnaire') }"
+                                    style="text-decoration: none;" title="Parent Questionnaire Form">
                                     <div class="form-sidebar-text">
                                         <span v-if="!showSidebar">PQF</span>
                                         <span v-else style="display: flex;">
@@ -83,6 +86,7 @@
                             </li>
                             <li>
                                 <RouterLink to="referralForm" class="form-sidebar-menu" active-class="form-active"
+                                    :class="{ 'form-active': $route.path.startsWith('/staff/requestReferralForm') || $route.path.startsWith('/staff/fieldReferralForm') }"
                                     style="text-decoration: none;" title="Referral Form">
                                     <div class="form-sidebar-text">
                                         <span v-if="!showSidebar">RF</span>
@@ -94,8 +98,9 @@
                             </li>
                             <li>
                                 <RouterLink to="cumulativeRecordForm" class="form-sidebar-menu"
-                                    active-class="form-active" style="text-decoration: none;"
-                                    title="Cumulative Record Form">
+                                    active-class="form-active"
+                                    :class="{ 'form-active': $route.path.startsWith('/staff/requestCumulativeRecord') || $route.path.startsWith('/staff/fieldCumulativeRecord') }"
+                                    style="text-decoration: none;" title="Cumulative Record Form">
                                     <div class="form-sidebar-text">
                                         <span v-if="!showSidebar">CRF</span>
                                         <span v-else style="display: flex;">
@@ -106,8 +111,9 @@
                             </li>
                             <li>
                                 <RouterLink to="clientMonitoringForm" class="form-sidebar-menu"
-                                    active-class="form-active" style="text-decoration: none;"
-                                    title="Client Monitoring Form">
+                                    active-class="form-active"
+                                    :class="{ 'form-active': $route.path.startsWith('/staff/requestClientMonitoring') || $route.path.startsWith('/staff/fieldClientMonitoring') }"
+                                    style="text-decoration: none;" title="Client Monitoring Form">
                                     <div class="form-sidebar-text">
                                         <span v-if="!showSidebar">CMF</span>
                                         <span v-else style="display: flex;">
@@ -124,10 +130,7 @@
         <!-- Mobile Sidebar -->
         <div class="mobile-sidebar sticky-top" v-show="screenWidth < 991" :class="{ 'show': showMobileSidebar }">
             <RouterLink to="" class="sidebar-logo" style="text-decoration: none;">
-                <img loading="lazy" src="../../../../public/external/C-Logo.png" class="img" />
-                <div class="logo-text">
-                    <div class="phs"><span class="certi">G</span><span class="code">RASS</span></div>
-                </div>
+                <img loading="lazy" src="../../../../public/external/logo.png" class="img" />
             </RouterLink>
             <div class="menu">
                 <RouterLink to="home" class="sidebar-menu" active-class="active" style="text-decoration: none;"
@@ -405,10 +408,6 @@ const handleLogout = async () => {
     box-sizing: border-box;
 }
 
-.main-content {
-    width: 100%;
-}
-
 .sticky .dropdown-hide {
     display: none !important;
 }
@@ -579,13 +578,10 @@ const handleLogout = async () => {
     position: fixed;
     top: 0;
     left: -250px;
-    /* Initial position off-screen */
     z-index: 1000;
-    /* Ensure it's above other content */
     transition: left 0.3s ease;
     overflow-y: auto;
     max-height: 100vh;
-    /* Add a smooth transition */
 }
 
 .show {
@@ -600,6 +596,12 @@ const handleLogout = async () => {
     padding: 0 20px;
 }
 
+@media screen and (max-width:360px) {
+    .main-content {
+        padding: 0 5px;
+    }
+}
+
 .show-mobile-sidebar {
     margin-left: 250px;
 }
@@ -608,15 +610,18 @@ const handleLogout = async () => {
     background-color: #ffffff !important;
     display: flex;
     justify-content: center;
-    color: var(--Black, #191919);
-    padding: 18px 55px;
     align-items: center;
-    gap: 15px;
-    margin-top: 5px;
+    color: var(--Black, #191919);
+    padding: 15px 40px;
+    align-items: center;
+    margin-top: 10px;
+    width: 100%;
+    height: 10%;
 }
 
 .sidebar-logo img {
-    width: 35px;
+    width: 100%;
+    height: 160%;
     border-radius: 5px;
 }
 

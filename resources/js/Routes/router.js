@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import store from '../State/index.js'
+import store from "../State/index.js";
 import isAuthenticated from "../Middleware/isAuthenticated";
 import LoginView from "../Components/Views/LoginView.vue";
 import RegistrationView from "../Components/Views/RegistrationView.vue";
@@ -24,6 +24,14 @@ import FieldReferralForm from "../Components/Pages/Staff/FillForm/FieldReferralF
 import FieldGuidanceAdmission from "../Components/Pages/Staff/FillForm/FieldGuidanceAdmissionSlip.vue";
 import FieldClientMonitoringForm from "../Components/Pages/Staff/FillForm/FieldClientMonitoringForm.vue";
 import FieldParentQuestionnaire from "../Components/Pages/Staff/FillForm/FieldParentQuestionnaire.vue";
+//Requests
+import RequestIntakeInterview from "../Components/Pages/Staff/Requests/RequestIntakeInterview.vue";
+import RequestGuidanceAdmission from "../Components/Pages/Staff/Requests/RequestGuidanceAdmission.vue";
+import RequestGuidanceCall from "../Components/Pages/Staff/Requests/RequestGuidanceCall.vue";
+import RequestClientMonitoring from "../Components/Pages/Staff/Requests/RequestClientMonitoring.vue";
+import RequestParentQuestionnaire from "../Components/Pages/Staff/Requests/RequestParentQuestionnaire.vue";
+import RequestReferralForm from "../Components/Pages/Staff/Requests/RequestReferralForm.vue";
+import RequestCumulativeRecord from "../Components/Pages/Staff/Requests/RequestCumulativeRecord.vue";
 
 //---------------------------------Student---------------------------------
 import StudentView from "../Components/Views/StudentView.vue";
@@ -146,6 +154,42 @@ const routes = [
                 component: FieldParentQuestionnaire,
                 name: "staff-fieldParentQuestionnaire",
             },
+            //REQUESTS
+            {
+                path: "requestIntakeInterview",
+                component: RequestIntakeInterview,
+                name: "staff-requestIntakeInterview",
+            },
+            {
+                path: "requestGuidanceAdmission",
+                component: RequestGuidanceAdmission,
+                name: "staff-requestGuidanceAdmission",
+            },
+            {
+                path: "requestClientMonitoring",
+                component: RequestClientMonitoring,
+                name: "staff-requestClientMonitoring",
+            },
+            {
+                path: "requestGuidanceCall",
+                component: RequestGuidanceCall,
+                name: "staff-requestGuidanceCall",
+            },
+            {
+                path: "requestParentQuestionnaire",
+                component: RequestParentQuestionnaire,
+                name: "staff-requestParentQuestionnaire",
+            },
+            {
+                path: "requestReferralForm",
+                component: RequestReferralForm,
+                name: "staff-requestReferralForm",
+            },
+            {
+                path: "requestCumulativeRecord",
+                component: RequestCumulativeRecord,
+                name: "staff-requestCumulativeRecord",
+            },
         ],
     },
     {
@@ -238,7 +282,10 @@ router.beforeEach(async (to, from, next) => {
 
         if (!authenticated) {
             console.log("Unauthorized");
-            store.commit('setWarning','Please Login your credentials to continue!')
+            store.commit(
+                "setWarning",
+                "Please Login your credentials to continue!"
+            );
             next({ name: "login" });
         } else {
             next();
