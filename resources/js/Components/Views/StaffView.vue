@@ -32,7 +32,7 @@
                             <li>
                                 <RouterLink to="intakeInterviewForm" class="form-sidebar-menu"
                                     active-class="form-active"
-                                    :class="{ 'form-active': $route.path.startsWith('/staff/requestIntakeInterview') }"
+                                    :class="{ 'form-active': $route.path.startsWith('/staff/requestIntakeInterview') || $route.path.startsWith('/staff/fieldIntakeInterview') }"
                                     style="text-decoration: none;" title="Intake Interview Form">
                                     <div class="form-sidebar-text">
                                         <span v-if="!showSidebar">IIF</span>
@@ -46,7 +46,7 @@
                             <li>
                                 <RouterLink to="guidanceAdmissionSlip" class="form-sidebar-menu"
                                     active-class="form-active"
-                                    :class="{ 'form-active': $route.path.startsWith('/staff/requestGuidanceAdmission') }"
+                                    :class="{ 'form-active': $route.path.startsWith('/staff/requestGuidanceAdmission') || $route.path.startsWith('/staff/fieldGuidanceAdmission') }"
                                     style="text-decoration: none;" title="Guidance Admission">
                                     <div class="form-sidebar-text">
                                         <span v-if="!showSidebar">GAS</span>
@@ -60,7 +60,7 @@
 
                             <li>
                                 <RouterLink to="guidanceCallSlip" class="form-sidebar-menu" active-class="form-active"
-                                    :class="{ 'form-active': $route.path.startsWith('/staff/requestGuidanceCall') }"
+                                    :class="{ 'form-active': $route.path.startsWith('/staff/requestGuidanceCall') || $route.path.startsWith('/staff/fieldGuidanceCall') }"
                                     style="text-decoration: none;" title="Guidance Call Slip">
                                     <div class="form-sidebar-text">
                                         <span v-if="!showSidebar">GCS</span>
@@ -74,7 +74,7 @@
                             <li>
                                 <RouterLink to="parentQuestionnaireForm" class="form-sidebar-menu"
                                     active-class="form-active"
-                                    :class="{ 'form-active': $route.path.startsWith('/staff/requestParentQuestionnaire') }"
+                                    :class="{ 'form-active': $route.path.startsWith('/staff/requestParentQuestionnaire') || $route.path.startsWith('/staff/fieldParentQuestionnaire') }"
                                     style="text-decoration: none;" title="Parent Questionnaire Form">
                                     <div class="form-sidebar-text">
                                         <span v-if="!showSidebar">PQF</span>
@@ -86,7 +86,7 @@
                             </li>
                             <li>
                                 <RouterLink to="referralForm" class="form-sidebar-menu" active-class="form-active"
-                                    :class="{ 'form-active': $route.path.startsWith('/staff/requestReferralForm') }"
+                                    :class="{ 'form-active': $route.path.startsWith('/staff/requestReferralForm') || $route.path.startsWith('/staff/fieldReferralForm') }"
                                     style="text-decoration: none;" title="Referral Form">
                                     <div class="form-sidebar-text">
                                         <span v-if="!showSidebar">RF</span>
@@ -99,7 +99,7 @@
                             <li>
                                 <RouterLink to="cumulativeRecordForm" class="form-sidebar-menu"
                                     active-class="form-active"
-                                    :class="{ 'form-active': $route.path.startsWith('/staff/requestCumulativeRecord') }"
+                                    :class="{ 'form-active': $route.path.startsWith('/staff/requestCumulativeRecord') || $route.path.startsWith('/staff/fieldCumulativeRecord') }"
                                     style="text-decoration: none;" title="Cumulative Record Form">
                                     <div class="form-sidebar-text">
                                         <span v-if="!showSidebar">CRF</span>
@@ -112,7 +112,7 @@
                             <li>
                                 <RouterLink to="clientMonitoringForm" class="form-sidebar-menu"
                                     active-class="form-active"
-                                    :class="{ 'form-active': $route.path.startsWith('/staff/requestCumulativeRecord') }"
+                                    :class="{ 'form-active': $route.path.startsWith('/staff/requestClientMonitoring') || $route.path.startsWith('/staff/fieldClientMonitoring') }"
                                     style="text-decoration: none;" title="Client Monitoring Form">
                                     <div class="form-sidebar-text">
                                         <span v-if="!showSidebar">CMF</span>
