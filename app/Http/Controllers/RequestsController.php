@@ -14,4 +14,8 @@ class RequestsController extends Controller
     public function createRequest(Request $request){
         return $this->requestsService->createRequest($request);
     }
+
+    public function approveRequest(Request $request){
+        return $this->requestsService->approveRequest($request);
+    }
 }

@@ -164,7 +164,7 @@
                                 </div>
                             </div>
                             <div class="modal-footer" style="display: flex; justify-content: center;">
-                                <button type="button" class="btn btn-primary">Send</button>
+                                <button type="button" class="btn btn-primary" @click="assignBySection">Send</button>
                             </div>
                         </div>
                     </div>

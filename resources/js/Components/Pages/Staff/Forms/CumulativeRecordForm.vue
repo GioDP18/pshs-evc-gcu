@@ -221,7 +221,7 @@ onMounted(async () => {
 });
 
 const initializeDataTable = () => {
-    $('#dailyTimeLog').DataTable();
+    $('#table-crf').DataTable();
 };
 
 const selectGrade = (grade) => {

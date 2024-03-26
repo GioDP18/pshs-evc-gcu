@@ -5,6 +5,7 @@ namespace App\Http\Implementations;
 
 use App\Http\Services\SaveInputsService;
 use App\Models\GuidanceAdmissionSlip;
+use App\Models\GuidanceCallSlip;
 use App\Models\IntakeInterviewForm;
 use App\Models\ReferralForm;
 use Illuminate\Http\Request;
@@ -42,6 +43,34 @@ Class SaveInputsServiceImpl implements SaveInputsService
 
     public function submitGuidanceAdmissionSlip(Request $request){
         $data = GuidanceAdmissionSlip::create([
+            'user_id' => $request->user_id,
+            'campus' => $request->campus,
+            'name_of_student' => $request->name_of_student,
+            'grade_and_section' => $request->grade_and_section,
+            'dear' => $request->dear,
+            'last_visited_date' => $request->last_visited_date,
+            'last_visited_time_start' => $request->last_visited_time_start,
+            'last_visited_time_end' => $request->last_visited_time_end,
+            'guidance_counselor' => $request->guidance_counselor,
+            'recieved_by' => $request->recieved_by
+        ]);
+
+        if(!$data){
+            return response()->json([
+                "success" => false,
+                "message" => "Internal Server Error.",
+            ], 500);
+        }
+
+        return response()->json([
+            "success" => true,
+            "message" => "Guidance Admission slip Submitted Successfully.",
+            "data" => $data
+        ], 200);
+    }
+
+    public function submitGuidanceCallSlip(Request $request){
+        $data = GuidanceCallSlip::create([
             'user_id' => $request->user_id,
             'campus' => $request->campus,
             'name_of_student' => $request->name_of_student,

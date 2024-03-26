@@ -210,7 +210,10 @@ import DataTable from 'datatables.net-vue3';
 import DataTablesCore from 'datatables.net-bs5';
 import axios from 'axios';
 import { ref, onMounted, computed } from 'vue';
+import { useRouter } from 'vue-router';
 import $ from 'jquery';
+
+const router = useRouter();
 
 const allUsers = ref([]);
 const selectedGrade = ref(null);
@@ -221,7 +224,7 @@ onMounted(async () => {
 });
 
 const initializeDataTable = () => {
-    $('#dailyTimeLog').DataTable();
+    $('#tale-cmf').DataTable();
 };
 
 const selectGrade = (grade) => {
@@ -252,6 +255,9 @@ const getSections = (grade) => {
     }
 };
 
+const goToInputs = () => {
+    router.push({ name: 'staff-fieldClientMonitoring' })
+}
 </script>
 
 <style scoped>
