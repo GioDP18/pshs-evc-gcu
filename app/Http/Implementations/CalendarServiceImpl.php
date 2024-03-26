@@ -45,6 +45,7 @@ Class CalendarServiceImpl implements CalendarService
                 $result = Calendar::create([
                     'available_time' => $timeSlot,
                     'date' => $request->date,
+                    'user_id_reserved' => $request->user_id_reserved
                 ]);
 
                 if(!$result){

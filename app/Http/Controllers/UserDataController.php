@@ -23,4 +23,21 @@ class UserDataController extends Controller
             "data" => $data
         ], 200);
     }
+
+    public function getAllUsers(){
+        $data = User::where('role', 'student')->get();
+
+        if(!$data){
+            return response()->json([
+                "success"=> false,
+                "message"=> "Internal Server Error."
+            ], 500);
+        }
+
+        return response()->json([
+            "success"=> true,
+            "message"=> "Fetched All Students.",
+            "data" => $data
+        ], 200);
+    }
 }
