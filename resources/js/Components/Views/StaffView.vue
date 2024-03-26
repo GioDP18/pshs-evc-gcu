@@ -405,10 +405,6 @@ const handleLogout = async () => {
     box-sizing: border-box;
 }
 
-.main-content {
-    width: 100%;
-}
-
 .sticky .dropdown-hide {
     display: none !important;
 }
@@ -598,6 +594,12 @@ const handleLogout = async () => {
     overflow: hidden;
     width: 100%;
     padding: 0 20px;
+}
+
+@media screen and (max-width:360px) {
+    .main-content {
+        padding: 0 5px;
+    }
 }
 
 .show-mobile-sidebar {
