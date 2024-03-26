@@ -88,10 +88,10 @@ const handleLogout = async () => {
         <!-- Web Sidebar -->
         <div class="sidebar sticky-top" v-show="screenWidth > 991" :class="{ 'minimized': !showSidebar }">
             <RouterLink to="" class="sidebar-logo" style="text-decoration: none;">
-                <img loading="lazy" src="../../../../public/external/C-Logo.png" class="img" />
-                <div v-if="showSidebar" class="logo-text">
+                <img loading="lazy" src="../../../../public/external/logo.png" class="img" />
+                <!-- <div v-if="showSidebar" class="logo-text">
                     <div class="phs"><span class="certi">G</span><span class="code">RASS</span></div>
-                </div>
+                </div> -->
             </RouterLink>
             <div class="menu">
                 <RouterLink to="parentsTeacherHome" class="sidebar-menu" active-class="active"
@@ -147,10 +147,10 @@ const handleLogout = async () => {
         <!-- Mobile Sidebar -->
         <div class="mobile-sidebar sticky-top" v-show="screenWidth < 991" :class="{ 'show': showMobileSidebar }">
             <RouterLink to="" class="sidebar-logo" style="text-decoration: none;">
-                <img loading="lazy" src="../../../../public/external/C-Logo.png" class="img" />
-                <div class="logo-text">
+                <img loading="lazy" src="../../../../public/external/logo.png" class="img" />
+                <!-- <div class="logo-text">
                     <div class="phs"><span class="certi">G</span><span class="code">RASS</span></div>
-                </div>
+                </div> -->
             </RouterLink>
             <div class="menu">
                 <RouterLink to="parentsTeacherHome" class="sidebar-menu" active-class="active"
@@ -454,15 +454,18 @@ const handleLogout = async () => {
     background-color: #ffffff !important;
     display: flex;
     justify-content: center;
-    color: var(--Black, #191919);
-    padding: 18px 55px;
     align-items: center;
-    gap: 15px;
-    margin-top: 5px;
+    color: var(--Black, #191919);
+    padding: 15px 40px;
+    align-items: center;
+    margin-top: 10px;
+    width: 100%;
+    height: 10%;
 }
 
 .sidebar-logo img {
-    width: 35px;
+    width: 100%;
+    height: 160%;
     border-radius: 5px;
 }
 
