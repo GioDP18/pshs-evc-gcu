@@ -19,11 +19,11 @@ return new class extends Migration
             $table->string('sex');
             $table->date('date_of_birth')->nullable();
             $table->enum('role', ['gcu_staff', 'parent', 'teachers', 'student'])->nullable();
-            $table->string('contact_number')->nullable();
-            $table->string('signature')->nullable();
+            $table->string('contact_number');
+            $table->string('signature');
             $table->string('id_number')->nullable();
-            $table->integer('grade_level');
-            $table->string('section');
+            $table->integer('grade_level')->nullable();
+            $table->string('section')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();

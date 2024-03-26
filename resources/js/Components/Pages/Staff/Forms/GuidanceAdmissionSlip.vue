@@ -210,6 +210,7 @@ import axios from 'axios';
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import $ from 'jquery';
+import store from "../../../../State/index.js";
 
 const router = useRouter();
 
@@ -247,6 +248,7 @@ const getAllGuidanceAdmissionSlips = async () => {
 }
 
 const generateForm = async (form_id) => {
+    store.commit('setLoading', true)
     try {
         const resp = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/generate-guidance-admission/${form_id}`, {
             responseType: 'arraybuffer'
@@ -264,6 +266,9 @@ const generateForm = async (form_id) => {
     }
     catch (error) {
         console.log(error);
+    }
+    finally{
+        store.commit('setLoading', false)
     }
 }
 

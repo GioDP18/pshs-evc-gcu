@@ -66,7 +66,7 @@ Class AuthServiceImpl implements AuthService
         return response()->json([
             'message' => 'User successfully registered',
             'user' => $user
-        ], 201);
+        ], 200);
     }
 
     /**

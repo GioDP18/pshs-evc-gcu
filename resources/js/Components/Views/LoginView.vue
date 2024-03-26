@@ -16,13 +16,16 @@
                                 </button>
                             </RouterLink>
                         </div>
-                        <button @click="viaGoogle">
+                        <!-- <button @click="viaGoogle">
                             SIGN IN WITH <i class="fa-brands fa-google"
                                 style="margin-left: 5px; background-color: #2087E4; border-radius: 50%; color: white; padding: 5px 5px 5px 5px;"></i>
                         </button>
                         <button>
                             SIGN IN WITH <i class="fa-brands fa-facebook"
                                 style="margin-left: 5px; background-color: #2087E4; border-radius: 50%; color: white; padding: 5px 5px 5px 5px;"></i>
+                        </button> -->
+                        <button>
+                            SIGN IN AS GUEST
                         </button>
                     </div>
                 </div>
@@ -70,6 +73,7 @@
 import axios from 'axios';
 import { ref } from 'vue';
 import { useRouter } from "vue-router";
+import store from "../../State/index.js";
 
 const router = useRouter();
 
@@ -105,6 +109,7 @@ const submitForm = async () => {
     if (Object.keys(errors.value).length === 0) {
         // Submit the form
         // console.log('Form submitted:', formData.value);
+        store.commit('setLoading', true)
         try {
             await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/login`, {
                 email: formData.value.email,
@@ -138,13 +143,17 @@ const submitForm = async () => {
                             break;
                     }
                 }
+                else{
+                    store.commit('setWarning','Invalid Credentials! Please try again.')
+                }
             })
         }
         catch (error) {
             console.log(error);
+            store.commit('setWarning','Invalid Credentials! Please try again.')
         }
         finally{
-
+            store.commit('setLoading', false)
         }
     }
 };
