@@ -31,13 +31,13 @@
                         <ul class="menu-option" :class="{ 'centered': !showSidebar }">
                             <li>
                                 <RouterLink to="intakeInterviewForm" class="form-sidebar-menu"
-                                    active-class="form-active" style="text-decoration: none;" title="Intake Interview
-                                            Form">
+                                    active-class="form-active"
+                                    :class="{ 'form-active': $route.path.startsWith('/staff/requestIntakeInterview') }"
+                                    style="text-decoration: none;" title="Intake Interview Form">
                                     <div class="form-sidebar-text">
                                         <span v-if="!showSidebar">IIF</span>
                                         <span v-else style="display: flex;">
-                                            <p style="margin-right: 10px;">•</p>Intake Interview
-                                            Form
+                                            <p style="margin-right: 10px;">•</p>Intake Interview Form
                                         </span>
                                     </div>
                                 </RouterLink>
@@ -45,8 +45,9 @@
 
                             <li>
                                 <RouterLink to="guidanceAdmissionSlip" class="form-sidebar-menu"
-                                    active-class="form-active" style="text-decoration: none;"
-                                    title="Guidance Admission">
+                                    active-class="form-active"
+                                    :class="{ 'form-active': $route.path.startsWith('/staff/requestGuidanceAdmission') }"
+                                    style="text-decoration: none;" title="Guidance Admission">
                                     <div class="form-sidebar-text">
                                         <span v-if="!showSidebar">GAS</span>
                                         <span v-else style="display: flex;">
@@ -59,6 +60,7 @@
 
                             <li>
                                 <RouterLink to="guidanceCallSlip" class="form-sidebar-menu" active-class="form-active"
+                                    :class="{ 'form-active': $route.path.startsWith('/staff/requestGuidanceCall') }"
                                     style="text-decoration: none;" title="Guidance Call Slip">
                                     <div class="form-sidebar-text">
                                         <span v-if="!showSidebar">GCS</span>
@@ -71,8 +73,9 @@
 
                             <li>
                                 <RouterLink to="parentQuestionnaireForm" class="form-sidebar-menu"
-                                    active-class="form-active" style="text-decoration: none;"
-                                    title="Parent Questionnaire Form">
+                                    active-class="form-active"
+                                    :class="{ 'form-active': $route.path.startsWith('/staff/requestParentQuestionnaire') }"
+                                    style="text-decoration: none;" title="Parent Questionnaire Form">
                                     <div class="form-sidebar-text">
                                         <span v-if="!showSidebar">PQF</span>
                                         <span v-else style="display: flex;">
@@ -83,6 +86,7 @@
                             </li>
                             <li>
                                 <RouterLink to="referralForm" class="form-sidebar-menu" active-class="form-active"
+                                    :class="{ 'form-active': $route.path.startsWith('/staff/requestReferralForm') }"
                                     style="text-decoration: none;" title="Referral Form">
                                     <div class="form-sidebar-text">
                                         <span v-if="!showSidebar">RF</span>
@@ -94,8 +98,9 @@
                             </li>
                             <li>
                                 <RouterLink to="cumulativeRecordForm" class="form-sidebar-menu"
-                                    active-class="form-active" style="text-decoration: none;"
-                                    title="Cumulative Record Form">
+                                    active-class="form-active"
+                                    :class="{ 'form-active': $route.path.startsWith('/staff/requestCumulativeRecord') }"
+                                    style="text-decoration: none;" title="Cumulative Record Form">
                                     <div class="form-sidebar-text">
                                         <span v-if="!showSidebar">CRF</span>
                                         <span v-else style="display: flex;">
@@ -106,8 +111,9 @@
                             </li>
                             <li>
                                 <RouterLink to="clientMonitoringForm" class="form-sidebar-menu"
-                                    active-class="form-active" style="text-decoration: none;"
-                                    title="Client Monitoring Form">
+                                    active-class="form-active"
+                                    :class="{ 'form-active': $route.path.startsWith('/staff/requestCumulativeRecord') }"
+                                    style="text-decoration: none;" title="Client Monitoring Form">
                                     <div class="form-sidebar-text">
                                         <span v-if="!showSidebar">CMF</span>
                                         <span v-else style="display: flex;">
@@ -575,13 +581,10 @@ const handleLogout = async () => {
     position: fixed;
     top: 0;
     left: -250px;
-    /* Initial position off-screen */
     z-index: 1000;
-    /* Ensure it's above other content */
     transition: left 0.3s ease;
     overflow-y: auto;
     max-height: 100vh;
-    /* Add a smooth transition */
 }
 
 .show {
