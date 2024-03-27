@@ -9,6 +9,8 @@ use App\Models\IntakeInterviewForm;
 use App\Models\GuidanceAdmissionSlip;
 use App\Models\ReferralForm;
 use App\Models\User;
+use App\Models\GuidanceCallSlip;
+
 use Illuminate\Support\Facades\Response;
 
 
@@ -238,35 +240,37 @@ Class GenerateServiceImpl implements GenerateService
         ], 201);
     }
 
-    public function generateGuidCallSlip(Request $request)
+    public function generateGuidCallSlip($id)
     {
-        $counseling = 'Referral';
-        $templateProcessor = new TemplateProcessor(public_path('templates\PSHS-00-F-GCU-04-Ver02-Rev0-Guidance-Call-Slip-1.docx'));
-        $templateProcessor->setValue('date', date('Y-m-d'));
-        $templateProcessor->setValue('time', date('H:i:s'));
 
-        if($counseling == 'Routine')
+        $guid_call = GuidanceCallSlip::with('gcspk')->findOrFail($id);
+        $templateProcessor = new TemplateProcessor(public_path('templates\PSHS-00-F-GCU-04-Ver02-Rev0-Guidance-Call-Slip-1.docx'));
+        $templateProcessor->setValue('campus', ($guid_call->campus != null) ? $guid_call->campus : '');
+        $templateProcessor->setValue('date', ($guid_call->date != null) ? $guid_call->date : '');
+        $templateProcessor->setValue('time', ($guid_call->time != null) ? $guid_call->time : '');
+
+        if($guid_call->type_of_counseling == 'Routine')
         {
             $templateProcessor->setValue('counseling-routine', '✖️');
         }else
         {
             $templateProcessor->setValue('counseling-routine', '');
         }
-        if($counseling == 'Referral')
+        if($guid_call->type_of_counseling == 'Referral')
         {
             $templateProcessor->setValue('counseling-referral', '✖️');
         }else
         {
             $templateProcessor->setValue('counseling-referral', '');
         }
-        if($counseling == 'Individual')
+        if($guid_call->type_of_counseling == 'Individual')
         {
             $templateProcessor->setValue('counseling-individual', '✖️');
         }else
         {
             $templateProcessor->setValue('counseling-individual', '');
         }
-        if($counseling == 'Group')
+        if($guid_call->type_of_counseling == 'Group')
         {
             $templateProcessor->setValue('counseling-group', '✖️');
         }else
@@ -274,22 +278,22 @@ Class GenerateServiceImpl implements GenerateService
             $templateProcessor->setValue('counseling-group', '');
         }
 
-        $templateProcessor->setValue('student1-name', 'example student 1 name');
-        $templateProcessor->setValue('student2-name', 'example student 2 name');
-        $templateProcessor->setValue('student3-name', 'example student 3 name');
-        $templateProcessor->setValue('student4-name', 'example student 4 name');
-        $templateProcessor->setValue('student5-name', 'example student 5 name');
-        $templateProcessor->setValue('student1-grade-section', 'example student 1 grade and section');
-        $templateProcessor->setValue('student2-grade-section', 'example student 2 grade and section');
-        $templateProcessor->setValue('student3-grade-section', 'example student 3 grade and section');
-        $templateProcessor->setValue('student4-grade-section', 'example student 4 grade and section');
-        $templateProcessor->setValue('student5-grade-section', 'example student 5 grade and section');
+        $templateProcessor->setValue('student1-name', ($guid_call->gcspk->s1 != null) ? $guid_call->gcspk->s1 : '');
+        $templateProcessor->setValue('student2-name', ($guid_call->gcspk->s2 != null) ? $guid_call->gcspk->s2 : '');
+        $templateProcessor->setValue('student3-name', ($guid_call->gcspk->s3 != null) ? $guid_call->gcspk->s3 : '');
+        $templateProcessor->setValue('student4-name', ($guid_call->gcspk->s4 != null) ? $guid_call->gcspk->s4 : '');
+        $templateProcessor->setValue('student5-name', ($guid_call->gcspk->s5 != null) ? $guid_call->gcspk->s5 : '');
+        $templateProcessor->setValue('student1-grade-section', ($guid_call->gcspk->gs1 != null) ? $guid_call->gcspk->gs1 : '');
+        $templateProcessor->setValue('student2-grade-section', ($guid_call->gcspk->gs2 != null) ? $guid_call->gcspk->gs2 : '');
+        $templateProcessor->setValue('student3-grade-section', ($guid_call->gcspk->gs3 != null) ? $guid_call->gcspk->gs3 : '');
+        $templateProcessor->setValue('student4-grade-section', ($guid_call->gcspk->gs4 != null) ? $guid_call->gcspk->gs4 : '');
+        $templateProcessor->setValue('student5-grade-section', ($guid_call->gcspk->gs5 != null) ? $guid_call->gcspk->gs5 : '');
 
-        $templateProcessor->setValue('counsel-start', date('H:i:s'));
-        $templateProcessor->setValue('counsel-end', date('H:i:s'));
+        $templateProcessor->setValue('counsel-start', $guid_call->counseling_time_start);
+        $templateProcessor->setValue('counsel-end', $guid_call->counseling_time_end);
 
-        $templateProcessor->setValue('counselor-name', 'example counselor name');
-        $templateProcessor->setValue('teacher-name', 'example teacher name');
+        $templateProcessor->setValue('counselor-name', $guid_call->guidance_counselor);
+        $templateProcessor->setValue('teacher-name', $guid_call->teacher_in_charge);
 
         $newFilePath = public_path('guidance_call_slip\\' . 'John Vincent Ramada' . '.docx');
         $templateProcessor->saveAs($newFilePath);
@@ -304,6 +308,7 @@ Class GenerateServiceImpl implements GenerateService
         return response()->json([
             'success' => true,
             'message' => 'Successfully generated guidance call slip form',
+            'result' => $guid_call,
         ], 201);
     }
 

@@ -13,7 +13,7 @@ interface GenerateService
 
     public function generateReferralForm($id);
 
-    public function generateGuidCallSlip(Request $request);
+    public function generateGuidCallSlip($id);
 
     public function generateParentQuestionaire(Request $request);
 }
