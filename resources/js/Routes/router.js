@@ -42,6 +42,7 @@ import StudentProfilePage from "../Components/Pages/Student/StudentProfilePage.v
 import StudentCummulativeRecord from "../Components/Pages/Student/Forms/StudentCummulativeRecord.vue";
 import StudentClientMonitoring from "../Components/Pages/Student/Forms/StudentClientMonitoring.vue";
 //Fields
+import FillClientMonitoring from "../Components/Pages/Student/FillForm/FillClientMonitoringForm.vue";
 
 //---------------------------------Parents and Teachers---------------------------------
 import ParentsTeacherView from "../Components/Views/ParentsTeacherView.vue";
@@ -224,6 +225,11 @@ const routes = [
                 name: "student-ClientMonitoring",
             },
             //FIELDS
+            {
+                path: "fillClientMonitoring",
+                component: FillClientMonitoring,
+                name: "student-fillClientMonitoring",
+            },
         ],
     },
     {
