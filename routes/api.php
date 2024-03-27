@@ -55,6 +55,7 @@ Route::group([
     Route::get('/get-appointments-today', [CalendarController::class, 'getAppointmentsToday']);
 
     // Request Forms
+    Route::post('/check-request', [RequestsController::class, 'checkRequest']);
     Route::post('/request-form', [RequestsController::class, 'createRequest']);
     Route::put('/approve-request/{id}', [RequestsController::class, 'approveRequest']);
     Route::put('/reject-request/{id}', [RequestsController::class, 'rejectRequest']);
