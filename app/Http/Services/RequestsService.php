@@ -8,5 +8,9 @@ interface RequestsService
 {
     public function createRequest(Request $request);
 
-    public function approveRequest(Request $request);
+    public function approveRequest($id);
+
+    public function rejectRequest($id);
+
+    public function getIntakeInterviewFormRequest();
 }
