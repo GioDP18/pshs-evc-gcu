@@ -11,6 +11,10 @@ class RequestsController extends Controller
 
     }
 
+    public function checkRequest(Request $request){
+        return $this->requestsService->checkRequest($request);
+    }
+
     public function createRequest(Request $request){
         return $this->requestsService->createRequest($request);
     }
@@ -25,5 +29,9 @@ class RequestsController extends Controller
 
     public function getIntakeInterviewFormRequest(){
         return $this->requestsService->getIntakeInterviewFormRequest();
+    }
+
+    public function getClientMonitoringFormRequest(){
+        return $this->requestsService->getClientMonitoringFormRequest();
     }
 }

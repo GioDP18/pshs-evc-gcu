@@ -15,13 +15,13 @@ const initializeDataTable = () => {
 };
 
 const createRequest = async () => {
-    try{
+    try {
         const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/request-form`, {
             form_name: 'Referral Form',
             user_id: localStorage.getItem('user_id')
         });
         console.log(response.data);
-        if(response.status === 200){
+        if (response.status === 200) {
             swal({
                 title: "Request sent.",
                 icon: "success",
@@ -29,7 +29,7 @@ const createRequest = async () => {
             });
         }
     }
-    catch(error){
+    catch (error) {
         console.log(error);
     }
 }
@@ -40,11 +40,11 @@ const handleRequest = () => {
         icon: "info",
         buttons: true,
     })
-    .then((willDelete) => {
-        if (willDelete) {
-            createRequest();
-        }
-    });
+        .then((willDelete) => {
+            if (willDelete) {
+                createRequest();
+            }
+        });
 };
 
 </script>

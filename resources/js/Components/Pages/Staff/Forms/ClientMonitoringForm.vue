@@ -10,7 +10,7 @@
                         <button class="assign" data-bs-toggle="modal" data-bs-target="#assign"><i
                                 style="margin-right: 5px;"><font-awesome-icon
                                     :icon="['fas', 'user-plus']" /></i>Assign</button>
-                        <button class="create" @click="goToInputs"><i style="margin-right: 5px;"><font-awesome-icon
+                        <button class="create" @click="goToRequests"><i style="margin-right: 5px;"><font-awesome-icon
                                     :icon="['fas', 'bell']" /></i>Requests</button>
                     </div>
                 </div>
@@ -261,6 +261,10 @@ const getSections = (grade) => {
 
 const goToInputs = () => {
     router.push({ name: 'staff-fieldClientMonitoring' })
+}
+
+const goToRequests = () => {
+    router.push({ name: 'staff-requestClientMonitoring' })
 }
 </script>
 

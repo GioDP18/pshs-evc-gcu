@@ -3,6 +3,7 @@ import store from "../State/index.js";
 import isAuthenticated from "../Middleware/isAuthenticated";
 import LoginView from "../Components/Views/LoginView.vue";
 import RegistrationView from "../Components/Views/RegistrationView.vue";
+import AboutPage from "../Components/Views/AboutPage.vue";
 
 //---------------------------------Staff---------------------------------
 import StaffView from "../Components/Views/StaffView.vue";
@@ -42,6 +43,7 @@ import StudentProfilePage from "../Components/Pages/Student/StudentProfilePage.v
 import StudentCummulativeRecord from "../Components/Pages/Student/Forms/StudentCummulativeRecord.vue";
 import StudentClientMonitoring from "../Components/Pages/Student/Forms/StudentClientMonitoring.vue";
 //Fields
+import FillClientMonitoring from "../Components/Pages/Student/FillForm/FillClientMonitoringForm.vue";
 
 //---------------------------------Parents and Teachers---------------------------------
 import ParentsTeacherView from "../Components/Views/ParentsTeacherView.vue";
@@ -66,6 +68,11 @@ const routes = [
         path: "/register",
         component: RegistrationView,
         name: "register",
+    },
+    {
+        path: "/about",
+        component: AboutPage,
+        name: "about",
     },
     {
         path: "/staff",
@@ -224,6 +231,11 @@ const routes = [
                 name: "student-ClientMonitoring",
             },
             //FIELDS
+            {
+                path: "fillClientMonitoring",
+                component: FillClientMonitoring,
+                name: "student-fillClientMonitoring",
+            },
         ],
     },
     {

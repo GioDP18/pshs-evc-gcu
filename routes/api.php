@@ -55,10 +55,12 @@ Route::group([
     Route::get('/get-appointments-today', [CalendarController::class, 'getAppointmentsToday']);
 
     // Request Forms
+    Route::post('/check-request', [RequestsController::class, 'checkRequest']);
     Route::post('/request-form', [RequestsController::class, 'createRequest']);
     Route::put('/approve-request/{id}', [RequestsController::class, 'approveRequest']);
     Route::put('/reject-request/{id}', [RequestsController::class, 'rejectRequest']);
     Route::get('/iif-requests', [RequestsController::class, 'getIntakeInterviewFormRequest']);
+    Route::get('/cmf-requests', [RequestsController::class, 'getClientMonitoringFormRequest']);
 
     // Get All Forms
     Route::get('/get-all-intake-interview-forms', [GetFormsController::class, 'getAllIntakeInterviewForms']);
