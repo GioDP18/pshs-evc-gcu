@@ -76,14 +76,14 @@
                                 <div class="reminder-info">
                                     <i><font-awesome-icon :icon="['fas', 'user-clock']" /></i>
                                     <div class="info-text">
-                                        <p class="info-title">Mausbot</p>
+                                        <p class="info-title">Reminer 1</p>
                                         <p class="info-date">February 2024, Monday</p>
                                     </div>
                                 </div>
                                 <div class="reminder-info">
                                     <i><font-awesome-icon :icon="['fas', 'user-clock']" /></i>
                                     <div class="info-text">
-                                        <p class="info-title">Mamayot</p>
+                                        <p class="info-title">Reminder 2</p>
                                         <p class="info-date">February 2024, Monday</p>
                                     </div>
                                 </div>

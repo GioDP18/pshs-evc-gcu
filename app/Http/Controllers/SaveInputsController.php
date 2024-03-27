@@ -19,6 +19,10 @@ class SaveInputsController extends Controller
         return $this->saveInputsService->submitGuidanceAdmissionSlip($request);
     }
 
+    public function submitGuidanceCallSlip(Request $request){
+        return $this->saveInputsService->submitGuidanceCallSlip($request);
+    }
+
     public function submitReferralForm(Request $request){
         return $this->saveInputsService->submitReferralForm($request);
     }

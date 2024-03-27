@@ -17,19 +17,19 @@
                 <table id="table-gcs" class="table table-striped table-hover" width="100%">
                     <thead>
                         <tr>
-                            <th>ID Number</th>
-                            <th>Name</th>
-                            <th>Gender</th>
+                            <th>Campus</th>
                             <th>Date</th>
+                            <th>Type of Counseling</th>
+                            <th>Teacher In Charge</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>123</td>
-                            <td>Bogart The Explorer</td>
-                            <td>Male</td>
-                            <td>July 1, 2002</td>
+                        <tr v-for="data in all_data" :key="data.id">
+                            <td>{{ data.campus }}</td>
+                            <td>{{ data.date }}</td>
+                            <td>{{ data.type_of_counseling }}</td>
+                            <td>{{ data.teacher_in_charge }}</td>
                             <td>
                                 <div class="dropdown">
                                     <button style="padding-right: 5px;" class="card14 dropdown-toggle" type="button"
@@ -42,7 +42,7 @@
                                                         :icon="['fas', 'eye']"
                                                         style="margin-right: 10px;" /></i>View</a></li>
                                         <li><a class="dropdown-item generate" href="#"
-                                                @click="sendCertificate('certificate2')"><i><font-awesome-icon
+                                                @click="generateForm(data.id)"><i><font-awesome-icon
                                                         :icon="['fas', 'file']"
                                                         style="margin-right: 10px;" /></i>Generate</a></li>
                                         <li><a class="dropdown-item delete" href="#"
@@ -217,17 +217,29 @@ import $ from 'jquery';
 
 const router = useRouter();
 
-const allUsers = ref([]);
+const all_data = ref([]);
 const selectedGrade = ref(null);
 const selectedSection = ref(null);
 
 onMounted(async () => {
     initializeDataTable();
+    getAllGuidanceCallSlips();
 });
 
 const initializeDataTable = () => {
     $('#table-gcs').DataTable();
 };
+
+const getAllGuidanceCallSlips = async () => {
+    try {
+        const resp = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/get-all-guidance-call-slips`);
+
+        all_data.value = resp.data.data;
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
 
 const selectGrade = (grade) => {
     selectedGrade.value = grade;
