@@ -22,4 +22,14 @@ class ReferralForm extends Model
     ];
 
     use HasFactory;
+
+    public function behavior_spotted()
+    {
+        return $this->hasOne(BehaviorSpotted::class);
+    }
+
+    public function user()
+    {
+        return $this->hasOne(User::class);
+    }
 }

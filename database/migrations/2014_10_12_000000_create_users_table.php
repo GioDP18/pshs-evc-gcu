@@ -22,8 +22,8 @@ return new class extends Migration
             $table->string('contact_number')->nullable();
             $table->string('signature')->nullable();
             $table->string('id_number')->nullable();
-            $table->integer('grade_level');
-            $table->string('section');
+            $table->integer('grade_level')->nullable();
+            $table->string('section')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();

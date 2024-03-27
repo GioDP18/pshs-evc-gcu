@@ -17,11 +17,10 @@ return new class extends Migration
             $table->string('name_of_student');
             $table->string('grade_and_section');
             $table->string('date');
-            $table->text('concern');
+            $table->enum('concern', ['Academic', 'Behavior', 'Personal']);
             $table->text('brief_description')->max_length();
             $table->text('intervention_done');
             $table->boolean('follow_up');
-            $table->text('behaviors_spotted');
             $table->string('others');
             // $table->string('referrer_id');
             $table->timestamps();

@@ -1,8 +1,8 @@
 <template>
     <Router-view></Router-view>
-    <div class="loader">
+    <!-- <div class="loader">
         <div class="justify-content-center jimu-primary-loading"></div>
-    </div>
+    </div> -->
 </template>
 
 <script setup>
