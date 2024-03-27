@@ -60,6 +60,7 @@ Route::group([
     Route::put('/approve-request/{id}', [RequestsController::class, 'approveRequest']);
     Route::put('/reject-request/{id}', [RequestsController::class, 'rejectRequest']);
     Route::get('/iif-requests', [RequestsController::class, 'getIntakeInterviewFormRequest']);
+    Route::get('/rf-requests', [RequestsController::class, 'getReferralFormRequest']);
     Route::get('/cmf-requests', [RequestsController::class, 'getClientMonitoringFormRequest']);
 
     // Get All Forms
