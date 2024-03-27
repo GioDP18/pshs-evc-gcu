@@ -6,6 +6,8 @@ import store from '../../State/index.js';
 
 const router = useRouter();
 
+const role = localStorage.getItem('role');
+
 const showSidebar = ref(true);
 const showMobileSidebar = ref(false);
 const showForms = ref(true); // Control visibility of forms container
@@ -79,6 +81,24 @@ onBeforeUnmount(() => {
 
 const handleLogout = async () => {
     store.commit('setLoading', true);
+    try {
+        const token = localStorage.getItem('token');
+        const headers = { Authorization: `Bearer ${token}` };
+
+        const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/logout`, {}, { headers });
+
+        if (response.status === 200) {
+            localStorage.removeItem('token');
+            localStorage.setItem('valid', false);
+            router.push({ name: 'login' })
+        }
+    }
+    catch (error) {
+        console.log(error);
+    }
+    finally {
+        store.commit('setLoading', false);
+    }
 }
 
 </script>
@@ -117,7 +137,7 @@ const handleLogout = async () => {
                     </div>
                     <div v-show="showForms">
                         <ul class="menu-option" :class="{ 'centered': !showSidebar }">
-                            <li>
+                            <li v-if="role == 'parent'">
                                 <RouterLink to="parentsTeacherParentQuestionnaire" class="form-sidebar-menu"
                                     active-class="form-active" style="text-decoration: none;" title="Intake Interview
                                             Form">
@@ -179,7 +199,7 @@ const handleLogout = async () => {
                     </div>
                     <div v-show="showForms">
                         <ul class="menu-option" :class="{ 'centered': !showSidebar }">
-                            <li>
+                            <li v-if="role == 'parent'">
                                 <RouterLink to="parentsTeacherParentQuestionnaire" class="form-sidebar-menu"
                                     active-class="form-active" style="text-decoration: none;" title="Intake Interview
                                             Form">
