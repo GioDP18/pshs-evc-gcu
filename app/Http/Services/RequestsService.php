@@ -18,4 +18,6 @@ interface RequestsService
     public function getIntakeInterviewFormRequest();
 
     public function getClientMonitoringFormRequest();
+
+    public function getReferralFormRequest();
 }
