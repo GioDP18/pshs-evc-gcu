@@ -11,7 +11,7 @@ interface GenerateService
 
     public function generateGuidAdmission($id);
 
-    public function generateReferralForm(Request $request);
+    public function generateReferralForm($id);
 
     public function generateGuidCallSlip(Request $request);
 
