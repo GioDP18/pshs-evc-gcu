@@ -88,10 +88,13 @@ const handleLogout = async () => {
         <!-- Web Sidebar -->
         <div class="sidebar sticky-top" v-show="screenWidth > 991" :class="{ 'minimized': !showSidebar }">
             <RouterLink to="" class="sidebar-logo" style="text-decoration: none;">
-                <img loading="lazy" src="../../../../public/external/logo.png" class="img" />
-                <!-- <div v-if="showSidebar" class="logo-text">
-                    <div class="phs"><span class="certi">G</span><span class="code">RASS</span></div>
-                </div> -->
+                <div style="display: flex;">
+                    <img loading="lazy" src="../../../../public/external/logo-g.png" class="img"
+                        :class="{ 'img-small': !showSidebar }" />
+                    <div v-if="showSidebar" class="logo-text">
+                        <div class="phs"><span class="code">RASS</span></div>
+                    </div>
+                </div>
             </RouterLink>
             <div class="menu">
                 <RouterLink to="parentsTeacherHome" class="sidebar-menu" active-class="active"
@@ -147,10 +150,13 @@ const handleLogout = async () => {
         <!-- Mobile Sidebar -->
         <div class="mobile-sidebar sticky-top" v-show="screenWidth < 991" :class="{ 'show': showMobileSidebar }">
             <RouterLink to="" class="sidebar-logo" style="text-decoration: none;">
-                <img loading="lazy" src="../../../../public/external/logo.png" class="img" />
-                <!-- <div class="logo-text">
-                    <div class="phs"><span class="certi">G</span><span class="code">RASS</span></div>
-                </div> -->
+                <div style="display: flex;">
+                    <img loading="lazy" src="../../../../public/external/logo-g.png" class="img"
+                        :class="{ 'img-small': !showSidebar }" />
+                    <div v-if="showSidebar" class="logo-text">
+                        <div class="phs"><span class="code">RASS</span></div>
+                    </div>
+                </div>
             </RouterLink>
             <div class="menu">
                 <RouterLink to="parentsTeacherHome" class="sidebar-menu" active-class="active"
@@ -453,20 +459,24 @@ const handleLogout = async () => {
 .sidebar-logo {
     background-color: #ffffff !important;
     display: flex;
+    align-items: center;
     justify-content: center;
-    align-items: center;
-    color: var(--Black, #191919);
-    padding: 15px 40px;
-    align-items: center;
-    margin-top: 10px;
+    padding-bottom: 30px;
+    padding-top: 40px;
     width: 100%;
     height: 10%;
+    text-decoration: none;
 }
 
 .sidebar-logo img {
-    width: 100%;
-    height: 160%;
+    width: 55px;
+    height: 50px;
     border-radius: 5px;
+}
+
+.sidebar-logo .img-small {
+    width: 45px;
+    height: 40px;
 }
 
 .header {
@@ -511,8 +521,8 @@ const handleLogout = async () => {
 }
 
 .logo-text .phs .code {
-    font-size: 20px;
-    color: #2087E4;
+    font-size: 30px;
+    color: #3EA1E0;
 }
 
 .logout-button {
