@@ -7,6 +7,8 @@ use PhpOffice\PhpWord\TemplateProcessor;
 use \ConvertApi\ConvertApi;
 use App\Models\IntakeInterviewForm;
 use App\Models\GuidanceAdmissionSlip;
+use App\Models\ReferralForm;
+use App\Models\User;
 use Illuminate\Support\Facades\Response;
 
 
@@ -71,45 +73,31 @@ Class GenerateServiceImpl implements GenerateService
         return response()->download(public_path('guidance_admission_slip\\' . 'John Vincent Ramada' . '.pdf'));
     }
 
-    public function generateReferralForm(Request $request)
+    public function generateReferralForm($id)
     {
-        $concern = 'Academic';
-        $follow_up = 'Yes';
-        $behavior1 = 'Check';
-        $behavior2 = Null;
-        $behavior2_1 = 'Check';
-        $behavior3 = 'Check';
-        $behavior4 = 'Check';
-        $behavior5 = 'Check';
-        $behavior6 = 'Check';
-        $behavior7 = 'Check';
-        $behavior8 = 'Check';
-        $behavior9 = 'Check';
-        $behavior10 = 'Check';
-        $behavior11 = 'Check';
-        $behavior12 = 'Check';
-        $behavior12_1 = 'example others';
+        $referral = ReferralForm::with('behavior_spotted')->findOrFail($id);
+        $user = User::find($referral->user_id);
 
         $templateProcessor = new TemplateProcessor(public_path('templates\PSHS-00-F-GCU-03-Ver02-Rev0-Referral-Form.docx'));
-        $templateProcessor->setValue('name', 'John Vincent Ramada');
-        $templateProcessor->setValue('grade-section', 'example grade and section');
-        $templateProcessor->setValue('date', date('Y-m-d'));
+        $templateProcessor->setValue('name', $referral->name_of_student);
+        $templateProcessor->setValue('grade-section', $referral->grade_and_section);
+        $templateProcessor->setValue('date', $referral->date);
 
-        if($concern == 'Academic')
+        if($referral->concern == 'Academic')
         {
             $templateProcessor->setValue('concern-academic', '✖️');
         }else
         {
             $templateProcessor->setValue('concern-academic', '');
         }
-        if($concern == 'Behavior')
+        if($referral->concern == 'Behavior')
         {
             $templateProcessor->setValue('concern-behavior', '✖️');
         }else
         {
             $templateProcessor->setValue('concern-behavior', '');
         }
-        if($concern == 'Personal')
+        if($referral->concern == 'Personal')
         {
             $templateProcessor->setValue('concern-personal', '✖️');
         }else
@@ -117,17 +105,17 @@ Class GenerateServiceImpl implements GenerateService
             $templateProcessor->setValue('concern-personal', '');
         }
 
-        $templateProcessor->setValue('brief-description', 'example description');
-        $templateProcessor->setValue('intervention', 'example intervention');
+        $templateProcessor->setValue('brief-description', $referral->brief_description);
+        $templateProcessor->setValue('intervention', $referral->intervention_done);
         
-        if($follow_up == 'Yes')
+        if($referral->follow_up == 0)
         {
             $templateProcessor->setValue('follow-up-yes', '✔️');
         }else
         {
             $templateProcessor->setValue('follow-up-yes', '');
         }
-        if($follow_up == 'No')
+        if($referral->follow_up == 1)
         {
             $templateProcessor->setValue('follow-up-no', '✔️');
         }else
@@ -135,107 +123,102 @@ Class GenerateServiceImpl implements GenerateService
             $templateProcessor->setValue('follow-up-no', '');
         }
 
-        $templateProcessor->setValue('reffered-signature', 'example reffered signature');
-        $templateProcessor->setValue('reffered-name', 'example reffered name');
+        $signaturePath = storage_path('app\\public\\'. $user->signature);
+        $templateProcessor->setImageValue('reffered-signature', array('path' => $signaturePath, 'width' => 70, 'height' => 70));
+        $templateProcessor->setValue('reffered-name', $user->firstname. ' ' .$user->lastname);
 
-        if($behavior1 == 'Check')
+        if($referral->behavior_spotted->b_1 == 0)
         {
             $templateProcessor->setValue('behavior1', '✖️');
         }else
         {
             $templateProcessor->setValue('behavior1', '');
         }
-        if($behavior2 == 'Check')
+        if($referral->behavior_spotted->b_2 == 0)
         {
             $templateProcessor->setValue('behavior2', '✖️');
         }else
         {
             $templateProcessor->setValue('behavior2', '');
         }
-        if($behavior2_1 == 'Check')
+        if($referral->behavior_spotted->b_2 == 0)
         {
             $templateProcessor->setValue('behavior2.1', '✖️');
         }else
         {
             $templateProcessor->setValue('behavior2.1', '');
         }
-        if($behavior3 == 'Check')
+        if($referral->behavior_spotted->b_3 == 0)
         {
             $templateProcessor->setValue('behavior3', '✖️');
         }else
         {
             $templateProcessor->setValue('behavior3', '');
         }
-        if($behavior4 == 'Check')
+        if($referral->behavior_spotted->b_4 == 0)
         {
             $templateProcessor->setValue('behavior4', '✖️');
         }else
         {
             $templateProcessor->setValue('behavior4', '');
         }
-        if($behavior5 == 'Check')
+        if($referral->behavior_spotted->b_5 == 0)
         {
             $templateProcessor->setValue('behavior5', '✖️');
         }else
         {
             $templateProcessor->setValue('behavior5', '');
         }
-        if($behavior6 == 'Check')
+        if($referral->behavior_spotted->b_6 == 0)
         {
             $templateProcessor->setValue('behavior6', '✖️');
         }else
         {
             $templateProcessor->setValue('behavior6', '');
         }
-        if($behavior7 == 'Check')
+        if($referral->behavior_spotted->b_7 == 0)
         {
             $templateProcessor->setValue('behavior7', '✖️');
         }else
         {
             $templateProcessor->setValue('behavior7', '');
         }
-        if($behavior8 == 'Check')
+        if($referral->behavior_spotted->b_8 == 0)
         {
             $templateProcessor->setValue('behavior8', '✖️');
         }else
         {
             $templateProcessor->setValue('behavior8', '');
         }
-        if($behavior9 == 'Check')
+        if($referral->behavior_spotted->b_9 == 0)
         {
             $templateProcessor->setValue('behavior9', '✖️');
         }else
         {
             $templateProcessor->setValue('behavior9', '');
         }
-        if($behavior10 == 'Check')
+        if($referral->behavior_spotted->b_10 == 0)
         {
             $templateProcessor->setValue('behavior10', '✖️');
         }else
         {
             $templateProcessor->setValue('behavior10', '');
         }
-        if($behavior11 == 'Check')
+        if($referral->behavior_spotted->b_11 == 0)
         {
             $templateProcessor->setValue('behavior11', '✖️');
         }else
         {
             $templateProcessor->setValue('behavior11', '');
         }
-        if($behavior12 == 'Check')
+        if($referral->behavior_spotted->b_12 == 0)
         {
             $templateProcessor->setValue('behavior12', '✖️');
         }else
         {
             $templateProcessor->setValue('behavior12', '');
         }
-        if($behavior12_1 != null)
-        {
-            $templateProcessor->setValue('behavior12.1', $behavior12_1);
-        }else
-        {
-            $templateProcessor->setValue('behavior12.1', '');
-        }
+        
 
         $newFilePath = public_path('referral_form\\' . 'John Vincent Ramada' . '.docx');
         $templateProcessor->saveAs($newFilePath);
@@ -250,6 +233,8 @@ Class GenerateServiceImpl implements GenerateService
         return response()->json([
             'success' => true,
             'message' => 'Successfully generated referral form',
+            'result' => $user,
+            'referral' => $referral
         ], 201);
     }
 
@@ -330,57 +315,42 @@ Class GenerateServiceImpl implements GenerateService
         $Q1_parent = 'Mother';
         $Q2 = 'No';
         $Q5 = 'Yes';
+        $Q6_father = 'Yes';
+        $Q6_mother = 'No';
+        $Q7 = 'Yes';
+        $Q8 = 'Normal';
+        $Q9 = 'Premature';
+        $Q10 = 'Yes';
+        $Q11 = 'No';
+        $Q12 = 'Yes';
+        $Q13 = 'Yes';
+        $Q14 = 'No';
+        $Q15 = 'Performing at full capacity';
+        $Q16 = 'Average Popularity';
+        $Q17 = 'Yes';
+        $Q18 = 'Yes';
+        $Q19 = 'Family Residence';
+        $Q20 = 'No';
+        $Q21 = 'Public Transportation';
+        $Q22 = 'Monthly';
+        $Q23 = 'Yes';
 
         $templateProcessor->setValue('child-name', 'John Vincent Ramada');
 
         // question 1.1
-        if($Q1 == 'Yes')
-        {
-            $templateProcessor->setValue('1.1yes', '✔️');
-        }else
-        {
-            $templateProcessor->setValue('1.1yes', '');
-        }
-        if($Q1 == 'No')
-        {
-            $templateProcessor->setValue('1.1no', '✔️');
-        }else
-        {
-            $templateProcessor->setValue('1.1no', '');
-        }
-        if($Q1_parent == 'Mother')
-        {
-            $templateProcessor->setValue('1.1mother-only', '✔️');
-        }else
-        {
-            $templateProcessor->setValue('1.1mother-only', '');
-        }
-        if($Q1_parent == 'Father')
-        {
-            $templateProcessor->setValue('1.1father-only', '✔️');
-        }else
-        {
-            $templateProcessor->setValue('1.1father-only', '');
-        }
+        $templateProcessor->setValue('1.1yes', ($Q1 == 'Yes') ? '✔️' : '');
+        $templateProcessor->setValue('1.1no', ($Q1 == 'No') ? '✔️' : '');
+        $templateProcessor->setValue('1.1mother-only', ($Q1_parent == 'Mother') ? '✔️' : '');
+        $templateProcessor->setValue('1.1father-only', ($Q1_parent == 'Father') ? '✔️' : '');
+        
         $templateProcessor->setValue('guardian-name', 'example guardian name');
         $templateProcessor->setValue('guardian-relation', 'example guardian relation');
         $templateProcessor->setValue('stayed-year', 13);
 
         // question 1.2
-        if($Q2 == 'Yes')
-        {
-            $templateProcessor->setValue('1.2yes', '✔️');
-        }else
-        {
-            $templateProcessor->setValue('1.2yes', '');
-        }
-        if($Q2 == 'No')
-        {
-            $templateProcessor->setValue('1.2no', '✔️');
-        }else
-        {
-            $templateProcessor->setValue('1.2no', '');
-        }
+        $templateProcessor->setValue('1.2yes', ($Q2 == 'Yes') ? '✔️' : '');
+        $templateProcessor->setValue('1.2no', ($Q2 == 'No') ? '✔️' : '');
+    
         $templateProcessor->setValue('duty1', 'example duty 1');
         $templateProcessor->setValue('duty2', 'example duty 2');
         $templateProcessor->setValue('duty3', 'example duty 3');
@@ -395,21 +365,164 @@ Class GenerateServiceImpl implements GenerateService
         $templateProcessor->setValue('1.4', 'example answer');
 
         // question 1.5
-        if($Q5 == 'Yes')
-        {
-            $templateProcessor->setValue('1.5yes', '✔️');
-        }else
-        {
-            $templateProcessor->setValue('1.5yes', '');
-        }
-        if($Q5 == 'No')
-        {
-            $templateProcessor->setValue('1.5no', '✔️');
-        }else
-        {
-            $templateProcessor->setValue('1.5no', '');
-        }
+        $templateProcessor->setValue('1.5yes', ($Q5 == 'Yes') ? '✔️' : '');
+        $templateProcessor->setValue('1.5no', ($Q5 == 'No') ? '✔️' : '');
         $templateProcessor->setValue('1.5often', 'example often');
+
+        // question 2.1
+        $templateProcessor->setValue('2.1yes-father', ($Q6_father == 'Yes') ? '✔️' : '');
+        $templateProcessor->setValue('2.1no-father', ($Q6_father == 'No') ? '✔️' : '');
+        $templateProcessor->setValue('2.1yes-mother', ($Q6_mother == 'Yes') ? '✔️' : '');
+        $templateProcessor->setValue('2.1no-mother', ($Q6_mother == 'No') ? '✔️' : '');
+
+        // question 2.2
+        $templateProcessor->setValue('2.2yes', ($Q7 == 'Yes') ? '✔️' : '');
+        $templateProcessor->setValue('2.2no', ($Q7 == 'No') ? '✔️' : '');
+        $templateProcessor->setValue('family-member-disease', 'example family member disease');
+
+        // question 2.3
+        $templateProcessor->setValue('2.3normal', ($Q8 == 'Normal') ? '✔️': '');
+        $templateProcessor->setValue('2.difficult', ($Q8 == 'Difficult') ? '✔️': '');
+
+        // question 2.4
+        $templateProcessor->setValue('2.4premature', ($Q9 == 'Premature') ? '✔️': '');
+        $templateProcessor->setValue('2.4caesarian', ($Q9 == 'Caesarian') ? '✔️': '');
+        $templateProcessor->setValue('2.4overdue', ($Q9 == 'Overdue') ? '✔️': '');
+        $templateProcessor->setValue('2.4induced', ($Q9 == 'Induced') ? '✔️': '');
+        $templateProcessor->setValue('2.4normal', ($Q9 == 'Normal') ? '✔️': '');
+
+        // question 2.5
+        $templateProcessor->setValue('2.5yes', ($Q10 == 'Yes') ? '✔️': '');
+        $templateProcessor->setValue('2.5no', ($Q10 == 'No') ? '✔️': '');
+
+        // question 2.6
+        $templateProcessor->setValue('2.6yes', ($Q11 == 'Yes') ? '✔️': '');
+        $templateProcessor->setValue('2.6no', ($Q11 == 'No') ? '✔️': '');
+
+        // question 2.7
+        $templateProcessor->setValue('2.7yes', ($Q12 == 'Yes') ? '✔️': '');
+        $templateProcessor->setValue('2.7no', ($Q12 == 'No') ? '✔️': '');
+
+        // question 2.8
+        $templateProcessor->setValue('child-sleeping-hrs', ' example child sleeping hours');
+        
+        // question 2.9
+        $templateProcessor->setValue('2.9yes', ($Q13 == 'Yes') ? '✔️': '');
+        $templateProcessor->setValue('2.9no', ($Q13 == 'No') ? '✔️': '');
+
+        // table impaired
+        $templateProcessor->setValue('physical-specific', 'example physical');
+        $templateProcessor->setValue('physical-diagnose-undiagnosed', 'example physical diagnostic');
+        $templateProcessor->setValue('learning-specific', 'example learning');
+        $templateProcessor->setValue('learning-diagnose-undiagnosed', 'example learning diagnostic');
+        $templateProcessor->setValue('mental-specific', 'example mental');
+        $templateProcessor->setValue('mental-diagnose-undiagnosed', 'example mental diagnostic');
+        $templateProcessor->setValue('autism-specific', 'example autism');
+        $templateProcessor->setValue('autism-diagnose-undiagnosed', 'example autism diagnostic');
+        $templateProcessor->setValue('other-specific', 'example other');
+        $templateProcessor->setValue('other-diagnose-undiagnosed', 'example other diagnostic');
+
+        // question 3.1
+        $templateProcessor->setValue('3.1yes', ($Q14 == 'Yes') ? '✔️': '');
+        $templateProcessor->setValue('3.1no', ($Q14 == 'No') ? '✔️': '');
+
+        // question 3.2
+        $templateProcessor->setValue('3.2year', 'example year');
+        $templateProcessor->setValue('3.2month', 'example month');
+
+        // question 3.3
+        $templateProcessor->setValue('3.3', 'example answer');
+
+        // question 3.4
+        $templateProcessor->setValue('3.4', 'example answer');
+        
+        // question 3.5
+        $templateProcessor->setValue('3.5', 'example answer');
+
+        // question 3.6
+        $templateProcessor->setValue('3.6', 'example answer');
+
+        // question 3.7
+        $templateProcessor->setValue('3.7', 'example answer');
+
+        // question 3.8
+        $templateProcessor->setValue('3.8overachieving', ($Q15 == 'Overachieving') ? '✔️': '');
+        $templateProcessor->setValue('3.8satisfactory', ($Q15 == 'Satisfactory') ? '✔️': '');
+        $templateProcessor->setValue('3.8per-full-capacity', ($Q15 == 'Performing at full capacity') ? '✔️': '');
+        $templateProcessor->setValue('3.8underachieving', ($Q15 == 'Underachieving') ? '✔️': '');
+
+        // question 3.9
+        $templateProcessor->setValue('3.9very-popular', ($Q16 == 'Very Popular') ? '✔️': '');
+        $templateProcessor->setValue('3.9average-popularity', ($Q16 == 'Average Popularity') ? '✔️': '');
+        $templateProcessor->setValue('3.9likes-be-popular', ($Q16 == 'Likes to be popular') ? '✔️': '');
+        $templateProcessor->setValue('3.9hardly-noticed', ($Q16 == 'Hardly Noticed') ? '✔️': '');
+        $templateProcessor->setValue('3.9aloof', ($Q16 == 'Aloof') ? '✔️': '');
+
+        // question 3.10
+        $templateProcessor->setValue('3.10yes', ($Q17 == 'Yes') ? '✔️': '');
+        $templateProcessor->setValue('3.10no', ($Q17 == 'No') ? '✔️': '');
+        $templateProcessor->setValue('3.10specify', 'example specified');
+
+        // question 3.11
+        $templateProcessor->setValue('3.11yes', ($Q18 == 'Yes') ? '✔️': '');
+        $templateProcessor->setValue('3.11no', ($Q18 == 'No') ? '✔️': '');
+        $templateProcessor->setValue('3.11specify', 'example specified');
+
+        // question 4.1
+        $templateProcessor->setValue('4.1family-residence', ($Q19 == 'Family Residence') ? '✔️': '');
+        $templateProcessor->setValue('4.1guardian-home', ($Q19 == 'Guardian’s Home') ? '✔️': '');
+        $templateProcessor->setValue('4.1school-dormitory', ($Q19 == 'School Dormitory') ? '✔️': '');
+        $templateProcessor->setValue('4.1other', ($Q19 == 'Others') ? '✔️': '');
+        $templateProcessor->setValue('4.1other-input', 'example other input');
+
+        //question 4.2
+        $templateProcessor->setValue('4.2.1yes', ($Q20 == 'Yes') ? '✔️': '');
+        $templateProcessor->setValue('4.2.1no', ($Q20 == 'No') ? '✔️': '');
+        $templateProcessor->setValue('name-PSHS', 'example name PSHS');
+        $templateProcessor->setValue('address-PSHS', 'example address PSHS');
+        $templateProcessor->setValue('contact-no', 'example contact number');
+        $templateProcessor->setValue('4.2.2often', 'example often');
+
+        //question 4.3
+        $templateProcessor->setValue('4.3public-transportation', ($Q21 == 'Public Transportation') ? '✔️': '');
+        $templateProcessor->setValue('4.3carpool', ($Q21 == ' Carpool') ? '✔️': '');
+        $templateProcessor->setValue('4.3owned-vehicle', ($Q21 == 'Family-Owned Vehicle') ? '✔️': '');
+
+        //question 5.1
+        $templateProcessor->setValue('5.1allowance', 'example allowance');
+
+        //question 5.2
+        $templateProcessor->setValue('5.2daily', ($Q22 == 'Daily') ? '✔️': '');
+        $templateProcessor->setValue('5.2weekly', ($Q22 == ' Weekly') ? '✔️': '');
+        $templateProcessor->setValue('5.2monthly', ($Q22 == 'Monthly') ? '✔️': '');
+        $templateProcessor->setValue('5.2stipend', ($Q22 == 'Through the Stipend') ? '✔️': '');
+
+        //question 5.3
+        $templateProcessor->setValue('5.3yes', ($Q23 == 'Yes') ? '✔️': '');
+        $templateProcessor->setValue('5.3no', ($Q23 == 'No') ? '✔️': '');
+
+        //question 5.4 
+        $templateProcessor->setValue('5.4', 'example answer');
+
+        //question 5.5
+        $templateProcessor->setValue('5.5', 'example answer');
+
+        //parents info
+        $templateProcessor->setValue('name-father', 'example answer');
+        $templateProcessor->setValue('contact-father', 'example answer');
+        $templateProcessor->setValue('email-father', 'example answer');
+        $templateProcessor->setValue('signature-father', 'example answer');
+        $templateProcessor->setValue('name-mother', 'example answer');
+        $templateProcessor->setValue('contact-mother', 'example answer');
+        $templateProcessor->setValue('email-mother', 'example answer');
+        $templateProcessor->setValue('signature-mother', 'example answer');
+
+        //guardian ifno
+        $templateProcessor->setValue('name-guardian', 'example answer');
+        $templateProcessor->setValue('contact-guardian', 'example answer');
+        $templateProcessor->setValue('email-guardian', 'example answer');
+        $templateProcessor->setValue('home-guardian', 'example answer');
+        $templateProcessor->setValue('relationship-guardian', 'example answer');
 
         // file path save
         $newFilePath = public_path('parents_questionaire\\' . 'John Vincent Ramada' . '.docx');

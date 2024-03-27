@@ -22,9 +22,9 @@ class GenerateController extends Controller
         return $this->generateService->generateGuidAdmission($id);
     }
 
-    public function generateReferralForm(Request $request)
+    public function generateReferralForm($id)
     {
-        return $this->generateService->generateReferralForm($request);
+        return $this->generateService->generateReferralForm($id);
     }
 
     public function generateGuidCallSlip(Request $request)
