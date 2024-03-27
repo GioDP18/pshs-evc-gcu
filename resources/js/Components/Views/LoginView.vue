@@ -25,9 +25,9 @@
                             SIGN IN WITH <i class="fa-brands fa-facebook"
                                 style="margin-left: 5px; background-color: #2087E4; border-radius: 50%; color: white; padding: 5px 5px 5px 5px;"></i>
                         </button> -->
-                        <button>
+                        <!-- <button>
                             SIGN IN AS GUEST
-                        </button>
+                        </button> -->
                     </div>
                 </div>
             </div>
@@ -120,6 +120,7 @@ const submitForm = async () => {
                     if (response.status === 200) {
                         localStorage.setItem('user_id', response.data.user.id);
                         localStorage.setItem('token', response.data.access_token);
+                        localStorage.setItem('role', response.data.user.role);
                         localStorage.setItem('valid', true);
                         switch (response.data.user.role) {
                             case 'gcu_staff':

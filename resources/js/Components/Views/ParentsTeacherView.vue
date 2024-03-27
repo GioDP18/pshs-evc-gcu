@@ -6,6 +6,8 @@ import store from '../../State/index.js';
 
 const router = useRouter();
 
+const role = localStorage.getItem('role');
+
 const showSidebar = ref(true);
 const showMobileSidebar = ref(false);
 const showForms = ref(true); // Control visibility of forms container
@@ -79,6 +81,24 @@ onBeforeUnmount(() => {
 
 const handleLogout = async () => {
     store.commit('setLoading', true);
+    try {
+        const token = localStorage.getItem('token');
+        const headers = { Authorization: `Bearer ${token}` };
+
+        const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/logout`, {}, { headers });
+
+        if (response.status === 200) {
+            localStorage.removeItem('token');
+            localStorage.setItem('valid', false);
+            router.push({ name: 'login' })
+        }
+    }
+    catch (error) {
+        console.log(error);
+    }
+    finally {
+        store.commit('setLoading', false);
+    }
 }
 
 </script>
@@ -88,10 +108,13 @@ const handleLogout = async () => {
         <!-- Web Sidebar -->
         <div class="sidebar sticky-top" v-show="screenWidth > 991" :class="{ 'minimized': !showSidebar }">
             <RouterLink to="" class="sidebar-logo" style="text-decoration: none;">
-                <img loading="lazy" src="../../../../public/external/logo.png" class="img" />
-                <!-- <div v-if="showSidebar" class="logo-text">
-                    <div class="phs"><span class="certi">G</span><span class="code">RASS</span></div>
-                </div> -->
+                <div style="display: flex;">
+                    <img loading="lazy" src="../../../../public/external/logo-g.png" class="img"
+                        :class="{ 'img-small': !showSidebar }" />
+                    <div v-if="showSidebar" class="logo-text">
+                        <div class="phs"><span class="code">RASS</span></div>
+                    </div>
+                </div>
             </RouterLink>
             <div class="menu">
                 <RouterLink to="parentsTeacherHome" class="sidebar-menu" active-class="active"
@@ -114,7 +137,7 @@ const handleLogout = async () => {
                     </div>
                     <div v-show="showForms">
                         <ul class="menu-option" :class="{ 'centered': !showSidebar }">
-                            <li>
+                            <li v-if="role == 'parent'">
                                 <RouterLink to="parentsTeacherParentQuestionnaire" class="form-sidebar-menu"
                                     active-class="form-active" style="text-decoration: none;" title="Intake Interview
                                             Form">
@@ -147,10 +170,13 @@ const handleLogout = async () => {
         <!-- Mobile Sidebar -->
         <div class="mobile-sidebar sticky-top" v-show="screenWidth < 991" :class="{ 'show': showMobileSidebar }">
             <RouterLink to="" class="sidebar-logo" style="text-decoration: none;">
-                <img loading="lazy" src="../../../../public/external/logo.png" class="img" />
-                <!-- <div class="logo-text">
-                    <div class="phs"><span class="certi">G</span><span class="code">RASS</span></div>
-                </div> -->
+                <div style="display: flex;">
+                    <img loading="lazy" src="../../../../public/external/logo-g.png" class="img"
+                        :class="{ 'img-small': !showSidebar }" />
+                    <div v-if="showSidebar" class="logo-text">
+                        <div class="phs"><span class="code">RASS</span></div>
+                    </div>
+                </div>
             </RouterLink>
             <div class="menu">
                 <RouterLink to="parentsTeacherHome" class="sidebar-menu" active-class="active"
@@ -173,7 +199,7 @@ const handleLogout = async () => {
                     </div>
                     <div v-show="showForms">
                         <ul class="menu-option" :class="{ 'centered': !showSidebar }">
-                            <li>
+                            <li v-if="role == 'parent'">
                                 <RouterLink to="parentsTeacherParentQuestionnaire" class="form-sidebar-menu"
                                     active-class="form-active" style="text-decoration: none;" title="Intake Interview
                                             Form">
@@ -453,20 +479,24 @@ const handleLogout = async () => {
 .sidebar-logo {
     background-color: #ffffff !important;
     display: flex;
+    align-items: center;
     justify-content: center;
-    align-items: center;
-    color: var(--Black, #191919);
-    padding: 15px 40px;
-    align-items: center;
-    margin-top: 10px;
+    padding-bottom: 30px;
+    padding-top: 40px;
     width: 100%;
     height: 10%;
+    text-decoration: none;
 }
 
 .sidebar-logo img {
-    width: 100%;
-    height: 160%;
+    width: 55px;
+    height: 50px;
     border-radius: 5px;
+}
+
+.sidebar-logo .img-small {
+    width: 45px;
+    height: 40px;
 }
 
 .header {
@@ -511,8 +541,8 @@ const handleLogout = async () => {
 }
 
 .logo-text .phs .code {
-    font-size: 20px;
-    color: #2087E4;
+    font-size: 30px;
+    color: #3EA1E0;
 }
 
 .logout-button {

@@ -70,7 +70,7 @@ Class CalendarServiceImpl implements CalendarService
 
     public function getAvailableTimeToday(){
         try{
-            $schedule = Calendar::where('date', date('Y-m-d'))->get();
+            $schedule = Calendar::where('date', date('Y-m-d'))->where('user_id_reserved', null)->get();
 
             if(!$schedule){
                 return response()->json([
