@@ -7,6 +7,7 @@ import store from '../../State/index.js';
 const router = useRouter();
 
 const role = localStorage.getItem('role');
+const firstname = ref('');
 
 const showSidebar = ref(true);
 const showMobileSidebar = ref(false);
@@ -72,12 +73,24 @@ onMounted(() => {
     window.addEventListener('resize', updateScreenWidth);
     window.addEventListener('scroll', handleScroll);
     initializeHamburgers();
+    getUserProfile();
 });
 onBeforeUnmount(() => {
     window.removeEventListener('resize', updateScreenWidth);
     window.removeEventListener('scroll', handleScroll);
 });
 
+const getUserProfile = async () => {
+    try {
+        const user_id = localStorage.getItem('user_id');
+        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/get-user-data/${user_id}`)
+        console.log(response.data.data.firstname)
+        firstname.value = response.data.data.firstname
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
 
 const handleLogout = async () => {
     store.commit('setLoading', true);
@@ -251,7 +264,7 @@ const handleLogout = async () => {
                     <button class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false"
                         style="display: flex; justify-content: center; align-items: center;">
-                        <span class="dropdown-text">Hi Bogart</span>
+                        <span class="dropdown-text">{{ firstname }}</span>
                         <i class="icon fas fa-chevron-down"></i>
                         <div class="image-container">
                             <img src="../../../../public/user.jpg" alt="Avatar">
