@@ -3,6 +3,7 @@ import store from "../State/index.js";
 import isAuthenticated from "../Middleware/isAuthenticated";
 import LoginView from "../Components/Views/LoginView.vue";
 import RegistrationView from "../Components/Views/RegistrationView.vue";
+import AboutPage from "../Components/Views/AboutPage.vue";
 
 //---------------------------------Staff---------------------------------
 import StaffView from "../Components/Views/StaffView.vue";
@@ -66,6 +67,11 @@ const routes = [
         path: "/register",
         component: RegistrationView,
         name: "register",
+    },
+    {
+        path: "/about",
+        component: AboutPage,
+        name: "about",
     },
     {
         path: "/staff",

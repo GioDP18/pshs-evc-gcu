@@ -291,7 +291,7 @@
                         <span class="dropdown-text">{{ firstname }}</span>
                         <i class="icon fas fa-chevron-down"></i>
                         <div class="image-container">
-                            <img src="../../../../public/user.jpg" alt="Avatar">
+                            <img src="../../../../public/external/user.png" alt="Avatar">
                         </div>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -473,6 +473,7 @@ const handleLogout = async () => {
     height: 40px;
     border-radius: 50%;
     margin-right: 10px;
+    border: 3px solid #2087E4;
 }
 
 .dropdown-toggle .icon {
