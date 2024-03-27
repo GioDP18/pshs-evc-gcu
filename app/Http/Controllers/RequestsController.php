@@ -30,4 +30,8 @@ class RequestsController extends Controller
     public function getIntakeInterviewFormRequest(){
         return $this->requestsService->getIntakeInterviewFormRequest();
     }
+
+    public function getClientMonitoringFormRequest(){
+        return $this->requestsService->getClientMonitoringFormRequest();
+    }
 }
