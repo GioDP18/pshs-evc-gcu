@@ -75,12 +75,12 @@
                                 </div>
                             </div>
                             <div class="pink-right">
-                                <div class="folder">
+                                <div class="folder" v-if="role == 'parent'">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                         <path
                                             d="M20 5h-9.586L8.707 3.293A.997.997 0 0 0 8 3H4c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2V7c0-1.103-.897-2-2-2z">
                                         </path>
-                                        <text x="50%" y="60%">CRF</text>
+                                        <text x="50%" y="60%">PQF</text>
                                     </svg>
                                 </div>
                                 <div class="folder">
@@ -88,7 +88,7 @@
                                         <path
                                             d="M20 5h-9.586L8.707 3.293A.997.997 0 0 0 8 3H4c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2V7c0-1.103-.897-2-2-2z">
                                         </path>
-                                        <text x="50%" y="60%">PQF</text>
+                                        <text x="50%" y="60%">RF</text>
                                     </svg>
                                 </div>
                             </div>
@@ -183,7 +183,12 @@
     </div>
 </template>
 
-<script setup></script>
+<script setup>
+
+const role = localStorage.getItem("role");
+
+
+</script>
 
 <style scoped>
 .main-content {
