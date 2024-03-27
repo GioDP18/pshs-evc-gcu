@@ -124,7 +124,7 @@
                                 <div :class="{ 'has-error': errors.id_number }" style="display:flex; margin-top:10px">
                                     <div class="col-6">
                                         <label for="exampleInputEmail1" class="form-label">Grade Level</label>
-                                        <select class="form-select" v-model="grade_level"name="" id="">
+                                        <select class="form-select" v-model="grade_level" name="" id="">
                                             <option value="" selected disabled>Select..</option>
                                             <option value="7">7</option>
                                             <option value="8">8</option>
@@ -186,6 +186,10 @@
 <script setup>
 import axios from 'axios';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import store from "../../State/index.js";
+
+const router = useRouter();
 
 const formData = ref({
     firstname: '',
@@ -283,7 +287,7 @@ const chooseSignature = (event) => {
 
 const submitForm = async () => {
     validateForm();
-
+    store.commit('setLoading', true)
     if (Object.keys(errors.value).length === 0) {
         // console.log('Form submitted:', formData.value);
         try {
@@ -308,9 +312,17 @@ const submitForm = async () => {
                         'Content-Type': 'multipart/form-data'
                     }
                 })
+                .then((response) => {
+                    if (response.status === 200) {
+                        router.push({ name: 'login' })
+                    }
+                })
         }
         catch (error) {
             console.log(error);
+        }
+        finally {
+            store.commit('setLoading', false)
         }
     }
     else {
@@ -341,6 +353,17 @@ const prevStep = () => {
 </script>
 
 <style scoped>
+.register-container {
+    background-image: url('../../../../public/external/Background.png');
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .has-error input {
     border-color: red;
 }
@@ -387,6 +410,7 @@ const prevStep = () => {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    background-color: white;
 }
 
 .white-box .register-text {

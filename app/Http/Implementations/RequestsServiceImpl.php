@@ -4,29 +4,169 @@ namespace App\Http\Implementations;
 
 
 use App\Http\Services\RequestsService;
+use App\Models\IntakeInterviewForm;
 use App\Models\Requests;
 use Illuminate\Http\Request;
 
 Class RequestsServiceImpl implements RequestsService
 {
-    public function createRequest(Request $request){
-        $result = Requests::create([
-            // 'form_name' => str_replace(' ', '_', strtolower($request->form_name.'s')),
-            'form_name' => $request->form_name,
-            'user_id' => $request->user_id,
-        ]);
 
-        if(!$result){
+    public function checkRequest(Request $request){
+        try{
+            $result = Requests::where('form_name', $request->form_name)->where('user_id', $request->user_id)->first();
+
+            if(!$result){
+                return response()->json([
+                    "success" => true,
+                    "message" => "No Request found.",
+                ], 201);
+            }
+
             return response()->json([
-                "success" => false,
-                "message" => "Internal Server Error.",
-            ], 500);
+                "success" => true,
+                "message" => $request->form_name." request sent.",
+                "data" => $result
+            ], 200);
         }
+        catch (\Exception $error){
+            return response()->json([
+                "success"=> false,
+                "message"=> $error->getMessage()
+            ]);
+        }
+    }
 
-        return response()->json([
-            "success" => true,
-            "message" => $request->form_name." request sent.",
-            "data" => $result
-        ], 200);
+    public function createRequest(Request $request){
+        try{
+            $result = Requests::create([
+                // 'form_name' => str_replace(' ', '_', strtolower($request->form_name.'s')),
+                'form_name' => $request->form_name,
+                'user_id' => $request->user_id,
+                'status' => 'pending'
+            ]);
+
+            if(!$result){
+                return response()->json([
+                    "success" => false,
+                    "message" => "Internal Server Error.",
+                ], 500);
+            }
+
+            return response()->json([
+                "success" => true,
+                "message" => $request->form_name." request sent.",
+                "data" => $result
+            ], 200);
+        }
+        catch (\Exception $error){
+            return response()->json([
+                "success"=> false,
+                "message"=> $error->getMessage()
+            ]);
+        }
+    }
+
+    public function approveRequest($id){
+        try{
+            $data = Requests::find($id)->update([
+                'status' => 'approved',
+            ]);
+
+            if(!$data){
+                return response()->json([
+                    "success" => false,
+                    "message" => "Internal Server Error.",
+                ], 500);
+            }
+
+            return response()->json([
+                "success" => true,
+                "message" => "Request approved!",
+                "data" => $data
+            ], 200);
+        }
+        catch (\Exception $error){
+            return response()->json([
+                "success"=> false,
+                "message"=> $error->getMessage()
+            ]);
+        }
+    }
+
+    public function rejectRequest($id){
+        try{
+            $data = Requests::find($id)->update([
+                'status' => 'rejected',
+            ]);
+
+            if(!$data){
+                return response()->json([
+                    "success" => false,
+                    "message" => "Internal Server Error.",
+                ], 500);
+            }
+
+            return response()->json([
+                "success" => true,
+                "message" => "Request approved!",
+                "data" => $data
+            ], 200);
+        }
+        catch (\Exception $error){
+            return response()->json([
+                "success"=> false,
+                "message"=> $error->getMessage()
+            ]);
+        }
+    }
+
+    public function getIntakeInterviewFormRequest(){
+        try{
+            $data = Requests::with('user')->where('status', 'pending')->where('form_name', 'Intake Interview Form')->get();
+
+            if(!$data){
+                return response()->json([
+                    "success" => false,
+                    "message" => "Internal Server Error.",
+                ], 500);
+            }
+
+            return response()->json([
+                "success" => true,
+                "message" => "Success",
+                "data" => $data
+            ], 200);
+        }
+        catch (\Exception $error){
+            return response()->json([
+                "success"=> false,
+                "message"=> $error->getMessage()
+            ]);
+        }
+    }
+
+    public function getClientMonitoringFormRequest(){
+        try{
+            $data = Requests::with('user')->where('status', 'pending')->where('form_name', 'Client Monitoring Form')->get();
+
+            if(!$data){
+                return response()->json([
+                    "success" => false,
+                    "message" => "Internal Server Error.",
+                ], 500);
+            }
+
+            return response()->json([
+                "success" => true,
+                "message" => "Success",
+                "data" => $data
+            ], 200);
+        }
+        catch (\Exception $error){
+            return response()->json([
+                "success"=> false,
+                "message"=> $error->getMessage()
+            ]);
+        }
     }
 }

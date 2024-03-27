@@ -18,9 +18,9 @@ return new class extends Migration
             $table->string('middlename')->nullable();
             $table->string('sex');
             $table->date('date_of_birth')->nullable();
-            $table->enum('role', ['gcu_staff', 'parent', 'teachers', 'student'])->nullable();
-            $table->string('contact_number')->nullable();
-            $table->string('signature')->nullable();
+            $table->enum('role', ['gcu_staff', 'parent', 'teacher', 'student'])->nullable();
+            $table->string('contact_number');
+            $table->string('signature');
             $table->string('id_number')->nullable();
             $table->integer('grade_level')->nullable();
             $table->string('section')->nullable();

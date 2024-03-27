@@ -1,199 +1,206 @@
 <template>
     <div class="main-content">
-        <div class="content">
-            <div class="column-1">
-                <div class="table-card">
-                    <div class="sub-header">
-                        <div class="content-text">Guidance Admission Slip</div>
-                        <div class="buttons">
-                            <button class="create" @click="goToInputs"><i style="margin-right: 5px;"><font-awesome-icon
-                                        :icon="['fas', 'pen']" /></i>Create New</button>
-                            <button class="assign" data-bs-toggle="modal" data-bs-target="#assign"><i
-                                    style="margin-right: 5px;"><font-awesome-icon
-                                        :icon="['fas', 'user-plus']" /></i>Assign</button>
-                        </div>
+        <div class="column-1">
+            <div class="table-card">
+                <div class="sub-header">
+                    <div class="content-text">Guidance Admission Slip</div>
+                    <div class="buttons">
+                        <button class="create" @click="goToInputs"><i style="margin-right: 5px;"><font-awesome-icon
+                                    :icon="['fas', 'pen']" /></i>Create New</button>
+                        <button class="assign" data-bs-toggle="modal" data-bs-target="#assign"><i
+                                style="margin-right: 5px;"><font-awesome-icon
+                                    :icon="['fas', 'user-plus']" /></i>Assign</button>
+                        <RouterLink class="create" to="requestGuidanceAdmission"><i
+                                style="margin-right: 5px;"><font-awesome-icon :icon="['fas', 'bell']" /></i>Requests
+                        </RouterLink>
                     </div>
-                    <table id="table-guidance-admission" class="table table-striped table-hover" width="100%">
-                        <thead>
-                            <tr>
-                                <th>Campus</th>
-                                <th>Name of student</th>
-                                <th>Grade & Section</th>
-                                <th>Last visited</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="data in all_data" :key="data.id">
-                                <td>{{ data.campus }}</td>
-                                <td>{{ data.name_of_student }}</td>
-                                <td>{{ data.grade_and_section }}</td>
-                                <td>{{ data.last_visited_date }} {{ data.lalst_visited_time_start }} - {{
-                                            data.lalst_visited_time_end }}</td>
-                                <td>
-                                    <div class="dropdown">
-                                        <button style="padding-right: 5px;" class="card14 dropdown-toggle" type="button"
-                                            id="sendUserCertDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <span class="send-text">Action</span>
-                                        </button>
-                                        <ul class="dropdown-menu" aria-labelledby="sendUserCertDropdown">
-                                            <li><a class="dropdown-item view" href="#"
-                                                    @click="sendCertificate('certificate1')"><i><font-awesome-icon
-                                                            :icon="['fas', 'eye']"
-                                                            style="margin-right: 10px;" /></i>View</a></li>
-                                            <li><a class="dropdown-item generate" href="#"
-                                                    @click="generateForm(data.id)"><i><font-awesome-icon
-                                                            :icon="['fas', 'file']"
-                                                            style="margin-right: 10px;" /></i>Generate</a></li>
-                                            <li><a class="dropdown-item delete" href="#"
-                                                    @click="sendCertificate('certificate2')"><i><font-awesome-icon
-                                                            :icon="['fas', 'trash']"
-                                                            style="margin-right: 10px;" /></i>Delete</a></li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <!-- Assign Modal -->
-                    <div class="modal fade" id="assign" tabindex="-1" aria-labelledby="exampleModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Send By</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
+                </div>
+                <table id="table-guidance-admission" class="table table-striped table-hover" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Campus</th>
+                            <th>Name of student</th>
+                            <th>Grade & Section</th>
+                            <th>Last visited</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="data in all_data" :key="data.id">
+                            <td>{{ data.campus }}</td>
+                            <td>{{ data.name_of_student }}</td>
+                            <td>{{ data.grade_and_section }}</td>
+                            <td>{{ data.last_visited_date }} {{ data.lalst_visited_time_start }} - {{
+                            data.lalst_visited_time_end }}</td>
+                            <td>
+                                <div class="dropdown">
+                                    <button style="padding-right: 5px;" class="card14 dropdown-toggle" type="button"
+                                        id="sendUserCertDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <span class="send-text">Action</span>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="sendUserCertDropdown">
+                                        <li><a class="dropdown-item view" href="#"
+                                                @click="sendCertificate('certificate1')"><i><font-awesome-icon
+                                                        :icon="['fas', 'eye']"
+                                                        style="margin-right: 10px;" /></i>View</a></li>
+                                        <li><a class="dropdown-item generate" href="#"
+                                                @click="generateForm(data.id)"><i><font-awesome-icon
+                                                        :icon="['fas', 'file']"
+                                                        style="margin-right: 10px;" /></i>Generate</a></li>
+                                        <li><a class="dropdown-item delete" href="#"
+                                                @click="sendCertificate('certificate2')"><i><font-awesome-icon
+                                                        :icon="['fas', 'trash']"
+                                                        style="margin-right: 10px;" /></i>Delete</a></li>
+                                    </ul>
                                 </div>
-                                <div class="modal-body">
-                                    <div class="options">
-                                        <button class="individual" data-bs-toggle="modal"
-                                            data-bs-target="#individual">Individual</button>
-                                        <button class="section" data-bs-toggle="modal"
-                                            data-bs-target="#section">Section</button>
-                                        <button class="batch" data-bs-toggle="modal"
-                                            data-bs-target="#batch">Batch</button>
-                                    </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Assign Modal -->
+                <div class="modal fade" id="assign" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Send By</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="basic-addon1">Due Date</span>
+                                    <input type="date" v-model="due_date"class="form-control" placeholder="" aria-describedby="basic-addon1">
+                                </div>
+                                <div class="options">
+                                    <button class="individual" data-bs-toggle="modal"
+                                        data-bs-target="#individual"><i><font-awesome-icon
+                                                :icon="['fas', 'user']" /></i>Individual</button>
+                                    <button class="section" data-bs-toggle="modal"
+                                        data-bs-target="#section"><i><font-awesome-icon
+                                                :icon="['fas', 'user-group']" /></i>Section</button>
+                                    <button class="batch" data-bs-toggle="modal"
+                                        data-bs-target="#batch"><i><font-awesome-icon
+                                                :icon="['fas', 'users']" /></i>Batch</button>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Individual Modal -->
-                    <div class="modal fade" id="individual" tabindex="-1" aria-labelledby="exampleModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">By Individual</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <table id="dailyTimeLog" class="table table-striped table-hover" width="100%">
-                                        <thead>
-                                            <tr>
-                                                <th>Name</th>
-                                                <th>Grade</th>
-                                                <th>Section</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>Bogart The Explorer</td>
-                                                <td>9</td>
-                                                <td>Zigzag</td>
-                                                <td>
-                                                    <button style="padding-right: 5px;" class="card14" type="button"
-                                                        aria-expanded="false">
-                                                        <span class="send-text"><i
-                                                                style="margin-right: 5px;"><font-awesome-icon
-                                                                    :icon="['fas', 'paper-plane']" /></i>Send</span>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                <!-- Individual Modal -->
+                <div class="modal fade" id="individual" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">By Individual</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <table id="dailyTimeLog" class="table table-striped table-hover" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Grade</th>
+                                            <th>Section</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Bogart The Explorer</td>
+                                            <td>9</td>
+                                            <td>Zigzag</td>
+                                            <td>
+                                                <button style="padding-right: 5px;" class="card14" type="button"
+                                                    aria-expanded="false">
+                                                    <span class="send-text"><i
+                                                            style="margin-right: 5px;"><font-awesome-icon
+                                                                :icon="['fas', 'paper-plane']" /></i>Send</span>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Section Modal -->
-                    <div class="modal fade" id="section" tabindex="-1" aria-labelledby="exampleModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog modal-sm">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">By Section</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="dropdown" style="width: 100%;">
-                                        <button style="width: 100%;" class="btn btn-primary dropdown-toggle"
-                                            type="button" id="dropdownMenuButton" data-toggle="dropdown"
-                                            aria-haspopup="true" aria-expanded="false">
-                                            {{ selectedGrade || 'Grade' }}
-                                        </button>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"
-                                            style="width: 100%;">
-                                            <a class="dropdown-item" href="#" @click="selectGrade(1)">1</a>
-                                            <a class="dropdown-item" href="#" @click="selectGrade(2)">2</a>
-                                            <a class="dropdown-item" href="#" @click="selectGrade(3)">3</a>
-                                        </div>
-                                    </div>
-                                    <div class="dropdown" style="width: 100%; margin-top: 20px;">
-                                        <button style="width: 100%;" class="btn btn-primary dropdown-toggle"
-                                            type="button" id="dropdownMenuButton" data-toggle="dropdown"
-                                            aria-haspopup="true" aria-expanded="false">
-                                            {{ selectedSection || 'Section' }}
-                                        </button>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"
-                                            style="width: 100%;">
-                                            <a class="dropdown-item" href="#" @click="selectSection('Yes')">Yes</a>
-                                            <a class="dropdown-item" href="#" @click="selectSection('No')">No</a>
-                                            <a class="dropdown-item" href="#" @click="selectSection('Maybe')">Maybe</a>
-                                        </div>
+                <!-- Section Modal -->
+                <div class="modal fade" id="section" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">By Section</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="dropdown" style="width: 100%;">
+                                    <button style="width: 100%;" class="btn btn-primary dropdown-toggle" type="button"
+                                        id="dropdownGrade" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">
+                                        {{ selectedGrade ? 'Grade ' + selectedGrade : 'Grade' }}
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownGrade" style="width: 100%;">
+                                        <a class="dropdown-item" href="#" @click="selectGrade(7)">Grade 7</a>
+                                        <a class="dropdown-item" href="#" @click="selectGrade(8)">Grade 8</a>
+                                        <a class="dropdown-item" href="#" @click="selectGrade(9)">Grade 9</a>
+                                        <a class="dropdown-item" href="#" @click="selectGrade(10)">Grade 10</a>
+                                        <a class="dropdown-item" href="#" @click="selectGrade(11)">Grade 11</a>
+                                        <a class="dropdown-item" href="#" @click="selectGrade(12)">Grade 12</a>
                                     </div>
                                 </div>
-                                <div class="modal-footer" style="display: flex; justify-content: center;">
-                                    <button type="button" class="btn btn-primary">Send</button>
+                                <div v-if="selectedGrade" class="dropdown" style="width: 100%; margin-top: 20px;">
+                                    <button style="width: 100%;" class="btn btn-primary dropdown-toggle" type="button"
+                                        id="dropdownSection" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">
+                                        {{ selectedSection || 'Section' }}
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownSection" style="width: 100%;">
+                                        <a class="dropdown-item" href="#" v-for="section in getSections(selectedGrade)"
+                                            :key="section" @click="selectSection(section)">{{ section }}</a>
+                                    </div>
                                 </div>
+                            </div>
+                            <div class="modal-footer" style="display: flex; justify-content: center;">
+                                <button type="button" class="btn btn-primary">Send</button>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Batch Modal -->
-                    <div class="modal fade" id="batch" tabindex="-1" aria-labelledby="exampleModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog modal-sm">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">By Section</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="dropdown" style="width: 100%;">
-                                        <button style="width: 100%;" class="btn btn-primary dropdown-toggle"
-                                            type="button" id="dropdownMenuButton" data-toggle="dropdown"
-                                            aria-haspopup="true" aria-expanded="false">
-                                            {{ selectedGrade || 'Grade' }}
-                                        </button>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"
-                                            style="width: 100%;">
-                                            <a class="dropdown-item" href="#" @click="selectGrade(1)">1</a>
-                                            <a class="dropdown-item" href="#" @click="selectGrade(2)">2</a>
-                                            <a class="dropdown-item" href="#" @click="selectGrade(3)">3</a>
-                                        </div>
+                <!-- Batch Modal -->
+                <div class="modal fade" id="batch" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">By Section</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="dropdown" style="width: 100%;">
+                                    <button style="width: 100%;" class="btn btn-primary dropdown-toggle" type="button"
+                                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">
+                                        {{ selectedGrade || 'Grade' }}
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"
+                                        style="width: 100%;">
+                                        <a class="dropdown-item" href="#" @click="selectGrade(1)">1</a>
+                                        <a class="dropdown-item" href="#" @click="selectGrade(2)">2</a>
+                                        <a class="dropdown-item" href="#" @click="selectGrade(3)">3</a>
                                     </div>
                                 </div>
-                                <div class="modal-footer" style="display: flex; justify-content: center;">
-                                    <button type="button" class="btn btn-primary">Send</button>
-                                </div>
+                            </div>
+                            <div class="modal-footer" style="display: flex; justify-content: center;">
+                                <button type="button" class="btn btn-primary">Send</button>
                             </div>
                         </div>
                     </div>
@@ -210,6 +217,7 @@ import axios from 'axios';
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import $ from 'jquery';
+import store from "../../../../State/index.js";
 
 const router = useRouter();
 
@@ -225,6 +233,7 @@ onMounted(async () => {
 
 const selectGrade = (grade) => {
     selectedGrade.value = grade;
+    selectedSection.value = null; // Reset selected section when grade changes
 };
 
 const selectSection = (section) => {
@@ -247,6 +256,7 @@ const getAllGuidanceAdmissionSlips = async () => {
 }
 
 const generateForm = async (form_id) => {
+    store.commit('setLoading', true)
     try {
         const resp = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/generate-guidance-admission/${form_id}`, {
             responseType: 'arraybuffer'
@@ -265,10 +275,32 @@ const generateForm = async (form_id) => {
     catch (error) {
         console.log(error);
     }
+    finally {
+        store.commit('setLoading', false)
+    }
 }
 
+const getSections = (grade) => {
+    // Dummy data, replace with actual data retrieval based on grade
+    if (grade === 7) {
+        return ['Diamond', 'Emerald', 'Ruby'];
+    } else if (grade === 8) {
+        return ['Sampaguita', 'Jasmine', 'Camia'];
+    } else if (grade === 9) {
+        return ['Sodium', 'Rubidium', 'Potassium'];
+    } else if (grade === 10) {
+        return ['Proton', 'Electron', 'Neutron'];
+    } else if (grade === 11) {
+        return ['A', 'B', 'C'];
+    } else if (grade === 12) {
+        return ['A', 'B', 'C'];
+    } else {
+        return [];
+    }
+};
+
 const goToInputs = () => {
-    router.push({ name: 'staff-fieldGuidanceAdmission'})
+    router.push({ name: 'staff-fieldGuidanceAdmission' })
 }
 
 </script>
@@ -304,12 +336,16 @@ const goToInputs = () => {
 
 .options button {
     width: 30%;
-    height: 40px;
+    height: 60px;
     border: none;
     border-radius: 5px;
     color: white;
     font-weight: 500;
     font-size: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .options .individual,
@@ -329,15 +365,32 @@ const goToInputs = () => {
 }
 
 .sub-header .buttons {
-    gap: 3%;
+    gap: 8px;
     display: flex;
-    width: 25%;
+    align-items: center;
+    justify-content: end;
+    width: 100%;
 }
 
 .sub-header button {
     border: none;
-    width: 190px;
+    width: 120px;
     border-radius: 5px;
+    height: 40px;
+    color: white;
+    font-weight: 500;
+    font-size: 15px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
+}
+
+.sub-header a {
+    text-decoration: none;
+    border: none;
+    width: 120px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     height: 40px;
     color: white;
     font-weight: 500;
@@ -381,6 +434,8 @@ const goToInputs = () => {
         max-width: 100%;
         margin-top: 7px;
         white-space: initial;
+        justify-content: center;
+        align-items: center;
     }
 }
 

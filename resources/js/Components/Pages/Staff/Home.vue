@@ -1,7 +1,6 @@
 <template>
     <div class="container">
         <div class="main-content">
-
             <div class="table-card">
                 <div class="content-text">Dashboard
                 </div>

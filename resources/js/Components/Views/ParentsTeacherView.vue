@@ -6,6 +6,9 @@ import store from '../../State/index.js';
 
 const router = useRouter();
 
+const role = localStorage.getItem('role');
+const firstname = ref('');
+
 const showSidebar = ref(true);
 const showMobileSidebar = ref(false);
 const showForms = ref(true); // Control visibility of forms container
@@ -70,15 +73,45 @@ onMounted(() => {
     window.addEventListener('resize', updateScreenWidth);
     window.addEventListener('scroll', handleScroll);
     initializeHamburgers();
+    getUserProfile();
 });
 onBeforeUnmount(() => {
     window.removeEventListener('resize', updateScreenWidth);
     window.removeEventListener('scroll', handleScroll);
 });
 
+const getUserProfile = async () => {
+    try {
+        const user_id = localStorage.getItem('user_id');
+        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/get-user-data/${user_id}`)
+        console.log(response.data.data.firstname)
+        firstname.value = response.data.data.firstname
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
 
 const handleLogout = async () => {
     store.commit('setLoading', true);
+    try {
+        const token = localStorage.getItem('token');
+        const headers = { Authorization: `Bearer ${token}` };
+
+        const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/logout`, {}, { headers });
+
+        if (response.status === 200) {
+            localStorage.removeItem('token');
+            localStorage.setItem('valid', false);
+            router.push({ name: 'login' })
+        }
+    }
+    catch (error) {
+        console.log(error);
+    }
+    finally {
+        store.commit('setLoading', false);
+    }
 }
 
 </script>
@@ -88,9 +121,12 @@ const handleLogout = async () => {
         <!-- Web Sidebar -->
         <div class="sidebar sticky-top" v-show="screenWidth > 991" :class="{ 'minimized': !showSidebar }">
             <RouterLink to="" class="sidebar-logo" style="text-decoration: none;">
-                <img loading="lazy" src="../../../../public/external/C-Logo.png" class="img" />
-                <div v-if="showSidebar" class="logo-text">
-                    <div class="phs"><span class="certi">G</span><span class="code">RASS</span></div>
+                <div style="display: flex;">
+                    <img loading="lazy" src="../../../../public/external/logo-g.png" class="img"
+                        :class="{ 'img-small': !showSidebar }" />
+                    <div v-if="showSidebar" class="logo-text">
+                        <div class="phs"><span class="code">RASS</span></div>
+                    </div>
                 </div>
             </RouterLink>
             <div class="menu">
@@ -114,7 +150,7 @@ const handleLogout = async () => {
                     </div>
                     <div v-show="showForms">
                         <ul class="menu-option" :class="{ 'centered': !showSidebar }">
-                            <li>
+                            <li v-if="role == 'parent'">
                                 <RouterLink to="parentsTeacherParentQuestionnaire" class="form-sidebar-menu"
                                     active-class="form-active" style="text-decoration: none;" title="Intake Interview
                                             Form">
@@ -147,9 +183,12 @@ const handleLogout = async () => {
         <!-- Mobile Sidebar -->
         <div class="mobile-sidebar sticky-top" v-show="screenWidth < 991" :class="{ 'show': showMobileSidebar }">
             <RouterLink to="" class="sidebar-logo" style="text-decoration: none;">
-                <img loading="lazy" src="../../../../public/external/C-Logo.png" class="img" />
-                <div class="logo-text">
-                    <div class="phs"><span class="certi">G</span><span class="code">RASS</span></div>
+                <div style="display: flex;">
+                    <img loading="lazy" src="../../../../public/external/logo-g.png" class="img"
+                        :class="{ 'img-small': !showSidebar }" />
+                    <div v-if="showSidebar" class="logo-text">
+                        <div class="phs"><span class="code">RASS</span></div>
+                    </div>
                 </div>
             </RouterLink>
             <div class="menu">
@@ -173,7 +212,7 @@ const handleLogout = async () => {
                     </div>
                     <div v-show="showForms">
                         <ul class="menu-option" :class="{ 'centered': !showSidebar }">
-                            <li>
+                            <li v-if="role == 'parent'">
                                 <RouterLink to="parentsTeacherParentQuestionnaire" class="form-sidebar-menu"
                                     active-class="form-active" style="text-decoration: none;" title="Intake Interview
                                             Form">
@@ -225,10 +264,10 @@ const handleLogout = async () => {
                     <button class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false"
                         style="display: flex; justify-content: center; align-items: center;">
-                        <span class="dropdown-text">Hi Bogart</span>
+                        <span class="dropdown-text">{{ firstname }}</span>
                         <i class="icon fas fa-chevron-down"></i>
                         <div class="image-container">
-                            <img src="../../../../public/user.jpg" alt="Avatar">
+                            <img src="../../../../public/external/user.png" alt="Avatar">
                         </div>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -294,6 +333,7 @@ const handleLogout = async () => {
     height: 40px;
     border-radius: 50%;
     margin-right: 10px;
+    border: 3px solid #2087E4;
 }
 
 .dropdown-toggle .icon {
@@ -453,17 +493,24 @@ const handleLogout = async () => {
 .sidebar-logo {
     background-color: #ffffff !important;
     display: flex;
-    justify-content: center;
-    color: var(--Black, #191919);
-    padding: 18px 55px;
     align-items: center;
-    gap: 15px;
-    margin-top: 5px;
+    justify-content: center;
+    padding-bottom: 30px;
+    padding-top: 40px;
+    width: 100%;
+    height: 10%;
+    text-decoration: none;
 }
 
 .sidebar-logo img {
-    width: 35px;
+    width: 55px;
+    height: 50px;
     border-radius: 5px;
+}
+
+.sidebar-logo .img-small {
+    width: 45px;
+    height: 40px;
 }
 
 .header {
@@ -508,8 +555,8 @@ const handleLogout = async () => {
 }
 
 .logo-text .phs .code {
-    font-size: 20px;
-    color: #2087E4;
+    font-size: 30px;
+    color: #3EA1E0;
 }
 
 .logout-button {

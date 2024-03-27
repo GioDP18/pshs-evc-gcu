@@ -10,7 +10,12 @@ class Requests extends Model
     protected $fillable = [
         'form_name',
         'user_id',
+        'status',
     ];
 
     use HasFactory;
+
+    public function user(){
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

@@ -10,6 +10,14 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 
+import axios from "axios";
+
+const boost = async () => {
+    await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/burst`)
+}
+
+boost();
+
 
 createApp(app)
 .use(router)

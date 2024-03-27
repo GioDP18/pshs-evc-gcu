@@ -61,7 +61,7 @@ Class AssignmentServiceImpl implements AssignmentService
             return response()->json([
                 "success" => true,
                 "message" => "Assignment was sent to the assignee.",
-                "data" => $result
+                "data" => $get_all_assignee
             ], 200);
         }
         catch (\Exception $error){

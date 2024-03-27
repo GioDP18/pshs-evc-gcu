@@ -1,31 +1,14 @@
-<script setup>
-import axios from 'axios';
-import { ref, onMounted } from 'vue';
-import $ from 'jquery';
-
-const allUsers = ref([]);
-
-onMounted(async () => {
-    // await getUsers();
-    initializeDataTable();
-});
-
-const initializeDataTable = () => {
-    $('#dailyTimeLog').DataTable();
-};
-
-</script>
-
-
 <template>
     <div class="main-content">
         <div class="content">
             <div class="table-card">
                 <div class="sub-header">
                     <div class="content-text">Client Monitoring Form</div>
-                    <button>Request Form</button>
+                    <button @click="handleRequest" v-if="status === false">Request</button>
+                    <button @click="handleRequest" v-if="status === 'pending'" style="cursor:not-allowed" disabled>Request</button>
+                    <button @click="goToFill" v-if="status === 'approved'">Fill Form</button>
                 </div>
-                <table id="dailyTimeLog" class="table table-striped table-hover" width="100%">
+                <table id="table-cmf" class="table table-striped table-hover" width="100%">
                     <thead>
                         <tr>
                             <th>ID Number</th>
@@ -70,6 +53,85 @@ const initializeDataTable = () => {
         </div>
     </div>
 </template>
+
+<script setup>
+import axios from 'axios';
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import $ from 'jquery';
+
+const status = ref(null);
+const router = useRouter();
+
+onMounted(async () => {
+    // await getUsers();
+    initializeDataTable();
+    checkRequest();
+});
+
+const initializeDataTable = () => {
+    $('#table-cmf').DataTable();
+};
+
+const createRequest = async () => {
+    try{
+        const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/request-form`, {
+            form_name: 'Client Monitoring Form',
+            user_id: localStorage.getItem('user_id')
+        });
+        console.log(response.data);
+        if(response.status === 200){
+            swal({
+                title: "Request sent.",
+                icon: "success",
+                button: "Okay",
+            });
+        }
+        checkRequest();
+    }
+    catch(error){
+        console.log(error);
+    }
+}
+
+const handleRequest = () => {
+    swal({
+        title: "Request Client Monitoring Form?",
+        icon: "info",
+        buttons: true,
+    })
+    .then((willDelete) => {
+        if (willDelete) {
+            createRequest();
+        }
+    });
+};
+
+const checkRequest = async () => {
+    try{
+        const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/check-request`, {
+            user_id: localStorage.getItem('user_id'),
+            form_name: 'Client Monitoring Form'
+        })
+        if(response.status === 200){
+            status.value = response.data.data.status
+        }
+        if(response.status === 201){
+            status.value = false
+        }
+
+
+    }
+    catch(error){
+        console.log(error);
+    }
+}
+
+const goToFill = () => {
+    router.push({ name: 'student-fillClientMonitoring'})
+}
+
+</script>
 
 
 <style scoped>

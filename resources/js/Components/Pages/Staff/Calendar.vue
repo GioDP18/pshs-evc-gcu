@@ -1,6 +1,6 @@
 <template>
-    <div class="d-flex gap-5">
-        <div style="width:70%; border:2px solid #67a5fc; border-radius:20px 20px 0 0; overflow:hidden;">
+    <div class="d-flex gap-5 container">
+        <div class="calendar">
             <div style="height:30px; background-color:#67a5fc;"></div>
             <el-calendar v-model="value">
                 <template #date-cell="{ data }">
@@ -17,14 +17,8 @@
                     <div><b>Choose Available Time:</b></div>
                     <div class="ml-4 mt-2 d-flex gap-4" style="flex-wrap:wrap;">
                         <div class="d-flex" style="width:10rem" v-for="timeSlot in fixedTimeSlots" :key="timeSlot">
-                            <input
-                                type="checkbox"
-                                :id="timeSlot"
-                                :value="timeSlot"
-                                :checked="availableTimeSlots.includes(timeSlot)"
-                                @change="handleChange(timeSlot)"
-
-                            >
+                            <input type="checkbox" :id="timeSlot" :value="timeSlot"
+                                :checked="availableTimeSlots.includes(timeSlot)" @change="handleChange(timeSlot)">
                             <label :for="timeSlot" class="m-1">{{ timeSlot }}</label>
                         </div>
                     </div>
@@ -34,13 +28,17 @@
                 </div>
             </el-dialog>
         </div>
-        <div style="width:30%">
+        <div class="details">
             <div class="d-flex flex-column gap-3">
                 <div style="width:100%; padding:10px; border-radius:20px; border:2px solid #fbebeb">
                     <p style="font-weight:bold; color:gray; font-size:15px; opacity:60%">Appoinments for today</p>
                     <div class="ml-4" style="overflow-x: auto;">
                         <div class="appointment d-flex" v-for="item in appointments_today" :key="item.id">
-                           <p style="font-weight:bold; color:#27516B"><i class="fa-regular fa-clock" style="color:#ED9696"></i> {{ item.available_time }} <br> <i class="fa-regular fa-user" style="color:#ED9696"></i> {{ item.reserved_user.firstname }} {{ item.reserved_user.lastname }}</p>
+                            <p style="font-weight:bold; color:#27516B"><i class="fa-regular fa-clock"
+                                    style="color:#ED9696"></i>
+                                {{ item.available_time }} <br> <i class="fa-regular fa-user" style="color:#ED9696"></i>
+                                {{
+                item.reserved_user.firstname }} {{ item.reserved_user.lastname }}</p>
                         </div>
                     </div>
                 </div>
@@ -48,16 +46,22 @@
                 <div style="width:100%; padding:10px; border-radius:20px; border:2px solid #fbebeb">
                     <p style="font-weight:bold; color:gray; font-size:15px; opacity:60%">Available time for today</p>
                     <div class="ml-4">
-                        <p style="font-weight:bold; color:#27516B" v-if="available_time_today.length === 0">No Available time for today.</p>
-                        <p style="font-weight:bold; color:#27516B" v-for="item in available_time_today" :key="item.id"><i class="fa-regular fa-clock" style="color:#ED9696"></i> {{ item.available_time }}</p>
+                        <p style="font-weight:bold; color:#27516B" v-if="available_time_today.length === 0">No Available
+                            time
+                            for today.</p>
+                        <p style="font-weight:bold; color:#27516B" v-for="item in available_time_today" :key="item.id">
+                            <i class="fa-regular fa-clock" style="color:#ED9696"></i> {{ item.available_time }}
+                        </p>
                     </div>
                 </div>
 
                 <div style="width:100%; padding:10px; border-radius:20px; border:2px solid #fbebeb">
                     <p style="font-weight:bold; color:gray; font-size:15px; opacity:60%">Participants</p>
                     <div class="d-flex gap-2">
-                        <p style="font-weight:bold; color:#27516B; font-size:30px;"><i class="fa-regular fa-circle-user" style="color:#9DCBF3"></i></p>
-                        <p style="font-weight:bold; color:#27516B; font-size:30px;"><i class="fa-regular fa-circle-user" style="color:#ED9696"></i></p>
+                        <p style="font-weight:bold; color:#27516B; font-size:30px;"><i class="fa-regular fa-circle-user"
+                                style="color:#9DCBF3"></i></p>
+                        <p style="font-weight:bold; color:#27516B; font-size:30px;"><i class="fa-regular fa-circle-user"
+                                style="color:#ED9696"></i></p>
                     </div>
                 </div>
             </div>
@@ -75,6 +79,7 @@ const value = ref(new Date())
 const modalVisible = ref(false)
 const selectedDate = ref(null)
 const selectedTimeSlots = ref([])
+const user_id_reserved = ref([])
 const availableTimeSlots = reactive([])
 const fixedTimeSlots = [
     '8:00 AM - 9:00 AM', '9:00 AM - 10:00 AM', '10:00 AM - 11:00 AM', '11:00 AM - 12:00 PM',
@@ -91,6 +96,7 @@ onMounted(() => {
 
 const handleDateClick = async (data) => {
     selectedTimeSlots.value = []
+    user_id_reserved.value = []
     try {
         const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/get-schedule/${data.day}`)
         console.log(response.data);
@@ -107,13 +113,14 @@ const updateSchedule = async () => {
     try {
         const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/update-schedule`, {
             available_time: selectedTimeSlots.value,
-            date: selectedDate.value
+            date: selectedDate.value,
+            user_id_reserved: user_id_reserved.value,
         })
         console.log(response.data);
         modalVisible.value = false
         available_time_today.value = []
         getTimeAvailableToday();
-        if(response){
+        if (response) {
             swal({
                 title: response.data.message,
                 icon: "success",
@@ -136,23 +143,23 @@ const handleChange = (time) => {
 }
 
 const getTimeAvailableToday = async () => {
-    try{
+    try {
         const result = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/get-available-time-today`)
         console.log(result.data)
         available_time_today.value = result.data.schedule
     }
-    catch(error){
+    catch (error) {
         console.error(error);
     }
 }
 
 const getAppointmentsToday = async () => {
-    try{
+    try {
         const result = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/get-appointments-today`)
         console.log(result.data)
         appointments_today.value = result.data.appointments
     }
-    catch(error){
+    catch (error) {
         console.error(error);
     }
 }
@@ -165,11 +172,37 @@ const getAppointmentsToday = async () => {
     cursor: pointer;
 }
 
-.appointment::before{
+.appointment::before {
     content: "";
     width: 5px;
     height: 50px;
     background-color: #75a6ea;
     margin-right: 7px
+}
+
+.calendar {
+    width: 70%;
+    border: 2px solid #67a5fc;
+    border-radius: 20px 20px 0 0;
+    overflow: hidden;
+}
+
+.details {
+    width: 30%
+}
+
+@media screen and (max-width:360px) {
+    .calendar {
+        width: 100%;
+    }
+
+    .container {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .details {
+        width: 100%;
+    }
 }
 </style>

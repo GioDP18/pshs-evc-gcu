@@ -138,6 +138,7 @@ const reserveConsultation = async () => {
             });
         }
         modalVisible.value = false
+        getTimeAvailableToday();
     }
     catch (error) {
         console.error(error);

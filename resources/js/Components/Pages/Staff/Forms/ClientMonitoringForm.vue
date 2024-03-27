@@ -10,6 +10,8 @@
                         <button class="assign" data-bs-toggle="modal" data-bs-target="#assign"><i
                                 style="margin-right: 5px;"><font-awesome-icon
                                     :icon="['fas', 'user-plus']" /></i>Assign</button>
+                        <button class="create" @click="goToRequests"><i style="margin-right: 5px;"><font-awesome-icon
+                                    :icon="['fas', 'bell']" /></i>Requests</button>
                     </div>
                 </div>
                 <table id="table-cmf" class="table table-striped table-hover" width="100%">
@@ -65,12 +67,20 @@
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="basic-addon1">Due Date</span>
+                                    <input type="date" v-model="due_date"class="form-control" placeholder="" aria-describedby="basic-addon1">
+                                </div>
                                 <div class="options">
                                     <button class="individual" data-bs-toggle="modal"
-                                        data-bs-target="#individual">Individual</button>
+                                        data-bs-target="#individual"><i><font-awesome-icon
+                                                :icon="['fas', 'user']" /></i>Individual</button>
                                     <button class="section" data-bs-toggle="modal"
-                                        data-bs-target="#section">Section</button>
-                                    <button class="batch" data-bs-toggle="modal" data-bs-target="#batch">Batch</button>
+                                        data-bs-target="#section"><i><font-awesome-icon
+                                                :icon="['fas', 'user-group']" /></i>Section</button>
+                                    <button class="batch" data-bs-toggle="modal"
+                                        data-bs-target="#batch"><i><font-awesome-icon
+                                                :icon="['fas', 'users']" /></i>Batch</button>
                                 </div>
                             </div>
                         </div>
@@ -131,28 +141,25 @@
                             <div class="modal-body">
                                 <div class="dropdown" style="width: 100%;">
                                     <button style="width: 100%;" class="btn btn-primary dropdown-toggle" type="button"
-                                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                        id="dropdownGrade" data-toggle="dropdown" aria-haspopup="true"
                                         aria-expanded="false">
-                                        {{ selectedGrade || 'Grade' }}
+                                        {{ selectedGrade ? 'Grade ' + selectedGrade : 'Grade' }}
                                     </button>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"
-                                        style="width: 100%;">
-                                        <a class="dropdown-item" href="#" @click="selectGrade(1)">1</a>
-                                        <a class="dropdown-item" href="#" @click="selectGrade(2)">2</a>
-                                        <a class="dropdown-item" href="#" @click="selectGrade(3)">3</a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownGrade" style="width: 100%;">
+                                        <a class="dropdown-item" href="#" @click="selectGrade(1)">Grade 1</a>
+                                        <a class="dropdown-item" href="#" @click="selectGrade(2)">Grade 2</a>
+                                        <a class="dropdown-item" href="#" @click="selectGrade(3)">Grade 3</a>
                                     </div>
                                 </div>
-                                <div class="dropdown" style="width: 100%; margin-top: 20px;">
+                                <div v-if="selectedGrade" class="dropdown" style="width: 100%; margin-top: 20px;">
                                     <button style="width: 100%;" class="btn btn-primary dropdown-toggle" type="button"
-                                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                        id="dropdownSection" data-toggle="dropdown" aria-haspopup="true"
                                         aria-expanded="false">
                                         {{ selectedSection || 'Section' }}
                                     </button>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"
-                                        style="width: 100%;">
-                                        <a class="dropdown-item" href="#" @click="selectSection('Yes')">Yes</a>
-                                        <a class="dropdown-item" href="#" @click="selectSection('No')">No</a>
-                                        <a class="dropdown-item" href="#" @click="selectSection('Maybe')">Maybe</a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownSection" style="width: 100%;">
+                                        <a class="dropdown-item" href="#" v-for="section in getSections(selectedGrade)"
+                                            :key="section" @click="selectSection(section)">{{ section }}</a>
                                     </div>
                                 </div>
                             </div>
@@ -162,6 +169,7 @@
                         </div>
                     </div>
                 </div>
+
 
                 <!-- Batch Modal -->
                 <div class="modal fade" id="batch" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -179,11 +187,13 @@
                                         aria-expanded="false">
                                         {{ selectedGrade || 'Grade' }}
                                     </button>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"
-                                        style="width: 100%;">
-                                        <a class="dropdown-item" href="#" @click="selectGrade(1)">1</a>
-                                        <a class="dropdown-item" href="#" @click="selectGrade(2)">2</a>
-                                        <a class="dropdown-item" href="#" @click="selectGrade(3)">3</a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownGrade" style="width: 100%;">
+                                        <a class="dropdown-item" href="#" @click="selectGrade(7)">Grade 7</a>
+                                        <a class="dropdown-item" href="#" @click="selectGrade(8)">Grade 8</a>
+                                        <a class="dropdown-item" href="#" @click="selectGrade(9)">Grade 9</a>
+                                        <a class="dropdown-item" href="#" @click="selectGrade(10)">Grade 10</a>
+                                        <a class="dropdown-item" href="#" @click="selectGrade(11)">Grade 11</a>
+                                        <a class="dropdown-item" href="#" @click="selectGrade(12)">Grade 12</a>
                                     </div>
                                 </div>
                             </div>
@@ -203,7 +213,7 @@
 import DataTable from 'datatables.net-vue3';
 import DataTablesCore from 'datatables.net-bs5';
 import axios from 'axios';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import $ from 'jquery';
 
@@ -214,27 +224,49 @@ const selectedGrade = ref(null);
 const selectedSection = ref(null);
 
 onMounted(async () => {
-    // await getUsers();
     initializeDataTable();
 });
 
 const initializeDataTable = () => {
-    $('#table-cmf').DataTable();
+    $('#tale-cmf').DataTable();
 };
 
 const selectGrade = (grade) => {
     selectedGrade.value = grade;
+    selectedSection.value = null;
 };
 
 const selectSection = (section) => {
     selectedSection.value = section;
 };
 
+const getSections = (grade) => {
+    // Dummy data, replace with actual data retrieval based on grade
+    if (grade === 7) {
+        return ['Diamond', 'Emerald', 'Ruby'];
+    } else if (grade === 8) {
+        return ['Sampaguita', 'Jasmine', 'Camia'];
+    } else if (grade === 9) {
+        return ['Sodium', 'Rubidium', 'Potassium'];
+    } else if (grade === 10) {
+        return ['Proton', 'Electron', 'Neutron'];
+    } else if (grade === 11) {
+        return ['A', 'B', 'C'];
+    } else if (grade === 12) {
+        return ['A', 'B', 'C'];
+    } else {
+        return [];
+    }
+};
+
 const goToInputs = () => {
-    router.push({ name: 'staff-fieldClientMonitoring'})
+    router.push({ name: 'staff-fieldClientMonitoring' })
+}
+
+const goToRequests = () => {
+    router.push({ name: 'staff-requestClientMonitoring' })
 }
 </script>
-
 
 <style scoped>
 .main-content {
@@ -260,12 +292,16 @@ const goToInputs = () => {
 
 .options button {
     width: 30%;
-    height: 40px;
+    height: 60px;
     border: none;
     border-radius: 5px;
     color: white;
     font-weight: 500;
     font-size: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .options .individual,
@@ -285,14 +321,16 @@ const goToInputs = () => {
 }
 
 .sub-header .buttons {
-    gap: 3%;
+    gap: 8px;
     display: flex;
-    width: 25%;
+    align-items: center;
+    justify-content: end;
+    width: 100%;
 }
 
 .sub-header button {
     border: none;
-    width: 190px;
+    width: 120px;
     border-radius: 5px;
     height: 40px;
     color: white;
@@ -337,6 +375,8 @@ const goToInputs = () => {
         max-width: 100%;
         margin-top: 7px;
         white-space: initial;
+        justify-content: center;
+        align-items: center;
     }
 }
 
