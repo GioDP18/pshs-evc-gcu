@@ -18,4 +18,8 @@ class GetFormsController extends Controller
     public function getAllGuidanceAdmissionSlips(){
         return $this->getFormsService->getAllGuidanceAdmissionSlips();
     }
+
+    public function getAllGuidanceCallSlips(){
+        return $this->getFormsService->getAllGuidanceCallSlips();
+    }
 }

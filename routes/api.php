@@ -66,10 +66,12 @@ Route::group([
     // Get All Forms
     Route::get('/get-all-intake-interview-forms', [GetFormsController::class, 'getAllIntakeInterviewForms']);
     Route::get('/get-all-guidance-admission-slips', [GetFormsController::class, 'getAllGuidanceAdmissionSlips']);
+    Route::get('/get-all-guidance-call-slips', [GetFormsController::class, 'getAllGuidanceCallSlips']);
 
     // Submit Forms
     Route::post('/submit-intake-interview', [SaveInputsController::class, 'submitIntakeInterview']);
     Route::post('/submit-guidance-admission-slip', [SaveInputsController::class, 'submitGuidanceAdmissionSlip']);
+    Route::post('/submit-guidance-call-slip', [SaveInputsController::class, 'submitGuidanceCallSlip']);
     Route::post('/submit-referral-form', [SaveInputsController::class, 'submitReferralForm']);
 
     // Assignment

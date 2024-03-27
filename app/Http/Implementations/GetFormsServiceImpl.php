@@ -5,6 +5,7 @@ namespace App\Http\Implementations;
 
 use App\Http\Services\GetFormsService;
 use App\Models\GuidanceAdmissionSlip;
+use App\Models\GuidanceCallSlip;
 use App\Models\IntakeInterviewForm;
 use Illuminate\Http\Request;
 
@@ -50,6 +51,31 @@ Class GetFormsServiceImpl implements GetFormsService
             return response()->json([
                 "success" => true,
                 "message" => "Fetched All Guidance Admission Slips.",
+                "data" => $data
+            ], 200);
+        }
+        catch (\Exception $error){
+            return response()->json([
+                "success"=> false,
+                "message"=> $error->getMessage()
+            ]);
+        }
+    }
+
+    public function getAllGuidanceCallSlips(){
+        try{
+            $data = GuidanceCallSlip::all();
+
+            if(!$data){
+                return response()->json([
+                    "success" => false,
+                    "message" => "Internal Server Error.",
+                ], 500);
+            }
+
+            return response()->json([
+                "success" => true,
+                "message" => "Fetched All Guidance Call Slips.",
                 "data" => $data
             ], 200);
         }
