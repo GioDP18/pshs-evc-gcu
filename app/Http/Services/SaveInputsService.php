@@ -10,5 +10,7 @@ interface SaveInputsService
 
     public function submitGuidanceAdmissionSlip(Request $request);
 
+    public function submitGuidanceCallSlip(Request $request);
+
     public function submitReferralForm(Request $request);
 }

@@ -9,4 +9,6 @@ interface GetFormsService
     public function getAllIntakeInterviewForms();
 
     public function getAllGuidanceAdmissionSlips();
+
+    public function getAllGuidanceCallSlips();
 }

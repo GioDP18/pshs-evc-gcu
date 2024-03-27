@@ -4,6 +4,7 @@ namespace App\Http\Implementations;
 
 
 use App\Http\Services\SaveInputsService;
+use App\Models\GcsPk;
 use App\Models\GuidanceAdmissionSlip;
 use App\Models\GuidanceCallSlip;
 use App\Models\IntakeInterviewForm;
@@ -70,30 +71,43 @@ Class SaveInputsServiceImpl implements SaveInputsService
     }
 
     public function submitGuidanceCallSlip(Request $request){
-        $data = GuidanceCallSlip::create([
-            'user_id' => $request->user_id,
+        $result1 = GuidanceCallSlip::create([
             'campus' => $request->campus,
-            'name_of_student' => $request->name_of_student,
-            'grade_and_section' => $request->grade_and_section,
-            'dear' => $request->dear,
-            'last_visited_date' => $request->last_visited_date,
-            'last_visited_time_start' => $request->last_visited_time_start,
-            'last_visited_time_end' => $request->last_visited_time_end,
+            'date' => $request->date,
+            'time' => $request->time,
+            'type_of_counseling' => $request->type_of_counseling,
+            'counseling_time_start' => $request->counseling_time_start,
+            'counseling_time_end' => $request->counseling_time_end,
             'guidance_counselor' => $request->guidance_counselor,
-            'recieved_by' => $request->recieved_by
+            'teacher_in_charge' => $request->teacher_in_charge,
         ]);
 
-        if(!$data){
+        if(!$result1){
             return response()->json([
                 "success" => false,
                 "message" => "Internal Server Error.",
             ], 500);
         }
 
+        $result2 = GcsPk::create([
+            'gcs_id' => $result1->id,
+            's1' => $request->s1,
+            's2' => $request->s2,
+            's3' => $request->s3,
+            's4' => $request->s4,
+            's5' => $request->s5,
+            'gs1' => $request->gs1,
+            'gs2' => $request->gs2,
+            'gs3' => $request->gs3,
+            'gs4' => $request->gs4,
+            'gs5' => $request->gs5,
+        ]);
+
         return response()->json([
             "success" => true,
             "message" => "Guidance Admission slip Submitted Successfully.",
-            "data" => $data
+            "data1" => $result1,
+            "data2" => $result2
         ], 200);
     }
 

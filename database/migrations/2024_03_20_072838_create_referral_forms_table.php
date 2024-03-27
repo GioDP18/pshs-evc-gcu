@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name_of_student');
             $table->string('grade_and_section');
             $table->string('date');
-            $table->enum('concern', ['Academic', 'Behavior', 'Personal']);
+            $table->json('concern');
             $table->text('brief_description')->max_length();
             $table->text('intervention_done');
             $table->boolean('follow_up');

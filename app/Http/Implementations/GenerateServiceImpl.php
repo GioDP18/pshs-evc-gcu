@@ -42,9 +42,6 @@ Class GenerateServiceImpl implements GenerateService
             );
             $result->saveFiles(public_path('intake_interview\\'. 'John Vincent Ramada' . '.pdf'));
 
-            $headers = [
-                'Content-Type' => 'application/pdf',
-            ];
             return response()->download(public_path('intake_interview\\' . 'John Vincent Ramada' . '.pdf'));
             
     }
@@ -85,26 +82,16 @@ Class GenerateServiceImpl implements GenerateService
         $templateProcessor->setValue('grade-section', $referral->grade_and_section);
         $templateProcessor->setValue('date', $referral->date);
 
-        if($referral->concern == 'Academic')
-        {
-            $templateProcessor->setValue('concern-academic', '✖️');
-        }else
-        {
-            $templateProcessor->setValue('concern-academic', '');
-        }
-        if($referral->concern == 'Behavior')
-        {
-            $templateProcessor->setValue('concern-behavior', '✖️');
-        }else
-        {
-            $templateProcessor->setValue('concern-behavior', '');
-        }
-        if($referral->concern == 'Personal')
-        {
-            $templateProcessor->setValue('concern-personal', '✖️');
-        }else
-        {
-            $templateProcessor->setValue('concern-personal', '');
+        $concernArray = json_decode($referral->consern, true);
+
+        $concerns = ['Academic', 'Behavior', 'Personal'];
+
+        foreach ($concerns as $concern) {
+            if (in_array($concern, $concernArray)) {
+                $templateProcessor->setValue('concern-' . strtolower($concern), '✖️');
+            } else {
+                $templateProcessor->setValue('concern-' . strtolower($concern), '');
+            }
         }
 
         $templateProcessor->setValue('brief-description', $referral->brief_description);
@@ -305,11 +292,7 @@ Class GenerateServiceImpl implements GenerateService
         );
         $result->saveFiles(public_path('guidance_call_slip\\'. 'John Vincent Ramada' . '.pdf'));
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Successfully generated guidance call slip form',
-            'result' => $guid_call,
-        ], 201);
+        return response()->download(public_path('guidance_call_slip\\' . 'John Vincent Ramada' . '.pdf'));
     }
 
     public function generateParentQuestionaire(Request $request)
