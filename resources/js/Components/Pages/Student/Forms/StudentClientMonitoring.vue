@@ -6,7 +6,7 @@
                     <div class="content-text">Client Monitoring Form</div>
                     <button @click="handleRequest" v-if="status === false">Request</button>
                     <button @click="handleRequest" v-if="status === 'pending'" style="cursor:not-allowed" disabled>Request</button>
-                    <button @click="goToFill" v-if="status == 'approved'">Fill Form</button>
+                    <button @click="goToFill" v-if="status === 'approved'">Fill Form</button>
                 </div>
                 <table id="table-cmf" class="table table-striped table-hover" width="100%">
                     <thead>

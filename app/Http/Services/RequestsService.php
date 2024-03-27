@@ -16,4 +16,6 @@ interface RequestsService
     public function rejectRequest($id);
 
     public function getIntakeInterviewFormRequest();
+
+    public function getClientMonitoringFormRequest();
 }
