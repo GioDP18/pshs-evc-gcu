@@ -54,7 +54,7 @@ import ParentsTeacherProfilePage from "../Components/Pages/ParentsTeacher/Parent
 import ParentsTeacherParentQuestionnaire from "../Components/Pages/ParentsTeacher/Forms/ParentsTeacherParentQuestionnaire.vue";
 import ParentsTeacherReferralForm from "../Components/Pages/ParentsTeacher/Forms/ParentsTeacherReferralForm.vue";
 //Fields
-import ParentsTeacherRequestReferral from "../Components/Pages/ParentsTeacher/FillForm/ParentsTeacherRequestReferral.vue";
+import FillReferral from "../Components/Pages/ParentsTeacher/FillForm/FillReferralForm.vue";
 
 import NotFound from "../Components/404.vue";
 
@@ -271,9 +271,9 @@ const routes = [
             },
             //FIELDS
             {
-                path: "parentsTeacherRequestReferral",
-                component: ParentsTeacherRequestReferral,
-                name: "parentsTeacher-RequestReferral",
+                path: "fillReferral",
+                component: FillReferral,
+                name: "parentsTeacher-fillReferral",
             },
         ],
     },

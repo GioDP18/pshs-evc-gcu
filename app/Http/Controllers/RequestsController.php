@@ -34,4 +34,8 @@ class RequestsController extends Controller
     public function getClientMonitoringFormRequest(){
         return $this->requestsService->getClientMonitoringFormRequest();
     }
+
+    public function getReferralFormRequest(){
+        return $this->requestsService->getReferralFormRequest();
+    }
 }
