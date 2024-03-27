@@ -14,58 +14,94 @@ const initializeDataTable = () => {
     $('#dailyTimeLog').DataTable();
 };
 
+const createRequest = async () => {
+    try {
+        const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/request-form`, {
+            form_name: 'Referral Form',
+            user_id: localStorage.getItem('user_id')
+        });
+        console.log(response.data);
+        if (response.status === 200) {
+            swal({
+                title: "Request sent.",
+                icon: "success",
+                button: "Okay",
+            });
+        }
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+const handleRequest = () => {
+    swal({
+        title: "Request Referral Form?",
+        icon: "info",
+        buttons: true,
+    })
+        .then((willDelete) => {
+            if (willDelete) {
+                createRequest();
+            }
+        });
+};
+
 </script>
 
 
 <template>
     <div class="main-content">
-        <div class="column-1">
-            <div class="table-card">
-                <div class="sub-header">
-                    <div class="content-text">Referral Form</div>
-                    <button>Request Form</button>
+        <div class="content">
+            <div class="column-1">
+                <div class="table-card">
+                    <div class="sub-header">
+                        <div class="content-text">Referral Form</div>
+                        <button @click="handleRequest">Request Form</button>
+                    </div>
+                    <table id="dailyTimeLog" class="table table-striped table-hover" width="100%">
+                        <thead>
+                            <tr>
+                                <th>ID Number</th>
+                                <th>Name</th>
+                                <th>Gender</th>
+                                <th>Date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>123</td>
+                                <td>Bogart The Explorer</td>
+                                <td>Male</td>
+                                <td>July 1, 2002</td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button style="padding-right: 10px;" class="card14 dropdown-toggle"
+                                            type="button" id="sendUserCertDropdown" data-bs-toggle="dropdown"
+                                            aria-expanded="false">
+                                            <span class="send-text">Action</span>
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="sendUserCertDropdown">
+                                            <li><a class="dropdown-item view" href="#"
+                                                    @click="sendCertificate('certificate1')"><i><font-awesome-icon
+                                                            :icon="['fas', 'eye']"
+                                                            style="margin-right: 10px;" /></i>View</a></li>
+                                            <li><a class="dropdown-item generate" href="#"
+                                                    @click="sendCertificate('certificate2')"><i><font-awesome-icon
+                                                            :icon="['fas', 'file']"
+                                                            style="margin-right: 10px;" /></i>Generate</a></li>
+                                            <li><a class="dropdown-item delete" href="#"
+                                                    @click="sendCertificate('certificate2')"><i><font-awesome-icon
+                                                            :icon="['fas', 'trash']"
+                                                            style="margin-right: 10px;" /></i>Delete</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-                <table id="dailyTimeLog" class="table table-striped table-hover" width="100%">
-                    <thead>
-                        <tr>
-                            <th>ID Number</th>
-                            <th>Name</th>
-                            <th>Gender</th>
-                            <th>Date</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>123</td>
-                            <td>Bogart The Explorer</td>
-                            <td>Male</td>
-                            <td>July 1, 2002</td>
-                            <td>
-                                <div class="dropdown">
-                                    <button style="padding-right: 10px;" class="card14 dropdown-toggle" type="button"
-                                        id="sendUserCertDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <span class="send-text">Action</span>
-                                    </button>
-                                    <ul class="dropdown-menu" aria-labelledby="sendUserCertDropdown">
-                                        <li><a class="dropdown-item view" href="#"
-                                                @click="sendCertificate('certificate1')"><i><font-awesome-icon
-                                                        :icon="['fas', 'eye']"
-                                                        style="margin-right: 10px;" /></i>View</a></li>
-                                        <li><a class="dropdown-item generate" href="#"
-                                                @click="sendCertificate('certificate2')"><i><font-awesome-icon
-                                                        :icon="['fas', 'file']"
-                                                        style="margin-right: 10px;" /></i>Generate</a></li>
-                                        <li><a class="dropdown-item delete" href="#"
-                                                @click="sendCertificate('certificate2')"><i><font-awesome-icon
-                                                        :icon="['fas', 'trash']"
-                                                        style="margin-right: 10px;" /></i>Delete</a></li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
             </div>
         </div>
     </div>
