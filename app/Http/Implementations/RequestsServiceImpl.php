@@ -169,4 +169,29 @@ Class RequestsServiceImpl implements RequestsService
             ]);
         }
     }
+
+    public function getReferralFormRequest(){
+        try{
+            $data = Requests::with('user')->where('status', 'pending')->where('form_name', 'Referral Form')->get();
+
+            if(!$data){
+                return response()->json([
+                    "success" => false,
+                    "message" => "Internal Server Error.",
+                ], 500);
+            }
+
+            return response()->json([
+                "success" => true,
+                "message" => "Success",
+                "data" => $data
+            ], 200);
+        }
+        catch (\Exception $error){
+            return response()->json([
+                "success"=> false,
+                "message"=> $error->getMessage()
+            ]);
+        }
+    }
 }
