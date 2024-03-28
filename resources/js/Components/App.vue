@@ -1,12 +1,8 @@
 <template>
     <Router-view></Router-view>
-<<<<<<< HEAD
-    <!-- <div class="loader">
-=======
     <div class="loader" v-if="$store.state.loading">
->>>>>>> 31037022c59b6df02675951ec9da15000d2b0762
         <div class="justify-content-center jimu-primary-loading"></div>
-    </div> -->
+    </div>
 </template>
 
 <script setup>

@@ -481,7 +481,7 @@ const handleLogout = async () => {
     margin-left: 0;
     transition: margin-left 0.3s ease;
     overflow: hidden;
-    padding: 0 20px 0;
+    padding: 0 5px 0;
     width: 100%;
 }
 
