@@ -17,7 +17,14 @@ class GuidanceCallSlipFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'campus' => 'Testing',
+            'date' => 'Testing',
+            'time' => 'Testing',
+            'type_of_counseling' => 'Testing',
+            'counseling_time_start' => 'Testing',
+            'counseling_time_end' => 'Testing',
+            'guidance_counselor' => 'Testing',
+            'teacher_in_charge' => 'Testing',
         ];
     }
 }

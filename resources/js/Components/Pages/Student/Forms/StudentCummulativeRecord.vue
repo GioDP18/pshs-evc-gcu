@@ -4,7 +4,9 @@
             <div class="table-card">
                 <div class="sub-header">
                     <div class="content-text">Cumulative Record Form</div>
-                    <button @click="handleRequest">Request Form</button>
+                    <button @click="handleRequest" v-if="status === false">Request</button>
+                    <button @click="handleRequest" v-if="status === 'pending'" style="cursor:not-allowed" disabled>Request</button>
+                    <button @click="goToFill" v-if="status === 'approved'">Fill Form</button>
                 </div>
                 <table id="table-cmf" class="table table-striped table-hover" width="100%">
                     <thead>
@@ -55,13 +57,16 @@
 <script setup>
 import axios from 'axios';
 import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import $ from 'jquery';
 
-const allUsers = ref([]);
+const status = ref(null);
+const router = useRouter();
 
 onMounted(async () => {
     // await getUsers();
     initializeDataTable();
+    checkRequest();
 });
 
 const initializeDataTable = () => {
@@ -71,7 +76,7 @@ const initializeDataTable = () => {
 const createRequest = async () => {
     try{
         const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/request-form`, {
-            form_name: 'Cumulative Records Form',
+            form_name: 'Cumulative Record Form',
             user_id: localStorage.getItem('user_id')
         });
         console.log(response.data);
@@ -82,6 +87,7 @@ const createRequest = async () => {
                 button: "Okay",
             });
         }
+        checkRequest();
     }
     catch(error){
         console.log(error);
@@ -90,7 +96,7 @@ const createRequest = async () => {
 
 const handleRequest = () => {
     swal({
-        title: "Request Cumulative Records Form?",
+        title: "Request Cumulative Record Form?",
         icon: "info",
         buttons: true,
     })
@@ -100,6 +106,30 @@ const handleRequest = () => {
         }
     });
 };
+
+const checkRequest = async () => {
+    try{
+        const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/check-request`, {
+            user_id: localStorage.getItem('user_id'),
+            form_name: 'Cumulative Record Form'
+        })
+        if(response.status === 200){
+            status.value = response.data.data.status
+        }
+        if(response.status === 201){
+            status.value = false
+        }
+
+
+    }
+    catch(error){
+        console.log(error);
+    }
+}
+
+const goToFill = () => {
+    router.push({ name: 'student-fillCumulativeRecord'})
+}
 
 </script>
 

@@ -124,7 +124,7 @@
                                 <div :class="{ 'has-error': errors.id_number }" style="display:flex; margin-top:10px">
                                     <div class="col-6">
                                         <label for="exampleInputEmail1" class="form-label">Grade Level</label>
-                                        <select class="form-select" v-model="grade_level" name="" id="">
+                                        <select class="form-select" v-model="formData.grade_level" name="" id="">
                                             <option value="" selected disabled>Select..</option>
                                             <option value="7">7</option>
                                             <option value="8">8</option>
@@ -139,7 +139,7 @@
                                     </div>
                                     <div class="col-6">
                                         <label for="exampleInputEmail1" class="form-label">Section</label>
-                                        <select class="form-select" v-model="section" name="" id="">
+                                        <select class="form-select" v-model="formData.section" name="" id="">
                                             <option value="" selected disabled>Select..</option>
                                             <option value="aaa">aaa</option>
                                             <option value="bbb">bbb</option>
@@ -307,16 +307,16 @@ const submitForm = async () => {
                 password: formData.value.password,
                 password_confirmation: formData.value.password_confirmation,
             },
-                {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                })
-                .then((response) => {
-                    if (response.status === 200) {
-                        router.push({ name: 'login' })
-                    }
-                })
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            .then((response) => {
+                if (response.status === 200) {
+                    router.push({ name: 'login' })
+                }
+            })
         }
         catch (error) {
             console.log(error);

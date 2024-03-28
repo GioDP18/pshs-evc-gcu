@@ -10,7 +10,7 @@
                         <button class="assign" data-bs-toggle="modal" data-bs-target="#assign"><i
                                 style="margin-right: 5px;"><font-awesome-icon
                                     :icon="['fas', 'user-plus']" /></i>Assign</button>
-                        <button class="create" @click="goToInputs"><i style="margin-right: 5px;"><font-awesome-icon
+                        <button class="create" @click="goToRequests"><i style="margin-right: 5px;"><font-awesome-icon
                                     :icon="['fas', 'bell']" /></i>Requests</button>
                     </div>
                 </div>
@@ -55,6 +55,7 @@
                         </tr>
                     </tbody>
                 </table>
+
 
                 <!-- Assign Modal -->
                 <div class="modal fade" id="assign" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -101,20 +102,20 @@
                                 <table id="table-gcs" class="table table-striped table-hover" width="100%">
                                     <thead>
                                         <tr>
-                                            <th>Name</th>
+                                            <th>Name of student</th>
                                             <th>Grade</th>
                                             <th>Section</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>Bogart The Explorer</td>
-                                            <td>9</td>
-                                            <td>Zigzag</td>
+                                        <tr v-for="item in users" :key="item.id">
+                                            <td>{{ item.firstname }} {{ item.middlename }} {{ item.firstname }}</td>
+                                            <td>{{ item.grade }}</td>
+                                            <td>{{ item.section }}</td>
                                             <td>
                                                 <button style="padding-right: 5px;" class="card14" type="button"
-                                                    aria-expanded="false">
+                                                    aria-expanded="false" @click="assign(item.id)">
                                                     <span class="send-text"><i
                                                             style="margin-right: 5px;"><font-awesome-icon
                                                                 :icon="['fas', 'paper-plane']" /></i>Send</span>
@@ -146,9 +147,12 @@
                                         {{ selectedGrade ? 'Grade ' + selectedGrade : 'Grade' }}
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownGrade" style="width: 100%;">
-                                        <a class="dropdown-item" href="#" @click="selectGrade(1)">Grade 1</a>
-                                        <a class="dropdown-item" href="#" @click="selectGrade(2)">Grade 2</a>
-                                        <a class="dropdown-item" href="#" @click="selectGrade(3)">Grade 3</a>
+                                        <a class="dropdown-item" href="#" @click="selectGrade(7)">Grade 7</a>
+                                        <a class="dropdown-item" href="#" @click="selectGrade(8)">Grade 8</a>
+                                        <a class="dropdown-item" href="#" @click="selectGrade(9)">Grade 9</a>
+                                        <a class="dropdown-item" href="#" @click="selectGrade(10)">Grade 10</a>
+                                        <a class="dropdown-item" href="#" @click="selectGrade(11)">Grade 11</a>
+                                        <a class="dropdown-item" href="#" @click="selectGrade(12)">Grade 12</a>
                                     </div>
                                 </div>
                                 <div v-if="selectedGrade" class="dropdown" style="width: 100%; margin-top: 20px;">
@@ -164,7 +168,7 @@
                                 </div>
                             </div>
                             <div class="modal-footer" style="display: flex; justify-content: center;">
-                                <button type="button" class="btn btn-primary">Send</button>
+                                <button type="button" class="btn btn-primary" @click="assignBySection">Send</button>
                             </div>
                         </div>
                     </div>
@@ -175,7 +179,7 @@
                     <div class="modal-dialog modal-sm">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">By Section</h5>
+                                <h5 class="modal-title" id="exampleModalLabel">By Batch</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
@@ -186,18 +190,19 @@
                                         aria-expanded="false">
                                         {{ selectedGrade || 'Grade' }}
                                     </button>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownGrade" style="width: 100%;">
-                                        <a class="dropdown-item" href="#" @click="selectGrade(7)">Grade 7</a>
-                                        <a class="dropdown-item" href="#" @click="selectGrade(8)">Grade 8</a>
-                                        <a class="dropdown-item" href="#" @click="selectGrade(9)">Grade 9</a>
-                                        <a class="dropdown-item" href="#" @click="selectGrade(10)">Grade 10</a>
-                                        <a class="dropdown-item" href="#" @click="selectGrade(11)">Grade 11</a>
-                                        <a class="dropdown-item" href="#" @click="selectGrade(12)">Grade 12</a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"
+                                        style="width: 100%;">
+                                        <a class="dropdown-item" href="#" @click="selectGrade(7)">7</a>
+                                        <a class="dropdown-item" href="#" @click="selectGrade(8)">8</a>
+                                        <a class="dropdown-item" href="#" @click="selectGrade(9)">9</a>
+                                        <a class="dropdown-item" href="#" @click="selectGrade(10)">10</a>
+                                        <a class="dropdown-item" href="#" @click="selectGrade(11)">11</a>
+                                        <a class="dropdown-item" href="#" @click="selectGrade(12)">12</a>
                                     </div>
                                 </div>
                             </div>
                             <div class="modal-footer" style="display: flex; justify-content: center;">
-                                <button type="button" class="btn btn-primary">Send</button>
+                                <button type="button" class="btn btn-primary" @click="assignByBatch">Send</button>
                             </div>
                         </div>
                     </div>
@@ -219,16 +224,49 @@ import store from "../../../../State/index.js";
 const router = useRouter();
 
 const all_data = ref([]);
+const users = ref([]);
+const due_date = ref(null);
+const bySection = ref(null);
+const byBatch = ref(null);
 const selectedGrade = ref(null);
 const selectedSection = ref(null);
 
 onMounted(async () => {
     initializeDataTable();
     getAllGuidanceCallSlips();
+    getAllUsers();
 });
 
 const initializeDataTable = () => {
     $('#table-gcs').DataTable();
+};
+
+const selectGrade = (grade) => {
+    selectedGrade.value = grade;
+    selectedSection.value = null; // Reset selected section when grade changes
+};
+
+const selectSection = (section) => {
+    selectedSection.value = section;
+};
+
+const getSections = (grade) => {
+    // Dummy data, replace with actual data retrieval based on grade
+    if (grade === 7) {
+        return ['Diamond', 'Emerald', 'Ruby'];
+    } else if (grade === 8) {
+        return ['Sampaguita', 'Jasmine', 'Camia'];
+    } else if (grade === 9) {
+        return ['Sodium', 'Rubidium', 'Potassium'];
+    } else if (grade === 10) {
+        return ['Proton', 'Electron', 'Neutron'];
+    } else if (grade === 11) {
+        return ['A', 'B', 'C'];
+    } else if (grade === 12) {
+        return ['A', 'B', 'C'];
+    } else {
+        return [];
+    }
 };
 
 const getAllGuidanceCallSlips = async () => {
@@ -267,36 +305,86 @@ const generateForm = async (form_id) => {
     }
 }
 
-const selectGrade = (grade) => {
-    selectedGrade.value = grade;
-    selectedSection.value = null; // Reset selected section when grade changes
-};
+const getAllUsers = async () => {
+    try {
+        const resp = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/get-all-users`)
 
-const selectSection = (section) => {
-    selectedSection.value = section;
-};
-
-const getSections = (grade) => {
-    // Dummy data, replace with actual data retrieval based on grade
-    if (grade === 7) {
-        return ['Diamond', 'Emerald', 'Ruby'];
-    } else if (grade === 8) {
-        return ['Sampaguita', 'Jasmine', 'Camia'];
-    } else if (grade === 9) {
-        return ['Sodium', 'Rubidium', 'Potassium'];
-    } else if (grade === 10) {
-        return ['Proton', 'Electron', 'Neutron'];
-    } else if (grade === 11) {
-        return ['A', 'B', 'C'];
-    } else if (grade === 12) {
-        return ['A', 'B', 'C'];
-    } else {
-        return [];
+        users.value = resp.data.data;
     }
-};
+    catch (error) {
+        console.log(error);
+    }
+}
+
+const assign = async (id) => {
+    try {
+        const resp = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/assign-form`, {
+            assignee: id,
+            form_name: 'Guidance Call Slip',
+            due_date: due_date.value
+        })
+        if (resp.status === 200) {
+            console.log(resp.data);
+            swal({
+                title: "Assigned successfully.",
+                icon: "success",
+                button: "Okay",
+            });
+        }
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+const assignBySection = async () => {
+    try {
+        const resp = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/bulk-assign-form-by-section`, {
+            section: selectedSection.value,
+            form_name: 'Guidance Call Slip',
+            due_date: due_date.value
+        })
+        if (resp.status === 200) {
+            console.log(resp.data);
+            swal({
+                title: "Assigned successfully.",
+                icon: "success",
+                button: "Okay",
+            });
+        }
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+const assignByBatch = async () => {
+    try {
+        const resp = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/bulk-assign-form-by-grade-level`, {
+            grade_level: selectedGrade.value,
+            form_name: 'Guidance Call Slip',
+            due_date: due_date.value
+        })
+        if (resp.status === 200) {
+            console.log(resp.data);
+            swal({
+                title: "Assigned successfully.",
+                icon: "success",
+                button: "Okay",
+            });
+        }
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
 
 const goToInputs = () => {
     router.push({ name: 'staff-fieldGuidanceCallSlip' })
+}
+
+const goToRequests = () => {
+    router.push({ name: 'staff-requestGuidanceCall' })
 }
 </script>
 

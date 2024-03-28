@@ -7,6 +7,7 @@ use Illuminate\Support\ServiceProvider;
 use App\Http\Implementations\AssignmentServiceImpl;
 use App\Http\Implementations\AuthServiceImpl;
 use App\Http\Implementations\CalendarServiceImpl;
+use App\Http\Implementations\EventServiceImpl;
 use App\Http\Implementations\GenerateServiceImpl;
 use App\Http\Implementations\GetFormsServiceImpl;
 use App\Http\Implementations\RequestsServiceImpl;
@@ -14,6 +15,7 @@ use App\Http\Implementations\SaveInputsServiceImpl;
 use App\Http\Services\AssignmentService;
 use App\Http\Services\AuthService;
 use App\Http\Services\CalendarService;
+use App\Http\Services\EventService;
 use App\Http\Services\GenerateService;
 use App\Http\Services\GetFormsService;
 use App\Http\Services\RequestsService;
@@ -29,6 +31,7 @@ class AppServiceProvider extends ServiceProvider
         RequestsService::class => RequestsServiceImpl::class,
         GetFormsService::class => GetFormsServiceImpl::class,
         AssignmentService::class => AssignmentServiceImpl::class,
+        EventService::class => EventServiceImpl::class,
     ];
     /**
      * Register any application services.

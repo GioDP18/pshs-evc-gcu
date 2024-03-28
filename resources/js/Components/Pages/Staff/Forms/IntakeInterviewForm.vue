@@ -10,9 +10,9 @@
                         <button class="assign" data-bs-toggle="modal" data-bs-target="#assign"><i
                                 style="margin-right: 5px;"><font-awesome-icon
                                     :icon="['fas', 'user-plus']" /></i>Assign</button>
-                        <RouterLink class="create" to="requestIntakeInterview"><i
+                        <button class="create" @click="goToRequests"><i
                                 style="margin-right: 5px;"><font-awesome-icon :icon="['fas', 'bell']" /></i>Requests
-                        </RouterLink>
+                        </button>
                     </div>
                 </div>
                 <table id="table-intake" class="table table-striped table-hover" width="100%">
@@ -244,7 +244,7 @@ const initializeDataTable = () => {
 
 const selectGrade = (grade) => {
     selectedGrade.value = grade;
-    selectedSection.value = null; // Reset selected section when grade changes
+    selectedSection.value = null;
 };
 
 const selectSection = (section) => {
@@ -382,6 +382,10 @@ const assignByBatch = async () => {
 
 const goToInputs = () => {
     router.push({ name: 'staff-fieldIntakeInterview' })
+}
+
+const goToRequests = () => {
+    router.push({ name: 'staff-requestIntakeInterview' })
 }
 
 </script>
