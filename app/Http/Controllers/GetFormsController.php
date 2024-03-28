@@ -22,4 +22,20 @@ class GetFormsController extends Controller
     public function getAllGuidanceCallSlips(){
         return $this->getFormsService->getAllGuidanceCallSlips();
     }
+
+    public function getAllParentQuestionnaireForms(){
+        return $this->getFormsService->getAllParentQuestionnaireForms();
+    }
+
+    public function getAllReferralForms(){
+        return $this->getFormsService->getAllReferralForms();
+    }
+
+    public function getAllCumulativeRecordForms(){
+        return $this->getFormsService->getAllCumulativeRecordForms();
+    }
+
+    public function getAllClientMonitoringForms(){
+        return $this->getFormsService->getAllClientMonitoringForms();
+    }
 }

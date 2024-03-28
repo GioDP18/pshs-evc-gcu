@@ -11,4 +11,12 @@ interface GetFormsService
     public function getAllGuidanceAdmissionSlips();
 
     public function getAllGuidanceCallSlips();
+
+    public function getAllParentQuestionnaireForms();
+
+    public function getAllReferralForms();
+
+    public function getAllCumulativeRecordForms();
+
+    public function getAllClientMonitoringForms();
 }

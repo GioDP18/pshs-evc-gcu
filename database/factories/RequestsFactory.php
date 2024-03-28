@@ -17,7 +17,15 @@ class RequestsFactory extends Factory
     public function definition(): array
     {
         return [
-            'form_name' => $this->faker->randomElement(['Intake Interview Form', 'Guidance Admission Slip', 'Guidance Call Slip']),
+            'form_name' => $this->faker->randomElement([
+                'Intake Interview Form',
+                'Guidance Admission Slip',
+                'Guidance Call Slip',
+                'Parent Questionnaire Form',
+                'Referral Form',
+                'Cumulative Record Form',
+                'Client Monitoring Form',
+            ]),
             'user_id' => 1,
             'status' => 'pending'
         ];

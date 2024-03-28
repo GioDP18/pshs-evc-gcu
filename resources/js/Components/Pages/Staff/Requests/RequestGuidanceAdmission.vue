@@ -8,26 +8,22 @@
                 <table id="table-gcs" class="table table-striped table-hover" width="100%">
                     <thead>
                         <tr>
-                            <th>ID Number</th>
-                            <th>Name</th>
-                            <th>Gender</th>
-                            <th>Date</th>
+                            <th>Name of Requestor</th>
+                            <th>Date Requested</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>123</td>
-                            <td>Bogart The Explorer</td>
-                            <td>Male</td>
-                            <td>July 1, 2002</td>
+                        <tr v-for="request in requests" :key="request.id">
+                            <td>{{ request.user.firstname }} {{ request.user.middlename }} {{ request.user.lastname }}</td>
+                            <td>{{ request.created_at }}</td>
                             <td>
                                 <div class="actions">
-                                    <button style="padding-right: 5px;" class="card14 approve" type="button">
+                                    <button style="padding-right: 5px;" class="card14 approve" type="button" @click="acceptRequest(request.id)">
                                         <span class="send-text"><font-awesome-icon :icon="['fas', 'check']" />
                                             Approve</span>
                                     </button>
-                                    <button style="padding-right: 5px;" class="card14 reject" type="button">
+                                    <button style="padding-right: 5px;" class="card14 reject" type="button" @click="rejectRequest(request.id)">
                                         <span class="send-text"><font-awesome-icon :icon="['fas', 'xmark']" />
                                             Reject</span>
                                     </button>
@@ -48,15 +44,60 @@ import axios from 'axios';
 import { ref, onMounted, computed } from 'vue';
 import $ from 'jquery';
 
-const allUsers = ref([]);
+const requests = ref([]);
 
 onMounted(async () => {
     initializeDataTable();
+    getRequests();
 });
 
 const initializeDataTable = () => {
     $('#dailyTimeLog').DataTable();
 };
+
+const getRequests = async () => {
+    try{
+        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/gas-requests`);
+        requests.value = response.data.data;
+    }
+    catch(error){
+        console.log(error);
+    }
+}
+
+const acceptRequest = async (id) => {
+    try{
+        const response = await axios.put(`${import.meta.env.VITE_BASE_URL}/api/v1/approve-request/${id}`);
+        if(response.status === 200){
+            swal({
+                title: response.data.message,
+                icon: "success",
+                button: "Okay",
+            });
+        }
+        getRequests();
+    }
+    catch(error){
+        console.log(error);
+    }
+}
+
+const rejectRequest = async (id) => {
+    try{
+        const response = await axios.put(`${import.meta.env.VITE_BASE_URL}/api/v1/reject-request/${id}`);
+        if(response.status === 200){
+            swal({
+                title: response.data.message,
+                icon: "success",
+                button: "Okay",
+            });
+        }
+        getRequests();
+    }
+    catch(error){
+        console.log(error);
+    }
+}
 </script>
 
 <style scoped>

@@ -363,16 +363,16 @@ const submitForm = async () => {
                 password: formData.value.password,
                 password_confirmation: formData.value.password_confirmation,
             },
-                {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                })
-                .then((response) => {
-                    if (response.status === 200) {
-                        router.push({ name: 'login' })
-                    }
-                })
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            .then((response) => {
+                if (response.status === 200) {
+                    router.push({ name: 'login' })
+                }
+            })
         }
         catch (error) {
             console.log(error);

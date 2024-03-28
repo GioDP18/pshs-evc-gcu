@@ -231,6 +231,11 @@ const routes = [
                 name: "student-ClientMonitoring",
             },
             //FIELDS
+            // {
+            //     path: "fillCumulativeRecord",
+            //     component: FillCumulativeRecord,
+            //     name: "student-fillCumulativeRecord",
+            // },
             {
                 path: "fillClientMonitoring",
                 component: FillClientMonitoring,

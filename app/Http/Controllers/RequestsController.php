@@ -31,11 +31,27 @@ class RequestsController extends Controller
         return $this->requestsService->getIntakeInterviewFormRequest();
     }
 
-    public function getClientMonitoringFormRequest(){
-        return $this->requestsService->getClientMonitoringFormRequest();
+    public function getGuidanceAdmissionSlipRequest(){
+        return $this->requestsService->getGuidanceAdmissionSlipRequest();
+    }
+
+    public function getGuidanceCallSlipRequest(){
+        return $this->requestsService->getGuidanceCallSlipRequest();
+    }
+
+    public function getParentQuestionnaireFormRequest(){
+        return $this->requestsService->getParentQuestionnaireFormRequest();
     }
 
     public function getReferralFormRequest(){
         return $this->requestsService->getReferralFormRequest();
+    }
+
+    public function getCumulativeRecordFormRequest(){
+        return $this->requestsService->getCumulativeRecordFormRequest();
+    }
+
+    public function getClientMonitoringFormRequest(){
+        return $this->requestsService->getClientMonitoringFormRequest();
     }
 }

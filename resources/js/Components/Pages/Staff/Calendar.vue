@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex gap-5 container">
+    <div class="d-flex gap-5 mb-5 container">
         <div class="calendar">
             <div style="height:30px; background-color:#67a5fc;"></div>
             <el-calendar v-model="value">
@@ -30,20 +30,19 @@
         </div>
         <div class="details">
             <div class="d-flex flex-column gap-3">
-                <div style="width:100%; padding:10px; border-radius:20px; border:2px solid #fbebeb">
+                <div style="width:100%; padding:10px; border-radius:20px; border:2px solid #fbebeb; max-height: 295px; overflow-y: auto;">
                     <p style="font-weight:bold; color:gray; font-size:15px; opacity:60%">Appoinments for today</p>
                     <div class="ml-4" style="overflow-x: auto;">
                         <div class="appointment d-flex" v-for="item in appointments_today" :key="item.id">
                             <p style="font-weight:bold; color:#27516B"><i class="fa-regular fa-clock"
                                     style="color:#ED9696"></i>
                                 {{ item.available_time }} <br> <i class="fa-regular fa-user" style="color:#ED9696"></i>
-                                {{
-                item.reserved_user.firstname }} {{ item.reserved_user.lastname }}</p>
+                                {{ item.reserved_user.firstname }} {{ item.reserved_user.lastname }}</p>
                         </div>
                     </div>
                 </div>
 
-                <div style="width:100%; padding:10px; border-radius:20px; border:2px solid #fbebeb">
+                <div style="width:100%; padding:10px; border-radius:20px; border:2px solid #fbebeb; max-height: 295px; overflow-y: auto;">
                     <p style="font-weight:bold; color:gray; font-size:15px; opacity:60%">Available time for today</p>
                     <div class="ml-4">
                         <p style="font-weight:bold; color:#27516B" v-if="available_time_today.length === 0">No Available
@@ -82,9 +81,24 @@ const selectedTimeSlots = ref([])
 const user_id_reserved = ref([])
 const availableTimeSlots = reactive([])
 const fixedTimeSlots = [
-    '8:00 AM - 9:00 AM', '9:00 AM - 10:00 AM', '10:00 AM - 11:00 AM', '11:00 AM - 12:00 PM',
-    '1:00 PM - 2:00 PM', '2:00 PM - 3:00 PM', '3:00 PM - 4:00 PM', '4:00 PM - 5:00 PM'
-    // '8AM', '9AM', '10AM', '11AM', '12PM', '1PM', '2PM', '3PM', '4PM', '5PM'
+    '7:30 AM - 8:00 AM',
+    '8:00 AM - 8:30 AM',
+    '8:30 AM - 9:00 AM',
+    '9:00 AM - 9:30 PM',
+    '9:30 AM - 10:00 AM',
+    '10:00 AM - 10:30 AM',
+    '10:30 AM - 11:00 AM',
+    '11:00 AM - 11:30 AM',
+    '11:30 AM - 12:00 PM',
+    '12:00 PM - 12:30 PM',
+    '12:30 PM - 1:00 PM',
+    '1:00 PM - 1:30 PM',
+    '1:30 PM - 2:00 PM',
+    '2:00 PM - 2:30 PM',
+    '2:30 PM - 3:00 PM',
+    '3:00 PM - 3:30 PM',
+    '3:30 PM - 4:00 PM',
+    '4:00 PM - 4:30 PM',
 ]
 const available_time_today = ref([])
 const appointments_today = ref([])
