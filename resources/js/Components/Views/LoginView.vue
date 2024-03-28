@@ -144,6 +144,7 @@ const submitForm = async () => {
                                 router.push({ name: 'login' })
                                 break;
                         }
+                        store.commit('setWarning', null)
                     }
                 })
         }

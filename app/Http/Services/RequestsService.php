@@ -17,7 +17,15 @@ interface RequestsService
 
     public function getIntakeInterviewFormRequest();
 
-    public function getClientMonitoringFormRequest();
+    public function getGuidanceAdmissionSlipRequest();
+
+    public function getGuidanceCallSlipRequest();
+
+    public function getParentQuestionnaireFormRequest();
 
     public function getReferralFormRequest();
+
+    public function getCumulativeRecordFormRequest();
+
+    public function getClientMonitoringFormRequest();
 }

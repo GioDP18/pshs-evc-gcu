@@ -145,9 +145,59 @@ Class RequestsServiceImpl implements RequestsService
         }
     }
 
-    public function getClientMonitoringFormRequest(){
+    public function getGuidanceAdmissionSlipRequest(){
         try{
-            $data = Requests::with('user')->where('status', 'pending')->where('form_name', 'Client Monitoring Form')->get();
+            $data = Requests::with('user')->where('status', 'pending')->where('form_name', 'Guidance Admission Slip')->get();
+
+            if(!$data){
+                return response()->json([
+                    "success" => false,
+                    "message" => "Internal Server Error.",
+                ], 500);
+            }
+
+            return response()->json([
+                "success" => true,
+                "message" => "Success",
+                "data" => $data
+            ], 200);
+        }
+        catch (\Exception $error){
+            return response()->json([
+                "success"=> false,
+                "message"=> $error->getMessage()
+            ]);
+        }
+    }
+
+    public function getGuidanceCallSlipRequest(){
+        try{
+            $data = Requests::with('user')->where('status', 'pending')->where('form_name', 'Guidance Call Slip')->get();
+
+            if(!$data){
+                return response()->json([
+                    "success" => false,
+                    "message" => "Internal Server Error.",
+                ], 500);
+            }
+
+            return response()->json([
+                "success" => true,
+                "message" => "Success",
+                "data" => $data
+            ], 200);
+        }
+        catch (\Exception $error){
+            return response()->json([
+                "success"=> false,
+                "message"=> $error->getMessage()
+            ]);
+        }
+    }
+
+    public function getParentQuestionnaireFormRequest(){
+        try{
+            $data = Requests::with('user')->where('status', 'pending')->where('form_name', 'Parent Questionnaire Form')->get();
 
             if(!$data){
                 return response()->json([
@@ -194,4 +244,56 @@ Class RequestsServiceImpl implements RequestsService
             ]);
         }
     }
+
+    public function getCumulativeRecordFormRequest(){
+        try{
+            $data = Requests::with('user')->where('status', 'pending')->where('form_name', 'Cumulative Record Form')->get();
+
+            if(!$data){
+                return response()->json([
+                    "success" => false,
+                    "message" => "Internal Server Error.",
+                ], 500);
+            }
+
+            return response()->json([
+                "success" => true,
+                "message" => "Success",
+                "data" => $data
+            ], 200);
+        }
+        catch (\Exception $error){
+            return response()->json([
+                "success"=> false,
+                "message"=> $error->getMessage()
+            ]);
+        }
+    }
+
+    public function getClientMonitoringFormRequest(){
+        try{
+            $data = Requests::with('user')->where('status', 'pending')->where('form_name', 'Client Monitoring Form')->get();
+
+            if(!$data){
+                return response()->json([
+                    "success" => false,
+                    "message" => "Internal Server Error.",
+                ], 500);
+            }
+
+            return response()->json([
+                "success" => true,
+                "message" => "Success",
+                "data" => $data
+            ], 200);
+        }
+        catch (\Exception $error){
+            return response()->json([
+                "success"=> false,
+                "message"=> $error->getMessage()
+            ]);
+        }
+    }
+
+
 }

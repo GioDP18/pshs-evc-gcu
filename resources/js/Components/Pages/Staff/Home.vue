@@ -2,9 +2,46 @@
     <div class="container">
         <div class="main-content">
             <div class="table-card">
-                <div class="content-text">Dashboard
+                <div class="d-flex justify-content-lg-between">
+                    <div>
+                        <div class="content-text">Dashboard
+                        </div>
+                        <p class="date">Monday, 25 March 2024</p>
+                    </div>
+                    <div>
+                        <button class="add-event-btn" data-bs-toggle="modal" data-bs-target="#add-event-modal"><i class="fa-solid fa-plus"></i> Add Event</button>
+                    </div>
+                    <!-- Modal Add Event -->
+                    <div class="modal fade" id="add-event-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <form @submit.prevent="handleAddEvent">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="staticBackdropLabel"><i class="fa-solid fa-pen-nib"></i> Add New Event</h1>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <label for="event-name" class="form-label">Event Name</label>
+                                            <input type="text" v-model="event_name"class="form-control" id="event-name">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="event-date" class="form-label">Event Date</label>
+                                            <input type="date" v-model="event_date"class="form-control" id="event-date">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="event-time" class="form-label">Event Time</label>
+                                            <input type="time" v-model="event_time"class="form-control" id="event-time">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary">Add</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-                <p class="date">Monday, 25 March 2024</p>
                 <div class="left-right">
                     <div class="left">
                         <div class="pink-card"></div>
@@ -98,39 +135,11 @@
                         <div class="event-card" style="padding-bottom: 1rem;">
                             <div class="event-text">Events</div>
                             <div class="event-content">
-                                <div class="event-info">
+                                <div class="event-info" v-for="event in events" :key="event.id">
                                     <i><font-awesome-icon :icon="['fas', 'calendar']" /></i>
                                     <div class="info-text">
-                                        <p class="info-title">Career Talk</p>
-                                        <p class="info-date">February 2024, Monday</p>
-                                    </div>
-                                </div>
-                                <div class="event-info">
-                                    <i><font-awesome-icon :icon="['fas', 'calendar']" /></i>
-                                    <div class="info-text">
-                                        <p class="info-title">Love and Relationship</p>
-                                        <p class="info-date">February 2024, Monday</p>
-                                    </div>
-                                </div>
-                                <div class="event-info">
-                                    <i><font-awesome-icon :icon="['fas', 'calendar']" /></i>
-                                    <div class="info-text">
-                                        <p class="info-title">Women's Month Celebration</p>
-                                        <p class="info-date">February 2024, Monday</p>
-                                    </div>
-                                </div>
-                                <div class="event-info">
-                                    <i><font-awesome-icon :icon="['fas', 'calendar']" /></i>
-                                    <div class="info-text">
-                                        <p class="info-title">Foundation Day</p>
-                                        <p class="info-date">February 2024, Monday</p>
-                                    </div>
-                                </div>
-                                <div class="event-info">
-                                    <i><font-awesome-icon :icon="['fas', 'calendar']" /></i>
-                                    <div class="info-text">
-                                        <p class="info-title">Birthday ni Pufferfish</p>
-                                        <p class="info-date">February 2024, Monday</p>
+                                        <p class="info-title">{{ event.event_name }}</p>
+                                        <p class="info-date">{{ event.event_date }}, {{ event.event_time }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -183,7 +192,51 @@
     </div>
 </template>
 
-<script setup></script>
+<script setup>
+import axios from "axios";
+import { ref, onMounted } from "vue";
+
+const events = ref([]);
+const event_name = ref("");
+const event_date = ref("");
+const event_time = ref("");
+
+onMounted(() => {
+    getEvents();
+})
+
+const getEvents =async () => {
+    try{
+        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/get-events`)
+        events.value = response.data.data
+    }
+    catch(error){
+        console.log(error);
+    }
+}
+
+const handleAddEvent = async () => {
+    try{
+        const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/add-event`, {
+            event_name: event_name.value,
+            event_date: event_date.value,
+            event_time: event_time.value
+        })
+
+        if(response.status === 200){
+            swal({
+                title: response.data.message,
+                icon: "success",
+                button: "Okay",
+            });
+        }
+        getEvents();
+    }
+    catch(error){
+        console.log(error);
+    }
+}
+</script>
 
 <style scoped>
 .main-content {
@@ -516,5 +569,32 @@
     .right .event-card {
         margin-bottom: 20px;
     }
+}
+
+.add-event-btn {
+  border-radius: .25rem;
+  text-transform: uppercase;
+  font-style: normal;
+  font-weight: bold;
+  padding-left: 25px;
+  padding-right: 25px;
+  color: #fff;
+  -webkit-clip-path: polygon(0 0,0 0,100% 0,100% 0,100% calc(100% - 15px),calc(100% - 15px) 100%,15px 100%,0 100%);
+  clip-path: polygon(0 0,0 0,100% 0,100% 0,100% calc(100% - 15px),calc(100% - 15px) 100%,15px 100%,0 100%);
+  height: 40px;
+  font-size: 0.7rem;
+  line-height: 14px;
+  letter-spacing: 1.2px;
+  transition: .2s .1s;
+  background-image: linear-gradient(90deg,#04439b,#4587E4);
+  border: 0 solid;
+  overflow: hidden;
+}
+
+.add-event-btn:hover {
+  cursor: pointer;
+  transition: all .3s ease-in;
+  padding-right: 30px;
+  padding-left: 30px;
 }
 </style>

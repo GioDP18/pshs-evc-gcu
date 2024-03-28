@@ -23,7 +23,9 @@ class GcsPk extends Model
 
     use HasFactory;
 
-    public function gcs(){
+    
+    public function guidance_call_slip()
+    {
         return $this->belongsTo(GuidanceCallSlip::class, 'gcs_id');
     }
 }

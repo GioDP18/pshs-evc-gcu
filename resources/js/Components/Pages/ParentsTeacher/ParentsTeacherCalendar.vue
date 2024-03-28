@@ -55,7 +55,7 @@
                         style="width:100%; padding:10px; border-radius:30px; background-color:#ED9696; border:1px solid #fbebeb">Reschedule</button>
                 </div>
 
-                <div style="width:100%; padding:10px; border-radius:20px; border:2px solid #fbebeb">
+                <div style="width:100%; padding:10px; border-radius:20px; border:2px solid #fbebeb; max-height: 295px; overflow-y: auto;">
                     <p style="font-weight:bold; color:gray; font-size:15px; opacity:60%">Available time for today</p>
                     <div class="ml-4">
                         <p style="font-weight:bold; color:#27516B" v-if="available_time_today.length === 0">No Available
