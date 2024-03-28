@@ -1,6 +1,6 @@
 <template>
-    <div class="d-flex gap-5">
-        <div style="width:70%; border:2px solid #67a5fc; border-radius:20px 20px 0 0; overflow:hidden;">
+    <div class="d-flex gap-5 container">
+        <div class="calendar">
             <div style="height:30px; background-color:#67a5fc;"></div>
             <el-calendar v-model="value">
                 <template #date-cell="{ data }">
@@ -23,8 +23,11 @@
                             </div>
                             <div class="radio-input">
                                 <div class="radio-container" v-for="item in availableTimeSlots" :key="item.id">
-                                    <input v-model="chosen_time" :value="item.id" name="value-radio" :id="'value-'+item.id" type="radio" :disabled="item.user_id_reserved !== null">
-                                    <label :for="'value-'+item.id" :style="'background-color:' + (item.user_id_reserved !== null ? '#ed9696;' : ';')+'color:' + (item.user_id_reserved !== null ? 'white' : '')">{{ item.available_time }}</label>
+                                    <input v-model="chosen_time" :value="item.id" name="value-radio"
+                                        :id="'value-' + item.id" type="radio" :disabled="item.user_id_reserved !== null">
+                                    <label :for="'value-' + item.id"
+                                        :style="'background-color:' + (item.user_id_reserved !== null ? '#ed9696;' : ';') + 'color:' + (item.user_id_reserved !== null ? 'white' : '')">{{
+                item.available_time }}</label>
                                 </div>
                             </div>
                         </div>
@@ -37,7 +40,7 @@
             </el-dialog>
         </div>
 
-        <div style="width:30%">
+        <div class="details">
             <div class="d-flex flex-column gap-3">
                 <div style="width:100%; padding:10px; border-radius:20px; border:2px solid #fbebeb">
                     <p style="font-weight:bold; color:gray; font-size:15px; opacity:60%">Appoinment</p>
@@ -59,7 +62,8 @@
                             time
                             for today.</p>
                         <p style="font-weight:bold; color:#27516B" v-for="item in available_time_today" :key="item.id">
-                            <i class="fa-regular fa-clock" style="color:#ED9696"></i> {{ item.available_time }}</p>
+                            <i class="fa-regular fa-clock" style="color:#ED9696"></i> {{ item.available_time }}
+                        </p>
                     </div>
                 </div>
 
@@ -101,10 +105,10 @@ const handleDateClick = async (data) => {
         availableTimeSlots.value = response.data.schedule
         selectedDate.value = data.day
         modalVisible.value = true
-        if(response.data.schedule.length == 0){
+        if (response.data.schedule.length == 0) {
             no_available_time.value = true
         }
-        else{
+        else {
             no_available_time.value = false
         }
     } catch (error) {
@@ -130,7 +134,7 @@ const reserveConsultation = async () => {
             calendar_id: chosen_time.value,
             user_id_reserved: localStorage.getItem('user_id')
         });
-        if(result){
+        if (result) {
             swal({
                 title: result.data.message,
                 icon: "success",
@@ -163,7 +167,7 @@ const reserveConsultation = async () => {
     width: 100%;
 }
 
-.radio-input .radio-container{
+.radio-input .radio-container {
     width: 30%;
 }
 
@@ -224,6 +228,32 @@ const reserveConsultation = async () => {
 
     100% {
         transform: translateX(0);
+    }
+}
+
+.calendar {
+    width: 70%;
+    border: 2px solid #67a5fc;
+    border-radius: 20px 20px 0 0;
+    overflow: hidden;
+}
+
+.details {
+    width: 30%
+}
+
+@media screen and (max-width:360px) {
+    .calendar {
+        width: 100%;
+    }
+
+    .container {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .details {
+        width: 100%;
     }
 }
 </style>
