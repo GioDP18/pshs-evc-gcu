@@ -42,7 +42,7 @@ Route::group([
     Route::get('/generate-intake-interview/{id}', [GenerateController::class, 'generateIntInterview']);
     Route::get('/generate-guidance-admission/{id}', [GenerateController::class, 'generateGuidAdmission']);
     Route::get('/generate-referral-form/{id}', [GenerateController::class, 'generateReferralForm']);
-    Route::get('/generate-guidance-call', [GenerateController::class, 'generateGuidCallSlip']);
+    Route::get('/generate-guidance-call/{id}', [GenerateController::class, 'generateGuidCallSlip']);
     Route::get('/generate-parent-questionaire', [GenerateController::class, 'generateParentQuestionaire']);
     Route::get('/auth/{provider}/callback', [AuthController::class, 'socialLoginCallback'])->name('auth.callback');
     Route::get('/auth/{provider}', [AuthController::class, 'socialLogin']);
