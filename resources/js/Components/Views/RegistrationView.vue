@@ -76,10 +76,18 @@
                                 <label for="exampleInputPassword" class="form-label">Password</label>
                                 <div class="password-input-wrapper">
                                     <input :type="showPassword ? 'text' : 'password'" class="form-control"
-                                        v-model="formData.password">
+                                        v-model="formData.password" @input="checkPasswordStrength">
                                     <i class="password-toggle-icon"
                                         :class="showPassword ? 'fa fa-eye-slash' : 'fa fa-eye'"
                                         @click="toggleShowPassword"></i>
+                                </div>
+                                <div class="password-strength-bar">
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar"
+                                            :style="{ width: passwordStrength + '%' }" :class="passwordStrengthColor">
+                                        </div>
+                                    </div>
+                                    <small class="password-strength-text">{{ passwordStrengthText }}</small>
                                 </div>
                                 <span class="error-message" v-if="errors.password">
                                     <i class="fa fa-info-circle"></i> {{ errors.password }}
@@ -113,7 +121,7 @@
                             </div>
                             <div v-if="formData.role === 'parent' || formData.role === 'student'"
                                 class="mb-3 form-input">
-                                <div :class="{ 'has-error': errors.id_number }">
+                                <div class="mb-3 form-input" :class="{ 'has-error': errors.id_number }">
                                     <label for="exampleInputEmail1" class="form-label">Student ID Number</label>
                                     <input type="text" class="form-control" placeholder="xx-xxxx-xxx"
                                         v-model="formData.id_number">
@@ -121,38 +129,32 @@
                                         <i class="fa fa-info-circle"></i> {{ errors.id_number }}
                                     </span>
                                 </div>
-                                <div :class="{ 'has-error': errors.id_number }" style="display:flex; margin-top:10px">
-                                    <div class="col-6">
-                                        <label for="exampleInputEmail1" class="form-label">Grade Level</label>
-                                        <select class="form-select" v-model="formData.grade_level" name="" id="">
-                                            <option value="" selected disabled>Select..</option>
-                                            <option value="7">7</option>
-                                            <option value="8">8</option>
-                                            <option value="9">9</option>
-                                            <option value="10">10</option>
-                                            <option value="11">11</option>
-                                            <option value="12">12</option>
+                                <div class="form-select-container">
+                                    <div class="form-select-wrapper">
+                                        <label for="grade_level" class="form-label">Grade Level</label>
+                                        <select id="grade_level" class="form-select" v-model="formData.grade_level"
+                                            @change="updateSections">
+                                            <option value="" selected disabled>Select grade level</option>
+                                            <option value="7">Grade 7</option>
+                                            <option value="8">Grade 8</option>
+                                            <option value="9">Grade 9</option>
+                                            <option value="10">Grade 10</option>
+                                            <option value="11">Grade 11</option>
+                                            <option value="12">Grade 12</option>
                                         </select>
-                                        <span class="error-message" v-if="errors.id_number">
-                                            <i class="fa fa-info-circle"></i> {{ errors.id_number }}
-                                        </span>
                                     </div>
-                                    <div class="col-6">
-                                        <label for="exampleInputEmail1" class="form-label">Section</label>
-                                        <select class="form-select" v-model="formData.section" name="" id="">
-                                            <option value="" selected disabled>Select..</option>
-                                            <option value="aaa">aaa</option>
-                                            <option value="bbb">bbb</option>
-                                            <option value="ccc">ccc</option>
-                                            <option value="ddd">ddd</option>
-                                            <option value="eee">eee</option>
-                                            <option value="fff">fff</option>
+                                    <div class="form-select-wrapper">
+                                        <label for="section" class="form-label">Section</label>
+                                        <select id="section" class="form-select" v-model="formData.section">
+                                            <option value="" selected disabled>Select section</option>
+                                            <option v-for="section in gradeSections[formData.grade_level]"
+                                                :value="section" :key="section">{{ section }}</option>
                                         </select>
-                                        <span class="error-message" v-if="errors.id_number">
-                                            <i class="fa fa-info-circle"></i> {{ errors.id_number }}
-                                        </span>
                                     </div>
                                 </div>
+                                <span class="error-message" v-if="errors.id_number">
+                                    <i class="fa fa-info-circle"></i> {{ errors.id_number }}
+                                </span>
                             </div>
                         </div>
                         <div class="form-buttons mt-1">
@@ -185,7 +187,7 @@
 
 <script setup>
 import axios from 'axios';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import store from "../../State/index.js";
 
@@ -227,6 +229,51 @@ const currentStep = ref(1);
 const totalSteps = 3;
 
 const showPassword = ref(false);
+
+const checkPasswordStrength = () => {
+    const password = formData.value.password;
+    let strength = 0;
+
+    if (password.length >= 8) strength += 1;
+    if (password.match(/[a-z]/)) strength += 1;
+    if (password.match(/[A-Z]/)) strength += 1;
+    if (password.match(/[0-9]/)) strength += 1;
+    if (password.match(/[$&+,:;=?@#|'<>.^*()%!-]/)) strength += 1;
+
+    passwordStrength.value = (strength / 5) * 100;
+    setPasswordStrengthText();
+};
+
+const setPasswordStrengthText = () => {
+    if (passwordStrength.value < 20) {
+        passwordStrengthText.value = "Weak";
+        passwordStrengthColor.value = "bg-danger";
+    } else if (passwordStrength.value < 60) {
+        passwordStrengthText.value = "Medium";
+        passwordStrengthColor.value = "bg-warning";
+    } else {
+        passwordStrengthText.value = "Strong";
+        passwordStrengthColor.value = "bg-success";
+    }
+};
+
+const passwordStrength = ref(0);
+const passwordStrengthText = ref("");
+const passwordStrengthColor = ref("");
+
+onMounted(() => {
+    checkPasswordStrength();
+});
+
+// Define sections for each grade level
+const gradeSections = {
+    '7': ['Diamond', 'Emerald', 'Ruby'],
+    '8': ['Sampaguita', 'Jasmine', 'Camia'],
+    '9': ['Sodium', 'Rubidium', 'Potassium'],
+    '10': ['Proton', 'Electron', 'Neutron'],
+    '11': ['A', 'B', 'C'],
+    '12': ['A', 'B', 'C']
+};
 
 const validateForm = () => {
     errors.value = {};
@@ -279,6 +326,15 @@ const validateForm = () => {
         errors.value.password_confirmation = "Passwords don't match.";
     }
 };
+
+const updateSections = () => {
+    const selectedGrade = formData.value.grade_level;
+    formData.value.section = '';
+    if (selectedGrade && gradeSections[selectedGrade]) {
+        formData.value.section = gradeSections[selectedGrade][0];
+    }
+};
+
 const chooseSignature = (event) => {
     const file = event.target.files[0];
     formData.value.signature = file;
@@ -353,6 +409,54 @@ const prevStep = () => {
 </script>
 
 <style scoped>
+.password-strength-bar {
+    margin-top: 5px;
+    position: relative;
+}
+
+.progress {
+    height: 5px;
+}
+
+.progress-bar {
+    border-radius: 5px;
+}
+
+.password-strength-text {
+    position: absolute;
+    bottom: -15px;
+    right: 0;
+    font-size: 10px;
+    color: #6c757d;
+}
+
+.bg-danger {
+    background-color: #dc3545;
+}
+
+.bg-warning {
+    background-color: #ffc107;
+}
+
+.bg-success {
+    background-color: #28a745;
+}
+
+.form-select-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.form-select-wrapper {
+    width: calc(50% - 10px);
+}
+
+.form-select {
+    width: 100%;
+}
+
 .register-container {
     background-image: url('../../../../public/external/Background.png');
     background-size: cover;
