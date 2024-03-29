@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('client_monitoring_forms', function (Blueprint $table) {
+        Schema::create('concerns', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
-            $table->string('campus');
-            $table->string('adviser');
+            $table->foreignId('client_monitoring_form_id')->constrained();
+            $table->string('date');
+            $table->string('area_of_concern');
+            $table->string('action_taken');
+            $table->string('recommendation');
             $table->timestamps();
         });
     }
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('client_monitoring_forms');
+        Schema::dropIfExists('concerns');
     }
 };
