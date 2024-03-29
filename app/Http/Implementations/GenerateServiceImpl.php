@@ -22,7 +22,9 @@ Class GenerateServiceImpl implements GenerateService
     public function generateIntInterview($id)
     {
             $intake = IntakeInterviewForm::findOrFail($id);
+            $interviewer = User::findOrFail($intake->interviewer);
             $templateProcessor = new TemplateProcessor(public_path('templates\PSHS-00-F-GCU-01-Ver02-Rev0-Intake-Interview-Form.docx'));
+            $templateProcessor->setValue('campus', $intake->campus);
             $templateProcessor->setValue('name', $intake->name_of_student);
             $templateProcessor->setValue('nickName', $intake->nickname);
             $templateProcessor->setValue('elementarySchool', $intake->elementary_school_graduated);
@@ -30,6 +32,7 @@ Class GenerateServiceImpl implements GenerateService
             $templateProcessor->setValue('age', $intake->age);
             $templateProcessor->setValue('sex', $intake->sex);
             $templateProcessor->setValue('dateOfInterview', date('Y-m-d'));
+            $templateProcessor->setValue('interviewed', $interviewer->firstname .' '. $interviewer->lastname);
 
             $newFilePath = public_path('intake_interview\\' . 'John Vincent Ramada' . '.docx');
             $templateProcessor->saveAs($newFilePath);
@@ -50,6 +53,7 @@ Class GenerateServiceImpl implements GenerateService
     {
         $admission = GuidanceAdmissionSlip::findOrFail($id);
         $templateProcessor = new TemplateProcessor(public_path('templates\PSHS-00-F-GCU-05-Ver02-Rev0-Guidance-Admission-Slip.docx'));
+        $templateProcessor->setValue('campus', $admission->campus);
         $templateProcessor->setValue('name', $admission->name_of_student);
         $templateProcessor->setValue('grade-section', $admission->grade_and_section);
         $templateProcessor->setValue('name-teacher', $admission->dear);
@@ -78,11 +82,12 @@ Class GenerateServiceImpl implements GenerateService
         $user = User::find($referral->user_id);
 
         $templateProcessor = new TemplateProcessor(public_path('templates\PSHS-00-F-GCU-03-Ver02-Rev0-Referral-Form.docx'));
+        $templateProcessor->setValue('campus', $referral->campus);
         $templateProcessor->setValue('name', $referral->name_of_student);
         $templateProcessor->setValue('grade-section', $referral->grade_and_section);
         $templateProcessor->setValue('date', $referral->date);
 
-        $concernArray = json_decode($referral->consern, true);
+        $concernArray = json_decode($referral->concern, true);
 
         $concerns = ['Academic', 'Behavior', 'Personal'];
 
@@ -207,6 +212,14 @@ Class GenerateServiceImpl implements GenerateService
         {
             $templateProcessor->setValue('behavior12', '');
         }
+        if($referral->behavior_spotted->b_13 == 0)
+        {
+            $templateProcessor->setValue('behavior13', '✖️');
+        }else
+        {
+            $templateProcessor->setValue('behavior13', '');
+        }
+        $templateProcessor->setValue('behavior13.1', 'example others');
         
 
         $newFilePath = public_path('referral_form\\' . 'John Vincent Ramada' . '.docx');
