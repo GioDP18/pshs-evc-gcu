@@ -16,7 +16,6 @@ return new class extends Migration
             $table->foreignId('referral_form_id')->constrained();
             $table->boolean('b_1');
             $table->boolean('b_2');
-            $table->boolean('b_2-1');
             $table->boolean('b_3');
             $table->boolean('b_4');
             $table->boolean('b_5');
@@ -27,6 +26,7 @@ return new class extends Migration
             $table->boolean('b_10');
             $table->boolean('b_11');
             $table->boolean('b_12');
+            $table->boolean('b_13');
             $table->timestamps();
         });
     }

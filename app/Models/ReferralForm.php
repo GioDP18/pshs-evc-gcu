@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class ReferralForm extends Model
 {
     protected $fillable = [
-        'user_id',
+        'campus',
+        // 'user_id',
         'name_of_student',
         'grade_and_section',
         'date',
@@ -18,7 +19,7 @@ class ReferralForm extends Model
         'follow_up',
         'behaviors_spotted',
         'others',
-        // 'referrer_id'
+        'referrer_id'
     ];
     protected $casts = [
         'concern' => 'array'
@@ -34,5 +35,9 @@ class ReferralForm extends Model
     public function user()
     {
         return $this->hasOne(User::class);
+    }
+
+    public function referrer_info(){
+        return $this->belongsTo(User::class, 'referrer_id');
     }
 }
