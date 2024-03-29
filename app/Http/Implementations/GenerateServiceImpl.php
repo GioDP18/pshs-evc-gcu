@@ -3,7 +3,10 @@
 namespace App\Http\Implementations;
 use Illuminate\Http\Request;
 use App\Http\Services\GenerateService;
+use App\Models\ClientMonitoringForm;
 use PhpOffice\PhpWord\TemplateProcessor;
+use PhpOffice\PhpWord\Element\Table;
+use PhpOffice\PhpWord\Shared\Converter;
 use \ConvertApi\ConvertApi;
 use App\Models\IntakeInterviewForm;
 use App\Models\GuidanceAdmissionSlip;
@@ -22,7 +25,9 @@ Class GenerateServiceImpl implements GenerateService
     public function generateIntInterview($id)
     {
             $intake = IntakeInterviewForm::findOrFail($id);
+            $interviewer = User::findOrFail($intake->interviewer);
             $templateProcessor = new TemplateProcessor(public_path('templates\PSHS-00-F-GCU-01-Ver02-Rev0-Intake-Interview-Form.docx'));
+            $templateProcessor->setValue('campus', $intake->campus);
             $templateProcessor->setValue('name', $intake->name_of_student);
             $templateProcessor->setValue('nickName', $intake->nickname);
             $templateProcessor->setValue('elementarySchool', $intake->elementary_school_graduated);
@@ -30,17 +35,14 @@ Class GenerateServiceImpl implements GenerateService
             $templateProcessor->setValue('age', $intake->age);
             $templateProcessor->setValue('sex', $intake->sex);
             $templateProcessor->setValue('dateOfInterview', date('Y-m-d'));
+            $templateProcessor->setValue('interviewed', $interviewer->firstname .' '. $interviewer->lastname);
 
             $newFilePath = public_path('intake_interview\\' . 'John Vincent Ramada' . '.docx');
             $templateProcessor->saveAs($newFilePath);
 
             // $docxFilePath = public_path('example.docx');
-            ConvertApi::setApiSecret('1MDrmpYzrCkI1g04');
-            $result = ConvertApi::convert('pdf', [
-                    'File' => $newFilePath,
-                ], 'doc'
-            );
-            $result->saveFiles(public_path('intake_interview\\'. 'John Vincent Ramada' . '.pdf'));
+            $convert = $this->wordToPdf($newFilePath);
+            $convert->saveFiles(public_path('intake_interview\\'. 'John Vincent Ramada' . '.pdf'));
 
             return response()->download(public_path('intake_interview\\' . 'John Vincent Ramada' . '.pdf'));
             
@@ -50,6 +52,7 @@ Class GenerateServiceImpl implements GenerateService
     {
         $admission = GuidanceAdmissionSlip::findOrFail($id);
         $templateProcessor = new TemplateProcessor(public_path('templates\PSHS-00-F-GCU-05-Ver02-Rev0-Guidance-Admission-Slip.docx'));
+        $templateProcessor->setValue('campus', $admission->campus);
         $templateProcessor->setValue('name', $admission->name_of_student);
         $templateProcessor->setValue('grade-section', $admission->grade_and_section);
         $templateProcessor->setValue('name-teacher', $admission->dear);
@@ -62,12 +65,8 @@ Class GenerateServiceImpl implements GenerateService
         $newFilePath = public_path('guidance_admission_slip\\' . 'John Vincent Ramada' . '.docx');
         $templateProcessor->saveAs($newFilePath);
 
-        ConvertApi::setApiSecret('1MDrmpYzrCkI1g04');
-        $result = ConvertApi::convert('pdf', [
-                'File' => $newFilePath,
-            ], 'doc'
-        );
-        $result->saveFiles(public_path('guidance_admission_slip\\'. 'John Vincent Ramada' . '.pdf'));
+        $convert = $this->wordToPdf($newFilePath);
+        $convert->saveFiles(public_path('guidance_admission_slip\\'. 'John Vincent Ramada' . '.pdf'));
 
         return response()->download(public_path('guidance_admission_slip\\' . 'John Vincent Ramada' . '.pdf'));
     }
@@ -78,11 +77,12 @@ Class GenerateServiceImpl implements GenerateService
         $user = User::find($referral->user_id);
 
         $templateProcessor = new TemplateProcessor(public_path('templates\PSHS-00-F-GCU-03-Ver02-Rev0-Referral-Form.docx'));
+        $templateProcessor->setValue('campus', $referral->campus);
         $templateProcessor->setValue('name', $referral->name_of_student);
         $templateProcessor->setValue('grade-section', $referral->grade_and_section);
         $templateProcessor->setValue('date', $referral->date);
 
-        $concernArray = json_decode($referral->consern, true);
+        $concernArray = json_decode($referral->concern, true);
 
         $concerns = ['Academic', 'Behavior', 'Personal'];
 
@@ -207,17 +207,21 @@ Class GenerateServiceImpl implements GenerateService
         {
             $templateProcessor->setValue('behavior12', '');
         }
+        if($referral->behavior_spotted->b_13 == 0)
+        {
+            $templateProcessor->setValue('behavior13', '✖️');
+        }else
+        {
+            $templateProcessor->setValue('behavior13', '');
+        }
+        $templateProcessor->setValue('behavior13.1', 'example others');
         
 
         $newFilePath = public_path('referral_form\\' . 'John Vincent Ramada' . '.docx');
         $templateProcessor->saveAs($newFilePath);
 
-        ConvertApi::setApiSecret('1MDrmpYzrCkI1g04');
-        $result = ConvertApi::convert('pdf', [
-                'File' => $newFilePath,
-            ], 'doc'
-        );
-        $result->saveFiles(public_path('referral_form\\'. 'John Vincent Ramada' . '.pdf'));
+        $convert = $this->wordToPdf($newFilePath);
+        $convert->saveFiles(public_path('referral_form\\'. 'John Vincent Ramada' . '.pdf'));
         
         return response()->json([
             'success' => true,
@@ -285,12 +289,8 @@ Class GenerateServiceImpl implements GenerateService
         $newFilePath = public_path('guidance_call_slip\\' . 'John Vincent Ramada' . '.docx');
         $templateProcessor->saveAs($newFilePath);
 
-        ConvertApi::setApiSecret('1MDrmpYzrCkI1g04');
-        $result = ConvertApi::convert('pdf', [
-                'File' => $newFilePath,
-            ], 'doc'
-        );
-        $result->saveFiles(public_path('guidance_call_slip\\'. 'John Vincent Ramada' . '.pdf'));
+        $convert = $this->wordToPdf($newFilePath);
+        $convert->saveFiles(public_path('guidance_call_slip\\'. 'John Vincent Ramada' . '.pdf'));
 
         return response()->download(public_path('guidance_call_slip\\' . 'John Vincent Ramada' . '.pdf'));
     }
@@ -516,16 +516,115 @@ Class GenerateServiceImpl implements GenerateService
         $newFilePath = public_path('parents_questionaire\\' . 'John Vincent Ramada' . '.docx');
         $templateProcessor->saveAs($newFilePath);
         
-        ConvertApi::setApiSecret('1MDrmpYzrCkI1g04');
-        $result = ConvertApi::convert('pdf', [
-                'File' => $newFilePath,
-            ], 'doc'
-        );
-        $result->saveFiles(public_path('parents_questionaire\\'. 'John Vincent Ramada' . '.pdf'));
+        $convert = $this->wordToPdf($newFilePath);
+        $convert->saveFiles(public_path('parents_questionaire\\'. 'John Vincent Ramada' . '.pdf'));
 
         return response()->json([
             'success' => true,
             'message' => 'Successfully generated parents questionaire form',
         ], 201);
+    }
+
+    public function generateClientMonitoring($id)
+    {
+        $user = User::with(['client_monitoring','client_monitoring.concern'])->findOrFail($id);
+        
+        $templateProcessor = new TemplateProcessor(public_path('templates\PSHS-00-F-GCU-07-Ver02-Rev1-Client-Monitoring-Form.docx'));
+        $templateProcessor->setValue('name', $user->firstname .' '. $user->lastname);
+        $templateProcessor->setValue('grade-section', $user->grade_level .'-'. $user->section);
+        $templateProcessor->setValue('adviser', $user->client_monitoring->adviser);
+        $templateProcessor->setValue('campus', $user->client_monitoring->campus);
+        
+        $headerData = [
+            ['date', 'Areas of Concern', 'Signature', 'Action Taken', 'Recommendation'],
+        ];
+        $tableData = [];
+        foreach ($user->client_monitoring->concern as $concern) {
+            $tableData[] = [
+                $concern->date,
+                $concern->area_of_concern,
+                $user->signature,
+                $concern->action_taken,
+                $concern->recommendation,
+            ];
+        }
+
+        $this->tableClientMonitoring($templateProcessor, $headerData, $tableData);
+
+        $newFilePath = public_path('client_monitoring\\' . 'John Vincent Ramada' . '.docx');
+        $templateProcessor->saveAs($newFilePath);
+
+        $convert = $this->wordToPdf($newFilePath);
+        $convert->saveFiles(public_path('client_monitoring\\'. 'John Vincent Ramada' . '.pdf'));
+
+        return response()->download(public_path('client_monitoring\\' . 'John Vincent Ramada' . '.pdf'));
+    }
+
+    private function tableClientMonitoring(TemplateProcessor $templateProcessor, array $headerData, array $data)
+    {
+        $table = new Table();
+        
+        $columnWidths = [
+            Converter::cmToTwip(2), 
+            Converter::cmToTwip(7), 
+            Converter::cmToTwip(3),
+            Converter::cmToTwip(3), 
+            Converter::cmToTwip(4) 
+        ];
+        // Add header row
+        $headerRow = $table->addRow();
+        foreach ($headerData[0] as $headerCellData) {
+            $cell = $headerRow->addCell();
+            $cell->getStyle()->setBorderTopSize(8);
+            $cell->getStyle()->setBorderLeftSize(8);
+            $cell->getStyle()->setBorderRightSize(8);
+            $cell->getStyle()->setBorderBottomSize(8);
+            $cell->addText(
+                $headerCellData,
+                ['bold' => true],
+                [
+                    'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER,
+                    'spaceAfter' => 0,
+                ]
+            );
+        }
+
+        $maxRows = 30;
+        $numRows = count($data);
+
+        for ($i = 1; $i <= $maxRows; $i++) {
+            $rowData = ($i <= $numRows) ? $data[$i - 1] : array_fill(0, count($columnWidths), '');
+            $dataRow = $table->addRow();
+            
+            foreach ($rowData as $cellIndex => $cellData) {
+                $cell = $dataRow->addCell($columnWidths[$cellIndex], ['align' => 'center']);
+                $cell->getStyle()->setBorderTopSize(8);
+                $cell->getStyle()->setBorderLeftSize(8);
+                $cell->getStyle()->setBorderRightSize(8);
+                $cell->getStyle()->setBorderBottomSize(8);
+                
+                $cell->addText(
+                    $cellData,
+                    ['size' => 9],
+                    [
+                        'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER,
+                        'spaceAfter' => 0,
+                    ]
+                );
+            }
+        }
+
+        $templateProcessor->setComplexBlock('table', $table);
+    }
+
+    private function wordToPdf($newFilePath)
+    {
+        ConvertApi::setApiSecret('1MDrmpYzrCkI1g04');
+        $result = ConvertApi::convert('pdf', [
+                'File' => $newFilePath,
+            ], 'doc'
+        );
+
+        return $result;
     }
 }

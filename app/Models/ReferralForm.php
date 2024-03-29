@@ -21,9 +21,6 @@ class ReferralForm extends Model
         'others',
         // 'referrer_id'
     ];
-    protected $casts = [
-        'concern' => 'array'
-    ];
 
     use HasFactory;
 

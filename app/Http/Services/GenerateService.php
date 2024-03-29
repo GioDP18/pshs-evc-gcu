@@ -16,4 +16,6 @@ interface GenerateService
     public function generateGuidCallSlip($id);
 
     public function generateParentQuestionaire(Request $request);
+
+    public function generateClientMonitoring($id);
 }
