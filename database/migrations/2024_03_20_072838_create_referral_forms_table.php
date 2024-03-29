@@ -13,17 +13,17 @@ return new class extends Migration
     {
         Schema::create('referral_forms', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
             $table->string('campus');
+            $table->foreignId('user_id')->constrained();
             $table->string('name_of_student');
             $table->string('grade_and_section');
             $table->string('date');
-            $table->json('concern');
+            $table->text('concern');
             $table->text('brief_description')->max_length();
             $table->text('intervention_done');
             $table->boolean('follow_up');
             $table->string('others')->nullable();
-            $table->foreignId('referrer_id')->constrained('users');
+            // $table->foreignId('referrer_id')->constrained('users');
             $table->timestamps();
         });
     }

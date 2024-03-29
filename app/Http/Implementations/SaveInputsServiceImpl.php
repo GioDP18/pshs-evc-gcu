@@ -114,6 +114,8 @@ Class SaveInputsServiceImpl implements SaveInputsService
 
     public function submitReferralForm(Request $request){
         $data1 = ReferralForm::create([
+            'campus' => $request->campus,
+            'user_id' => $request->user_id,
             'name_of_student' => $request->name_of_student,
             'grade_and_section' => $request->grade_and_section,
             'date' => $request->date,
@@ -122,7 +124,6 @@ Class SaveInputsServiceImpl implements SaveInputsService
             'intervention_done' => $request->intervention_done,
             'follow_up' => $request->follow_up,
             'others' => $request->others,
-            'referrer_id' => $request->user_id,
         ]);
 
         if(!$data1){
@@ -136,17 +137,17 @@ Class SaveInputsServiceImpl implements SaveInputsService
             'referral_form_id' => $data1->id,
             'b_1'=> $request->b_1,
             'b_2' => $request->b_2,
-            'b_2-1' => $request->b_2_1,
             'b_3' => $request->b_3,
             'b_4' => $request->b_4,
             'b_5' => $request->b_5,
             'b_6' => $request->b_6,
-            'b_7' => $request->b_7, 
+            'b_7' => $request->b_7,
             'b_8' => $request->b_8,
             'b_9' => $request->b_9,
             'b_10' => $request->b_10,
             'b_11' => $request->b_11,
             'b_12' => $request->b_12,
+            'b_13' => $request->b_13,
         ]);
 
         if(!$data2){

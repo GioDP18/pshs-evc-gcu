@@ -119,6 +119,9 @@ const submitForm = async () => {
                 .then((response) => {
                     if (response.status === 200) {
                         localStorage.setItem('user_id', response.data.user.id);
+                        localStorage.setItem('firstname', response.data.user.firstname);
+                        localStorage.setItem('middlename', response.data.user.middlename);
+                        localStorage.setItem('lastname', response.data.user.lastname);
                         localStorage.setItem('token', response.data.access_token);
                         localStorage.setItem('role', response.data.user.role);
                         localStorage.setItem('valid', true);

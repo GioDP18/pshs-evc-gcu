@@ -119,8 +119,8 @@ Class GetFormsServiceImpl implements GetFormsService
 
     public function getAllReferralForms(){
         try{
-            // $data = ReferralForm::all();
-            $data = GuidanceAdmissionSlip::all();
+            $data = ReferralForm::with('referrer_info')->get();
+            // $data = GuidanceAdmissionSlip::all();
 
             if(!$data){
                 return response()->json([
