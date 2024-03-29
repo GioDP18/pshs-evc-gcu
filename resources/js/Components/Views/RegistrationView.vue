@@ -36,8 +36,6 @@
                                     <i class="fa fa-info-circle"></i> {{ errors.email }}
                                 </span>
                             </div>
-                        </div>
-                        <div v-show="currentStep === 2">
                             <div class="mb-3 form-input" :class="{ 'has-error': errors.sex }">
                                 <label for="sex" class="form-label">Sex</label>
                                 <select id="sex" class="form-select" v-model="formData.sex">
@@ -49,6 +47,8 @@
                                     <i class="fa fa-info-circle"></i> {{ errors.sex }}
                                 </span>
                             </div>
+                        </div>
+                        <div v-show="currentStep === 2">
                             <div class="mb-3 form-input" :class="{ 'has-error': errors.date_of_birth }">
                                 <label for="exampleInputEmail1" class="form-label">Date of Birth</label>
                                 <input type="date" class="form-control" v-model="formData.date_of_birth">
@@ -63,15 +63,6 @@
                                     <i class="fa fa-info-circle"></i> {{ errors.contact_number }}
                                 </span>
                             </div>
-                            <div class="mb-3 form-input" :class="{ 'has-error': errors.signature }">
-                                <label for="exampleInputPassword" class="form-label">Signature Image</label>
-                                <input type="file" class="form-control" @change="chooseSignature">
-                                <span class="error-message" v-if="errors.signature">
-                                    <i class="fa fa-info-circle"></i> {{ errors.signature }}
-                                </span>
-                            </div>
-                        </div>
-                        <div v-show="currentStep === 3">
                             <div class="mb-3 form-input" :class="{ 'has-error': errors.password }">
                                 <label for="exampleInputPassword" class="form-label">Password</label>
                                 <div class="password-input-wrapper">
@@ -104,6 +95,15 @@
                                 </div>
                                 <span class="error-message" v-if="errors.password_confirmation">
                                     <i class="fa fa-info-circle"></i> {{ errors.password_confirmation }}
+                                </span>
+                            </div>
+                        </div>
+                        <div v-show="currentStep === 3">
+                            <div class="mb-3 form-input" :class="{ 'has-error': errors.signature }">
+                                <label for="exampleInputPassword" class="form-label">Signature Image</label>
+                                <input type="file" class="form-control" @change="chooseSignature">
+                                <span class="error-message" v-if="errors.signature">
+                                    <i class="fa fa-info-circle"></i> {{ errors.signature }}
                                 </span>
                             </div>
                             <div class="mb-3 form-input" :class="{ 'has-error': errors.role }">
@@ -156,6 +156,17 @@
                                     <i class="fa fa-info-circle"></i> {{ errors.id_number }}
                                 </span>
                             </div>
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="termsCheckbox"
+                                    v-model="formData.acceptTerms">
+                                <label class="form-check-label" for="termsCheckbox">
+                                    I accept the <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">terms
+                                        and conditions</a>
+                                </label>
+                                <span class="error-message" v-if="errors.acceptTerms">
+                                    <i class="fa fa-info-circle"></i> {{ errors.acceptTerms }}
+                                </span>
+                            </div>
                         </div>
                         <div class="form-buttons mt-1">
                             <button v-if="currentStep > 1" type="button" class="btn btn-primary" @click="prevStep"
@@ -165,6 +176,74 @@
                             <button v-else type="submit" class="btn btn-primary">Submit</button>
                         </div>
                     </form>
+                </div>
+            </div>
+
+            <!-- Bootstrap modal for terms and conditions -->
+            <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header" style="background-color: #2087E4; color: white;">
+                            <h5 class="modal-title" id="termsModalLabel">Terms and Conditions</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+
+                        <div class="modal-body">
+                            <p>This privacy policy will help you understand how GRASS uses and protects the data you
+                                will provide.</p>
+                            <p>We reserve the right to change and update this policy at any given time, of which you
+                                will be promptly updated. If you want to make sure that you are up to date with the
+                                latest changes, we advise you to visit this page frequently.</p>
+
+                            <h5><strong>What User Data We Collect:</strong></h5>
+                            <p>When you visit the website, we may ask you to provide us with certain personally
+                                identifiable information that can be used to contact or identify you. Personally
+                                Identifiable Information may include, but is not limited to:</p>
+                            <ul>
+                                <li>Email address</li>
+                                <li>First name and Last name</li>
+                                <li>Phone number</li>
+                            </ul>
+
+                            <h5><strong>Why We Collect Your Data:</strong></h5>
+                            <p>We are collecting your data for several reasons:</p>
+                            <ul>
+                                <li>To provide and maintain our services</li>
+                                <li>To improve our services</li>
+                                <li>To communicate with you and respond to inquiries and requests</li>
+                            </ul>
+
+                            <h5><strong>Data Sharing and Disclosure:</strong></h5>
+                            <p>Personal data collected within this service will be utilized by the PSHS-EVC Guidance and
+                                Counseling Unit (GCU) for their student profiling and counseling services. However, no
+                                personal information will be sold, rented, or leased to other third parties without your
+                                explicit consent.</p>
+
+                            <h5><strong>Data Security:</strong></h5>
+                            <p>We take appropriate measures to safeguard your personal data against unauthorized access,
+                                alteration, disclosure, or destruction. However, no method of transmission over the
+                                Internet or electronic storage is 100% secure, and we cannot guarantee absolute
+                                security.</p>
+
+                            <h5><strong>User Controls and Rights:</strong></h5>
+                            <p>You have the right to access, correct, or delete your personal data held by us. You may
+                                also opt-out of certain data processing activities, although this may affect your
+                                ability to access certain features or services.</p>
+
+                            <h5><strong>Retention of Data:</strong></h5>
+                            <p>We will retain your personal data only for as long as necessary to fulfill the purposes
+                                outlined in these terms.</p>
+
+                            <p>If you have any questions, concerns, or requests regarding these terms or our data
+                                practices, please contact the developers at <a
+                                    href="mailto:gcu.grass@gmail.com">gcu.grass@gmail.com</a>.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" style="background-color: #FF4141; border: none;"
+                                class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="register-right">
@@ -208,6 +287,7 @@ const formData = ref({
     id_number: '',
     grade_level: '',
     section: '',
+    acceptTerms: false,
 });
 
 const errors = ref({
@@ -324,6 +404,10 @@ const validateForm = () => {
         errors.value.password_confirmation = "Confirm Password is required.";
     } else if (formData.value.password_confirmation !== formData.value.password) {
         errors.value.password_confirmation = "Passwords don't match.";
+    }
+
+    if (!formData.value.acceptTerms) {
+        errors.value.acceptTerms = 'You must accept the terms and conditions';
     }
 };
 
@@ -539,7 +623,9 @@ const prevStep = () => {
 .form-input select {
     border-radius: 20px;
     font-style: italic;
+    /* padding: 0 30px 0 25px; */
     padding-left: 25px;
+    padding-right: 40px;
     background-color: #f0f0f0;
 }
 
