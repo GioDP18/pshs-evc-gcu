@@ -4,6 +4,7 @@ namespace App\Http\Implementations;
 
 
 use App\Http\Services\SaveInputsService;
+use App\Models\BehaviorSpotted;
 use App\Models\GcsPk;
 use App\Models\GuidanceAdmissionSlip;
 use App\Models\GuidanceCallSlip;
@@ -112,30 +113,54 @@ Class SaveInputsServiceImpl implements SaveInputsService
     }
 
     public function submitReferralForm(Request $request){
-        $data = ReferralForm::create([
-            'user_id' => $request->user_id,
+        $data1 = ReferralForm::create([
             'name_of_student' => $request->name_of_student,
             'grade_and_section' => $request->grade_and_section,
             'date' => $request->date,
-            'concern' => $request->concern,
+            'concern' => serialize($request->concern),
             'brief_description' => $request->brief_description,
             'intervention_done' => $request->intervention_done,
             'follow_up' => $request->follow_up,
-            'behaviors_spotted' => $request->behaviors_spotted,
-            'others' => $request->others
+            'others' => $request->others,
+            'referrer_id' => $request->user_id,
         ]);
 
-        if(!$data){
+        if(!$data1){
             return response()->json([
                 "success" => false,
-                "message" => "Internal Server Error.",
+                "message" => "Data 1: Internal Server Error.",
+            ], 500);
+        }
+
+        $data2 = BehaviorSpotted::create([
+            'referral_form_id' => $data1->id,
+            'b_1'=> $request->b_1,
+            'b_2' => $request->b_2,
+            'b_2-1' => $request->b_2_1,
+            'b_3' => $request->b_3,
+            'b_4' => $request->b_4,
+            'b_5' => $request->b_5,
+            'b_6' => $request->b_6,
+            'b_7' => $request->b_7, 
+            'b_8' => $request->b_8,
+            'b_9' => $request->b_9,
+            'b_10' => $request->b_10,
+            'b_11' => $request->b_11,
+            'b_12' => $request->b_12,
+        ]);
+
+        if(!$data2){
+            return response()->json([
+                "success" => false,
+                "message" => "Data 2: Internal Server Error.",
             ], 500);
         }
 
         return response()->json([
             "success" => true,
             "message" => "Referral Form Submitted Successfully.",
-            "data" => $data
+            "data1" => $data1,
+            "data2" => $data2
         ], 200);
     }
 }

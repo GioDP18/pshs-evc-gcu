@@ -18,94 +18,20 @@
                         </div>
                         <div class="below-pink">
                             <div class="pink-left">
-                                <div class="left-text">Reminders</div>
+                                <div class="left-text">Upcoming Events</div>
                                 <div class="reminder-container">
-                                    <div class="reminder-content">
-                                        <i><font-awesome-icon :icon="['fas', 'user-clock']" /></i>
-                                        <div class="reminder-info">
-                                            <p class="info-title">Career Talk</p>
-                                            <p class="info-date">February 2024, Monday</p>
+                                    <div style="width:100%; padding-left:3rem" v-for="event in events" :key="event.div">
+                                        <div class="reminder-content">
+                                            <i><font-awesome-icon :icon="['fas', 'calendar']" /></i>
+                                            <div class="reminder-info">
+                                                <p class="info-title">{{ event.event_name }}</p>
+                                                <p class="info-date">{{ event.event_date }}</p>
+                                            </div>
+                                            <div class="info-time">
+                                                <p class="info-time-title">{{ event.event_time }}</p>
+                                            </div>
                                         </div>
-                                        <div class="info-time">
-                                            <p class="info-time-title">10:00 AM</p>
-                                        </div>
-                                    </div>
-                                    <hr style="color: black; width: 89%; margin: 2px;">
-                                    <div class=" reminder-content">
-                                        <i><font-awesome-icon :icon="['fas', 'user-clock']" /></i>
-                                        <div class="reminder-info">
-                                            <p class="info-title">Career Talk</p>
-                                            <p class="info-date">February 2024, Monday</p>
-                                        </div>
-                                        <div class="info-time">
-                                            <p class="info-time-title">10:00 AM</p>
-                                        </div>
-                                    </div>
-                                    <hr style="color: black; width: 89%; margin: 2px;">
-                                    <div class=" reminder-content">
-                                        <i><font-awesome-icon :icon="['fas', 'user-clock']" /></i>
-                                        <div class="reminder-info">
-                                            <p class="info-title">Career Talk</p>
-                                            <p class="info-date">February 2024, Monday</p>
-                                        </div>
-                                        <div class="info-time">
-                                            <p class="info-time-title">10:00 AM</p>
-                                        </div>
-                                    </div>
-                                    <hr style="color: black; width: 89%; margin: 2px;">
-                                    <div class=" reminder-content">
-                                        <i><font-awesome-icon :icon="['fas', 'user-clock']" /></i>
-                                        <div class="reminder-info">
-                                            <p class="info-title">Career Talk</p>
-                                            <p class="info-date">February 2024, Monday</p>
-                                        </div>
-                                        <div class="info-time">
-                                            <p class="info-time-title">10:00 AM</p>
-                                        </div>
-                                    </div>
-                                    <hr style="color: black; width: 89%; margin: 2px;">
-                                    <div class=" reminder-content">
-                                        <i><font-awesome-icon :icon="['fas', 'user-clock']" /></i>
-                                        <div class="reminder-info">
-                                            <p class="info-title">Career Talk</p>
-                                            <p class="info-date">February 2024, Monday</p>
-                                        </div>
-                                        <div class="info-time">
-                                            <p class="info-time-title">10:00 AM</p>
-                                        </div>
-                                    </div>
-                                    <hr style="color: black; width: 89%; margin: 2px;">
-                                    <div class=" reminder-content">
-                                        <i><font-awesome-icon :icon="['fas', 'user-clock']" /></i>
-                                        <div class="reminder-info">
-                                            <p class="info-title">Career Talk</p>
-                                            <p class="info-date">February 2024, Monday</p>
-                                        </div>
-                                        <div class="info-time">
-                                            <p class="info-time-title">10:00 AM</p>
-                                        </div>
-                                    </div>
-                                    <hr style="color: black; width: 89%; margin: 2px;">
-                                    <div class=" reminder-content">
-                                        <i><font-awesome-icon :icon="['fas', 'user-clock']" /></i>
-                                        <div class="reminder-info">
-                                            <p class="info-title">Career Talk</p>
-                                            <p class="info-date">February 2024, Monday</p>
-                                        </div>
-                                        <div class="info-time">
-                                            <p class="info-time-title">10:00 AM</p>
-                                        </div>
-                                    </div>
-                                    <hr style="color: black; width: 89%; margin: 2px;">
-                                    <div class=" reminder-content">
-                                        <i><font-awesome-icon :icon="['fas', 'user-clock']" /></i>
-                                        <div class="reminder-info">
-                                            <p class="info-title">Career Talk</p>
-                                            <p class="info-date">February 2024, Monday</p>
-                                        </div>
-                                        <div class="info-time">
-                                            <p class="info-time-title">10:00 AM</p>
-                                        </div>
+                                        <hr style="color: black; width: 89%; margin: 2px;">
                                     </div>
                                 </div>
                             </div>
@@ -154,7 +80,26 @@
     </div>
 </template>
 
-<script setup></script>
+<script setup>
+import axios from "axios";
+import { ref, onMounted } from "vue";
+
+const events = ref([]);
+
+onMounted(() => {
+    getEvents();
+});
+
+const getEvents =async () => {
+    try{
+        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/get-events`)
+        events.value = response.data.data
+    }
+    catch(error){
+        console.log(error);
+    }
+}
+</script>
 
 <style scoped>
 .pink-left .reminder-container {
