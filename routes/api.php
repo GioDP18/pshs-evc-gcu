@@ -45,6 +45,7 @@ Route::group([
     Route::get('/generate-referral-form/{id}', [GenerateController::class, 'generateReferralForm']);
     Route::get('/generate-guidance-call/{id}', [GenerateController::class, 'generateGuidCallSlip']);
     Route::get('/generate-parent-questionaire', [GenerateController::class, 'generateParentQuestionaire']);
+    Route::get('/generate-client-monitoring/{id}', [GenerateController::class, 'generateClientMonitoring']);
 
     // Callendar Schedule
     Route::get('/get-schedule/{date}', [CalendarController::class, 'getSchedule']);

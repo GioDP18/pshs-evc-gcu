@@ -71,4 +71,9 @@ class User extends Authenticatable implements JWTSubject
     public function referral_form(){
         return $this->hasMany(ReferralForm::class);
     }
+
+    public function client_monitoring()
+    {
+        return $this->hasOne(ClientMonitoringForm::class);
+    }
 }

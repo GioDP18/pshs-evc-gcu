@@ -36,4 +36,9 @@ class GenerateController extends Controller
     {
         return $this->generateService->generateParentQuestionaire($request);
     }
+
+    public function generateClientMonitoring($id)
+    {
+        return $this->generateService->generateClientMonitoring($id);
+    }
 }
