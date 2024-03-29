@@ -29,7 +29,7 @@
                             <td>{{ data.campus }}</td>
                             <td>{{ data.name_of_student }}</td>
                             <td>{{ data.date_of_interview }}</td>
-                            <td>{{ data.interviewer_info.firstname }} {{ data.interviewer_info.lastname }}</td>
+                            <td>{{ data.referrer_info.firstname }} {{ data.referrer_info.lastname }}</td>
                             <td>
                                 <div class="dropdown">
                                     <button style="padding-right: 5px;" class="card14 dropdown-toggle" type="button"
@@ -219,6 +219,7 @@ import axios from 'axios';
 import { ref, onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import $ from 'jquery';
+import store from "../../../../State/index.js";
 
 const router = useRouter();
 
@@ -282,7 +283,19 @@ const getAllReferralForms = async () => {
 const generateForm = async (form_id) => {
     store.commit('setLoading', true)
     try {
-        // Logic here
+        const resp = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/generate-referral-form/${form_id}`, {
+            responseType: 'arraybuffer'
+        })
+        if (resp.status === 200) {
+            var newBlob = new Blob([resp.data], { type: 'application/pdf' })
+
+            console.log(resp.data)
+            const data = window.URL.createObjectURL(newBlob)
+            var link = document.createElement('a')
+            link.href = data
+            link.download = 'Referral_Form' + '.pdf'
+            link.click()
+        }
     }
     catch (error) {
         console.log(error);

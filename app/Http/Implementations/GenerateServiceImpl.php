@@ -82,7 +82,14 @@ Class GenerateServiceImpl implements GenerateService
         $templateProcessor->setValue('grade-section', $referral->grade_and_section);
         $templateProcessor->setValue('date', $referral->date);
 
-        $concernArray = json_decode($referral->concern, true);
+        $concernArray = unserialize($referral->concern);
+
+        if (!is_array($concernArray)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'the concern data is not array'
+            ]);
+        }
 
         $concerns = ['Academic', 'Behavior', 'Personal'];
 
@@ -97,14 +104,14 @@ Class GenerateServiceImpl implements GenerateService
         $templateProcessor->setValue('brief-description', $referral->brief_description);
         $templateProcessor->setValue('intervention', $referral->intervention_done);
         
-        if($referral->follow_up == 0)
+        if($referral->follow_up == 1)
         {
             $templateProcessor->setValue('follow-up-yes', '✔️');
         }else
         {
             $templateProcessor->setValue('follow-up-yes', '');
         }
-        if($referral->follow_up == 1)
+        if($referral->follow_up == 0)
         {
             $templateProcessor->setValue('follow-up-no', '✔️');
         }else
@@ -116,98 +123,98 @@ Class GenerateServiceImpl implements GenerateService
         $templateProcessor->setImageValue('reffered-signature', array('path' => $signaturePath, 'width' => 70, 'height' => 70));
         $templateProcessor->setValue('reffered-name', $user->firstname. ' ' .$user->lastname);
 
-        if($referral->behavior_spotted->b_1 == 0)
+        if($referral->behavior_spotted->b_1 == 1)
         {
             $templateProcessor->setValue('behavior1', '✖️');
         }else
         {
             $templateProcessor->setValue('behavior1', '');
         }
-        if($referral->behavior_spotted->b_2 == 0)
+        if($referral->behavior_spotted->b_2 == 1)
         {
             $templateProcessor->setValue('behavior2', '✖️');
         }else
         {
             $templateProcessor->setValue('behavior2', '');
         }
-        if($referral->behavior_spotted->b_2 == 0)
+        if($referral->behavior_spotted->b_2 == 1)
         {
             $templateProcessor->setValue('behavior2.1', '✖️');
         }else
         {
             $templateProcessor->setValue('behavior2.1', '');
         }
-        if($referral->behavior_spotted->b_3 == 0)
+        if($referral->behavior_spotted->b_3 == 1)
         {
             $templateProcessor->setValue('behavior3', '✖️');
         }else
         {
             $templateProcessor->setValue('behavior3', '');
         }
-        if($referral->behavior_spotted->b_4 == 0)
+        if($referral->behavior_spotted->b_4 == 1)
         {
             $templateProcessor->setValue('behavior4', '✖️');
         }else
         {
             $templateProcessor->setValue('behavior4', '');
         }
-        if($referral->behavior_spotted->b_5 == 0)
+        if($referral->behavior_spotted->b_5 == 1)
         {
             $templateProcessor->setValue('behavior5', '✖️');
         }else
         {
             $templateProcessor->setValue('behavior5', '');
         }
-        if($referral->behavior_spotted->b_6 == 0)
+        if($referral->behavior_spotted->b_6 == 1)
         {
             $templateProcessor->setValue('behavior6', '✖️');
         }else
         {
             $templateProcessor->setValue('behavior6', '');
         }
-        if($referral->behavior_spotted->b_7 == 0)
+        if($referral->behavior_spotted->b_7 == 1)
         {
             $templateProcessor->setValue('behavior7', '✖️');
         }else
         {
             $templateProcessor->setValue('behavior7', '');
         }
-        if($referral->behavior_spotted->b_8 == 0)
+        if($referral->behavior_spotted->b_8 == 1)
         {
             $templateProcessor->setValue('behavior8', '✖️');
         }else
         {
             $templateProcessor->setValue('behavior8', '');
         }
-        if($referral->behavior_spotted->b_9 == 0)
+        if($referral->behavior_spotted->b_9 == 1)
         {
             $templateProcessor->setValue('behavior9', '✖️');
         }else
         {
             $templateProcessor->setValue('behavior9', '');
         }
-        if($referral->behavior_spotted->b_10 == 0)
+        if($referral->behavior_spotted->b_10 == 1)
         {
             $templateProcessor->setValue('behavior10', '✖️');
         }else
         {
             $templateProcessor->setValue('behavior10', '');
         }
-        if($referral->behavior_spotted->b_11 == 0)
+        if($referral->behavior_spotted->b_11 == 1)
         {
             $templateProcessor->setValue('behavior11', '✖️');
         }else
         {
             $templateProcessor->setValue('behavior11', '');
         }
-        if($referral->behavior_spotted->b_12 == 0)
+        if($referral->behavior_spotted->b_12 == 1)
         {
             $templateProcessor->setValue('behavior12', '✖️');
         }else
         {
             $templateProcessor->setValue('behavior12', '');
         }
-        if($referral->behavior_spotted->b_13 == 0)
+        if($referral->behavior_spotted->b_13 == 1)
         {
             $templateProcessor->setValue('behavior13', '✖️');
         }else
@@ -223,12 +230,7 @@ Class GenerateServiceImpl implements GenerateService
         $convert = $this->wordToPdf($newFilePath);
         $convert->saveFiles(public_path('referral_form\\'. 'John Vincent Ramada' . '.pdf'));
         
-        return response()->json([
-            'success' => true,
-            'message' => 'Successfully generated referral form',
-            'result' => $user,
-            'referral' => $referral
-        ], 201);
+        return response()->download(public_path('referral_form\\' . 'John Vincent Ramada' . '.pdf'));
     }
 
     public function generateGuidCallSlip($id)
