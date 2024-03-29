@@ -221,7 +221,7 @@ const brief_description = ref("");
 const intervention_done = ref("");
 const follow_up = ref(null);
 const others = ref("");
-const referrer_id = localStorage.getItem("user_id");
+// const referrer_id = localStorage.getItem("user_id");
 const designation = ref("");
 const b_1 = ref(false);
 const b_2 = ref(false);
@@ -260,6 +260,7 @@ const submitForm = async () => {
 
         const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/submit-referral-form`, {
             campus: campus.value,
+            user_id: localStorage.getItem("user_id"),
             name_of_student: name_of_student.value,
             grade_and_section: grade_and_section.value,
             date: date.value,
@@ -268,7 +269,6 @@ const submitForm = async () => {
             intervention_done: intervention_done.value,
             follow_up: followUpValue,
             others: others.value,
-            referrer_id: localStorage.getItem("user_id"),
             designation: designation.value,
             b_1: b_1.value,
             b_2: b_2.value,
