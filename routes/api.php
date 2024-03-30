@@ -33,6 +33,7 @@ Route::group([
     Route::post('/refresh', [AuthController::class, 'refresh']);
     Route::get('/get-user-data/{id}', [UserDataController::class, 'getUserData']);
     Route::get('/get-all-users', [UserDataController::class, 'getAllUsers']);
+    Route::get('/get-all-staffs', [UserDataController::class, 'getStaffs']);
 
     // Social login
     Route::get('/oauth/{provider}', [AuthController::class, 'socialLogin']);
@@ -84,7 +85,11 @@ Route::group([
     Route::post('/submit-intake-interview', [SaveInputsController::class, 'submitIntakeInterview']);
     Route::post('/submit-guidance-admission-slip', [SaveInputsController::class, 'submitGuidanceAdmissionSlip']);
     Route::post('/submit-guidance-call-slip', [SaveInputsController::class, 'submitGuidanceCallSlip']);
+    // Parent route here
     Route::post('/submit-referral-form', [SaveInputsController::class, 'submitReferralForm']);
+    // Cumulative route here
+    Route::post('/submit-client-monitoring-form', [SaveInputsController::class, 'submitClientMonitoringForm']);
+    Route::post('/update-client-monitoring-form', [SaveInputsController::class, 'updateClientMonitoringForm']);
 
     // Assignment
     Route::post('/assign-form', [AssignmentController::class, 'assignForm']);
