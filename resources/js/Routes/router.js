@@ -25,6 +25,7 @@ import FieldReferralForm from "../Components/Pages/Staff/FillForm/FieldReferralF
 import FieldGuidanceAdmission from "../Components/Pages/Staff/FillForm/FieldGuidanceAdmissionSlip.vue";
 import FieldClientMonitoringForm from "../Components/Pages/Staff/FillForm/FieldClientMonitoringForm.vue";
 import FieldParentQuestionnaire from "../Components/Pages/Staff/FillForm/FieldParentQuestionnaire.vue";
+import FieldCumulativeRecord from "../Components/Pages/Staff/FillForm/FieldCumulativeRecord.vue";
 //Requests
 import RequestIntakeInterview from "../Components/Pages/Staff/Requests/RequestIntakeInterview.vue";
 import RequestGuidanceAdmission from "../Components/Pages/Staff/Requests/RequestGuidanceAdmission.vue";
@@ -160,6 +161,11 @@ const routes = [
                 path: "fieldParentQuestionnaire",
                 component: FieldParentQuestionnaire,
                 name: "staff-fieldParentQuestionnaire",
+            },
+            {
+                path: "fieldCumulativeRecord",
+                component: FieldCumulativeRecord,
+                name: "staff-fieldCumulativeRecord",
             },
             //REQUESTS
             {
