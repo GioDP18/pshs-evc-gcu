@@ -17,6 +17,9 @@
                                 </button>
                             </RouterLink>
                         </div>
+                        <div class="scroll-message" v-if="showScrollMessage">
+                            Scroll down <i><font-awesome-icon :icon="['fas', 'arrow-down']" /></i>
+                        </div>
                         <!-- <button @click="viaGoogle">
                             SIGN IN WITH <i class="fa-brands fa-google"
                                 style="margin-left: 5px; background-color: #2087E4; border-radius: 50%; color: white; padding: 5px 5px 5px 5px;"></i>
@@ -72,7 +75,7 @@
 
 <script setup>
 import axios from 'axios';
-import { ref } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRouter } from "vue-router";
 import store from "../../State/index.js";
 
@@ -87,6 +90,20 @@ const errors = ref({
     email: '',
     password: ''
 });
+
+const screenWidth = ref(window.innerWidth);
+
+const userHasScrolled = ref(false);
+
+onMounted(() => {
+    window.addEventListener('scroll', handleScroll);
+});
+
+const handleScroll = () => {
+    userHasScrolled.value = true;
+};
+
+const showScrollMessage = computed(() => screenWidth.value <= 360 && !userHasScrolled.value);
 
 const showPassword = ref(false);
 
@@ -184,6 +201,29 @@ const viaGoogle = async () => {
 </script>
 
 <style scoped>
+.scroll-message {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: floatAnimation 3s infinite alternate;
+    color: #2087E4;
+}
+
+@keyframes floatAnimation {
+    0% {
+        transform: translateX(-50%) translateY(0);
+    }
+
+    50% {
+        transform: translateX(-50%) translateY(10px);
+    }
+
+    100% {
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
 .login-container {
     background-image: url('../../../../public/external/Background.png');
     background-size: cover;
@@ -396,7 +436,6 @@ const viaGoogle = async () => {
     .big-text h1 {
         font-size: 55px;
         width: 100%;
-        padding-top: 100px;
         font-weight: 700
     }
 

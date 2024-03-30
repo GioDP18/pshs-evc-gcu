@@ -70,7 +70,8 @@
                             <div class="modal-body">
                                 <div class="input-group mb-3">
                                     <span class="input-group-text" id="basic-addon1">Due Date</span>
-                                    <input type="date" v-model="due_date"class="form-control" placeholder="" aria-describedby="basic-addon1">
+                                    <input type="date" v-model="due_date" class="form-control" placeholder=""
+                                        aria-describedby="basic-addon1">
                                 </div>
                                 <div class="options">
                                     <button class="individual" data-bs-toggle="modal"
