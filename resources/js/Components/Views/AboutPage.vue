@@ -13,7 +13,7 @@
 
                 <h2>Guidance Counseling Unit</h2>
 
-                <RouterLink to="/" title="Go Back Button">GO BACK</RouterLink>
+                <a href="#staff-section" title="Staff Button">STAFF</a>
 
             </div>
 
@@ -35,7 +35,7 @@
                     growth and well-being. Whether you’re dealing with academic stress, career decisions, or personal
                     issues, we’re here to listen and guide you towards a path of resilience and fulfillment.</p>
 
-                <a href="#staff-section" title="Staff Button">STAFF</a>
+                <RouterLink to="/" title="Back Button">GO BACK</RouterLink>
 
             </div>
 
@@ -480,5 +480,43 @@ a:hover {
 
 .image-1 .position {
     font-weight: 500;
+}
+
+@media screen and (max-width:360px) {
+    .about-us-info {
+        height: 100%;
+    }
+
+    .about-us-info h2 {
+        font-size: 40pt;
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+    .staff-info .image-container {
+        flex-direction: column;
+    }
+
+    .staff-info h2 {
+        margin-bottom: 120px;
+        font-size: 40pt;
+    }
+
+    .history-info {
+        padding: 10px 30px 180px 30px !important;
+    }
+
+    .history-info p {
+        font-size: 20px;
+    }
+
+    #staff-section {
+        margin-top: 90px;
+        padding-top: 30px;
+    }
+
+    .staff-info .image-container {
+        gap: 60px;
+    }
 }
 </style>

@@ -447,7 +447,6 @@ const handleLogout = async () => {
     top: 0;
     z-index: 1000;
     width: 100%;
-    /* Add any additional styles for the sticky header */
 }
 
 .dropdown {

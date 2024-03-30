@@ -69,7 +69,8 @@
                             <div class="modal-body">
                                 <div class="input-group mb-3">
                                     <span class="input-group-text" id="basic-addon1">Due Date</span>
-                                    <input type="date" v-model="due_date"class="form-control" placeholder="" aria-describedby="basic-addon1">
+                                    <input type="date" v-model="due_date" class="form-control" placeholder=""
+                                        aria-describedby="basic-addon1">
                                 </div>
                                 <div class="options">
                                     <button class="individual" data-bs-toggle="modal"
@@ -146,9 +147,12 @@
                                         {{ selectedGrade ? 'Grade ' + selectedGrade : 'Grade' }}
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownGrade" style="width: 100%;">
-                                        <a class="dropdown-item" href="#" @click="selectGrade(1)">Grade 1</a>
-                                        <a class="dropdown-item" href="#" @click="selectGrade(2)">Grade 2</a>
-                                        <a class="dropdown-item" href="#" @click="selectGrade(3)">Grade 3</a>
+                                        <a class="dropdown-item" href="#" @click="selectGrade(7)">Grade 7</a>
+                                        <a class="dropdown-item" href="#" @click="selectGrade(8)">Grade 8</a>
+                                        <a class="dropdown-item" href="#" @click="selectGrade(9)">Grade 9</a>
+                                        <a class="dropdown-item" href="#" @click="selectGrade(10)">Grade 10</a>
+                                        <a class="dropdown-item" href="#" @click="selectGrade(11)">Grade 11</a>
+                                        <a class="dropdown-item" href="#" @click="selectGrade(12)">Grade 12</a>
                                     </div>
                                 </div>
                                 <div v-if="selectedGrade" class="dropdown" style="width: 100%; margin-top: 20px;">

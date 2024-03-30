@@ -1,7 +1,6 @@
 <template>
-    <div class="d-flex gap-5 container">
+    <div class="d-flex gap-5 mb-5 container">
         <div class="calendar">
-            <div style="height:30px; background-color:#67a5fc;"></div>
             <el-calendar v-model="value">
                 <template #date-cell="{ data }">
                     <p :class="data.isSelected ? 'is-selected' : ''" @click="handleDateClick(data)">
@@ -24,8 +23,7 @@
                             <div class="radio-input">
                                 <div class="radio-container" v-for="item in availableTimeSlots" :key="item.id">
                                     <input v-model="chosen_time" :value="item.id" name="value-radio"
-                                        :id="'value-' + item.id" type="radio"
-                                        :disabled="item.user_id_reserved !== null">
+                                        :id="'value-' + item.id" type="radio" :disabled="item.user_id_reserved !== null">
                                     <label :for="'value-' + item.id"
                                         :style="'background-color:' + (item.user_id_reserved !== null ? '#ed9696;' : ';') + 'color:' + (item.user_id_reserved !== null ? 'white' : '')">{{
                 item.available_time }}</label>
@@ -56,12 +54,11 @@
                         style="width:100%; padding:10px; border-radius:30px; background-color:#ED9696; border:1px solid #fbebeb">Reschedule</button>
                 </div>
 
-                <div style="width:100%; padding:10px; border-radius:20px; border:2px solid #fbebeb">
-                    <p style="font-weight:bold; color:gray; font-size:15px; opacity:60%">Available time for today
-                    </p>
+                <div
+                    style="width:100%; padding:10px; border-radius:20px; border:2px solid #fbebeb; max-height: 295px; overflow-y: auto;">
+                    <p style="font-weight:bold; color:gray; font-size:15px; opacity:60%">Available time for today</p>
                     <div class="ml-4">
-                        <p style="font-weight:bold; color:#27516B" v-if="available_time_today.length === 0">No
-                            Available
+                        <p style="font-weight:bold; color:#27516B" v-if="available_time_today.length === 0">No Available
                             time
                             for today.</p>
                         <p style="font-weight:bold; color:#27516B" v-for="item in available_time_today" :key="item.id">
@@ -80,6 +77,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 
