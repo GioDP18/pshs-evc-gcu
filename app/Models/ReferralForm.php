@@ -35,6 +35,6 @@ class ReferralForm extends Model
     }
 
     public function referrer_info(){
-        return $this->belongsTo(User::class, 'referrer_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 }
