@@ -5,6 +5,8 @@ namespace App\Http\Implementations;
 
 use App\Http\Services\SaveInputsService;
 use App\Models\BehaviorSpotted;
+use App\Models\ClientMonitoringForm;
+use App\Models\Concern;
 use App\Models\GcsPk;
 use App\Models\GuidanceAdmissionSlip;
 use App\Models\GuidanceCallSlip;
@@ -112,6 +114,8 @@ Class SaveInputsServiceImpl implements SaveInputsService
         ], 200);
     }
 
+    // Parent
+
     public function submitReferralForm(Request $request){
         $data1 = ReferralForm::create([
             'campus' => $request->campus,
@@ -164,4 +168,68 @@ Class SaveInputsServiceImpl implements SaveInputsService
             "data2" => $data2
         ], 200);
     }
+
+    //Cumulative
+
+    public function submitClientMonitoringForm(Request $request){
+        $data1 = ClientMonitoringForm::create([
+            'user_id' => $request->user_id,
+            'campus' => $request->campus,
+            'adviser' => $request->adviser,
+        ]);
+
+        if(!$data1){
+            return response()->json([
+                "success" => false,
+                "message" => "Data 1: Internal Server Error.",
+            ], 500);
+        }
+
+        $data2 = Concern::create([
+            'client_monitoring_form_id' => $data1->id,
+            'date'=> $request->date,
+            'area_of_concern' => $request->area_of_concern,
+            'action_taken' => $request->action_taken,
+            'recommendation' => $request->recommendation,
+        ]);
+
+        if(!$data2){
+            return response()->json([
+                "success" => false,
+                "message" => "Data 2: Internal Server Error.",
+            ], 500);
+        }
+
+        return response()->json([
+            "success" => true,
+            "message" => "Client Monitoring Form Submitted Successfully.",
+            "data1" => $data1,
+            "data2" => $data2
+        ], 200);
+    }
+
+    public function updateClientMonitoringForm(Request $request){
+        $data = Concern::create([
+            'client_monitoring_form_id' => $request->cmf_id,
+            'date'=> $request->date,
+            'area_of_concern' => $request->area_of_concern,
+            'action_taken' => $request->action_taken,
+            'recommendation' => $request->recommendation,
+        ]);
+
+        if(!$data){
+            return response()->json([
+                "success" => false,
+                "message" => "Data 2: Internal Server Error.",
+            ], 500);
+        }
+
+        return response()->json([
+            "success" => true,
+            "message" => "Client Monitoring Form Updated Successfully.",
+            "data" => $data
+        ], 200);
+    }
+
+
 }

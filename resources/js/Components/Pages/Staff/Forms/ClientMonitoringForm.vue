@@ -29,7 +29,7 @@
                             <td>{{ data.campus }}</td>
                             <td>{{ data.name_of_student }}</td>
                             <td>{{ data.date_of_interview }}</td>
-                            <td>{{ data.interviewer_info.firstname }} {{ data.interviewer_info.lastname }}</td>
+                            <td></td>
                             <td>
                                 <div class="dropdown">
                                     <button style="padding-right: 5px;" class="card14 dropdown-toggle" type="button"
