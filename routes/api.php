@@ -31,6 +31,8 @@ Route::group([
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/refresh', [AuthController::class, 'refresh']);
+    Route::post('/verify-user-email', [AuthController::class, 'verifyUserEmail']);
+    Route::post('/resend-email-verification-link', [AuthController::class, 'resendEmailVerificationLink']);
     Route::get('/get-user-data/{id}', [UserDataController::class, 'getUserData']);
     Route::get('/get-all-users', [UserDataController::class, 'getAllUsers']);
 
