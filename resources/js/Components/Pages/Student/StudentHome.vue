@@ -10,7 +10,7 @@
                         <div class="pink-card">
                             <div class="hello-text">
                                 <p class="hello">Hello,</p>
-                                <p class="name">Bogart!</p>
+                                <p class="name">{{ name }}!</p>
                             </div>
                             <div class="undraw">
                                 <img src="../../../../../public/external/undraw_true_friends_c-94-g.svg" alt="">
@@ -84,6 +84,7 @@
 import axios from "axios";
 import { ref, onMounted } from "vue";
 
+const name = localStorage.getItem("firstname");
 const events = ref([]);
 
 onMounted(() => {
