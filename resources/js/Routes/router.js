@@ -57,6 +57,8 @@ import ParentsTeacherReferralForm from "../Components/Pages/ParentsTeacher/Forms
 //Fields
 import FillReferral from "../Components/Pages/ParentsTeacher/FillForm/FillReferralForm.vue";
 
+import VerifiedEmail from "../Components/Views/VerifiedEmail.vue";
+import NotVerifiedEmail from "../Components/Views/NotVerifiedEmail.vue";
 import NotFound from "../Components/404.vue";
 
 const routes = [
@@ -287,6 +289,16 @@ const routes = [
                 name: "parentsTeacher-fillReferral",
             },
         ],
+    },
+    {
+        path: "/verifiedEmail",
+        component: VerifiedEmail,
+        name: "verifiedEmail",
+    },
+    {
+        path: "/notVerifiedEmail",
+        component: NotVerifiedEmail,
+        name: "notVerifiedEmail",
     },
     {
         path: "/:path(.*)",
