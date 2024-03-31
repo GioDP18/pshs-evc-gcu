@@ -57,4 +57,18 @@ class UserDataController extends Controller
             "data" => $data
         ], 200);
     }
+
+    public function checkAuth(){
+        if (auth()->check()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'You are authenticated.'
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'You are unauthenticated.'
+            ], 200);
+        }
+    }
 }

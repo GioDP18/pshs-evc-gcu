@@ -8,6 +8,8 @@ interface AuthService
 {
     public function login(Request $request);
 
+    public function checkAuth();
+
     public function register(Request $request);
 
     public function logout();

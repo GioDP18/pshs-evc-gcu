@@ -31,6 +31,7 @@ Route::group([
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/refresh', [AuthController::class, 'refresh']);
+    Route::get('/check-auth', [AuthController::class, 'checkAuth']);
     Route::get('/get-user-data/{id}', [UserDataController::class, 'getUserData']);
     Route::get('/get-all-users', [UserDataController::class, 'getAllUsers']);
     Route::get('/get-all-staffs', [UserDataController::class, 'getStaffs']);
