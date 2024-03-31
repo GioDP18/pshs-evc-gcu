@@ -1,5 +1,5 @@
 <template>
-    <p>email verification Dummy</p>
+    
 </template>
 
 <script setup>
@@ -8,6 +8,7 @@ import { ref, onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import store from "../../State/index.js";
 
+const router = useRouter();
 const response = ref([]);
 const email = ref('');
 const token = ref('');
@@ -27,8 +28,9 @@ const verifyEmail = async () => {
             email: email.value,
             token: token.value
         })
-
+        
         response.value = resp.data;
+        router.push({ name: 'verifiedEmail' })
     }
     catch (error) {
         console.log(error);
