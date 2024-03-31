@@ -10,15 +10,15 @@
                         <div class="pink-card">
                             <div class="hello-text">
                                 <p class="hello">Hello,</p>
-                                <p class="name">Bogart!</p>
+                                <p class="name">{{ name }}!</p>
                             </div>
                             <div class="undraw">
-                                <img src="../../../../../public/external/undraw_suburbs_re_en49.svg" alt="">
+                                <img src="../../../../../public/external/undraw_true_friends_c-94-g.svg" alt="">
                             </div>
                         </div>
                         <div class="below-pink">
                             <div class="pink-left">
-                                <div class="left-text">Reminders</div>
+                                <div class="left-text">Upcoming Events</div>
                                 <div class="reminder-container">
                                     <div style="width:100%; padding-left:3rem" v-for="event in events" :key="event.div">
                                         <div class="reminder-content">
@@ -39,7 +39,7 @@
                     </div>
                     <div class="right">
                         <div class="pink-right">
-                            <div class="folder">
+                            <div class="folder" v-if="role === 'parent'">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                     <!-- Original path -->
                                     <path
@@ -47,11 +47,11 @@
 
                                     <!-- Original text -->
                                     <text x="50%" y="60%" fill="#3d4b5f" font-size="4" font-weight="bold"
-                                        text-anchor="middle">CRF</text>
+                                        text-anchor="middle">PQF</text>
 
                                     <!-- Red circle with number -->
                                     <circle cx="21" cy="5.5" r="2" fill="red" />
-                                    <text x="21" y="6.5" fill="white" font-size="3" text-anchor="middle">5</text>
+                                    <text x="21" y="6.5" fill="white" font-size="3" text-anchor="middle">{{ pqf_count }}</text>
                                     <!-- Adjust fill here -->
                                 </svg>
 
@@ -64,11 +64,11 @@
 
                                     <!-- Original text -->
                                     <text x="50%" y="60%" fill="#3d4b5f" font-size="4" font-weight="bold"
-                                        text-anchor="middle">CMF</text>
+                                        text-anchor="middle">RF</text>
 
                                     <!-- Red circle with number -->
                                     <circle cx="21" cy="5.5" r="2" fill="red" />
-                                    <text x="21" y="6.5" fill="white" font-size="3" text-anchor="middle">5</text>
+                                    <text x="21" y="6.5" fill="white" font-size="3" text-anchor="middle" @click="goToAssRF" style="cursor:pointer">{{ rf_count }}</text>
                                     <!-- Adjust fill here -->
                                 </svg>
                             </div>
@@ -83,11 +83,21 @@
 <script setup>
 import axios from "axios";
 import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
+const role = localStorage.getItem("role");
+const name = localStorage.getItem("firstname");
+const user_id = localStorage.getItem("user_id");
 const events = ref([]);
+
+const pqf_count = ref(0);
+const rf_count = ref(0);
 
 onMounted(() => {
     getEvents();
+    getPQF();
+    getRF();
 });
 
 const getEvents =async () => {
@@ -98,6 +108,36 @@ const getEvents =async () => {
     catch(error){
         console.log(error);
     }
+}
+
+const getPQF = async () => {
+    try{
+        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/get-assigned-forms/${user_id}/${'Parent Quetionnaire Form'}`)
+        pqf_count.value = response.data.count
+        console.log(response.data.data)
+    }
+    catch(error){
+        console.log(error);
+    }
+}
+
+const getRF = async () => {
+    try{
+        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/get-assigned-forms/${user_id}/${'Referral Form'}`)
+        rf_count.value = response.data.count
+        console.log(response.data.data)
+    }
+    catch(error){
+        console.log(error);
+    }
+}
+
+const goToAssPQF = () => {
+    router.push({ name: 'student-assignmentCumulative'})
+}
+
+const goToAssRF = () => {
+    router.push({ name: 'parentsTeacher-assReferral'})
 }
 </script>
 
@@ -292,7 +332,7 @@ const getEvents =async () => {
 }
 
 .pink-card .undraw {
-    width: 47.5%;
+    width: 46.5%;
 }
 
 .undraw img {
