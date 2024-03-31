@@ -85,6 +85,7 @@ Route::group([
 
 
     Route::get('/get-my-referral-forms/{id}', [GetFormsController::class, 'getMyReferralForms']);
+    Route::get('/get-my-client-monitoring-forms/{id}', [GetFormsController::class, 'getMyClientMonitoringForms']);
 
     // Submit Forms
     Route::post('/submit-intake-interview', [SaveInputsController::class, 'submitIntakeInterview']);

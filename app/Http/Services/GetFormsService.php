@@ -21,4 +21,6 @@ interface GetFormsService
     public function getAllClientMonitoringForms();
 
     public function getMyReferralForms($id);
+
+    public function getMyClientMonitoringForms($id);
 }
