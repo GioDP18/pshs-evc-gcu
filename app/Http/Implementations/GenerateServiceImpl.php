@@ -529,23 +529,23 @@ Class GenerateServiceImpl implements GenerateService
 
     public function generateClientMonitoring($id)
     {
-        $user = User::with(['client_monitoring','client_monitoring.concern'])->findOrFail($id);
+        $user = ClientMonitoringForm::with(['user','concern'])->findOrFail($id);
         
         $templateProcessor = new TemplateProcessor(public_path('templates\PSHS-00-F-GCU-07-Ver02-Rev1-Client-Monitoring-Form.docx'));
-        $templateProcessor->setValue('name', $user->firstname .' '. $user->lastname);
-        $templateProcessor->setValue('grade-section', $user->grade_level .'-'. $user->section);
-        $templateProcessor->setValue('adviser', $user->client_monitoring->adviser);
-        $templateProcessor->setValue('campus', $user->client_monitoring->campus);
+        $templateProcessor->setValue('name', $user->user->firstname .' '. $user->lastname);
+        $templateProcessor->setValue('grade-section', $user->user->grade_level .'-'. $user->user->section);
+        $templateProcessor->setValue('adviser', $user->adviser);
+        $templateProcessor->setValue('campus', $user->campus);
         
         $headerData = [
             ['date', 'Areas of Concern', 'Signature', 'Action Taken', 'Recommendation'],
         ];
         $tableData = [];
-        foreach ($user->client_monitoring->concern as $concern) {
+        foreach ($user->concern as $concern) {
             $tableData[] = [
                 $concern->date,
                 $concern->area_of_concern,
-                $user->signature,
+                $user->user->signature,
                 $concern->action_taken,
                 $concern->recommendation,
             ];
