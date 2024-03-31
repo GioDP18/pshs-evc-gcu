@@ -12,6 +12,7 @@ use App\Models\GuidanceAdmissionSlip;
 use App\Models\GuidanceCallSlip;
 use App\Models\IntakeInterviewForm;
 use App\Models\ReferralForm;
+use App\Models\Reservation;
 use Illuminate\Http\Request;
 
 Class SaveInputsServiceImpl implements SaveInputsService
@@ -128,6 +129,12 @@ Class SaveInputsServiceImpl implements SaveInputsService
             'intervention_done' => $request->intervention_done,
             'follow_up' => $request->follow_up,
             'others' => $request->others,
+        ]);
+
+        Reservation::create([
+            'time' => $request->selected_time,
+            'date' => $request->date,
+            'user_id' => $request->user_id,
         ]);
 
         if(!$data1){

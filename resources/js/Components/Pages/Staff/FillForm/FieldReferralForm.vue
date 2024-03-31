@@ -15,19 +15,28 @@
                                 <input type="text" v-model="campus" class="form-control" id="campus" required>
                             </div>
 
-                            <div class="mb-3">
-                                <label for="studentName" class="form-label">Name of Student:</label>
-                                <input type="text" v-model="name_of_student" class="form-control" id="studentName" required>
-                            </div>
-
                             <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="studentName" class="form-label">Name of Student:</label>
+                                    <input type="text" v-model="name_of_student" class="form-control" id="studentName" required>
+                                </div>
                                 <div class="col-md-6">
                                     <label for="gradeSection" class="form-label">Grade & Section:</label>
                                     <input type="text" v-model="grade_and_section" class="form-control" id="gradeSection" required>
                                 </div>
+                            </div>
+
+                            <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="date" class="form-label">Date:</label>
                                     <input type="date" v-model="date" class="form-control" id="date" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="gradeSection" class="form-label">Start:</label>
+                                    <input type="text" v-model="selected_time" list="reserve-time" class="form-control" id="gradeSection" required>
+                                    <datalist id="reserve-time">
+                                        <option v-for="item in time" :key="item" :value="item"></option>
+                                    </datalist>
                                 </div>
                             </div>
 
@@ -216,6 +225,7 @@ const campus = ref("");
 const name_of_student = ref("");
 const grade_and_section = ref("");
 const date = ref("");
+const selected_time = ref("");
 const concern = ref([]);
 const brief_description = ref("");
 const intervention_done = ref("");
@@ -237,6 +247,26 @@ const b_11 = ref(false);
 const b_12 = ref(false);
 const b_13 = ref(false);
 
+const time = [
+    '7:30 AM - 8:00 AM',
+    '8:00 AM - 8:30 AM',
+    '8:30 AM - 9:00 AM',
+    '9:00 AM - 9:30 PM',
+    '9:30 AM - 10:00 AM',
+    '10:00 AM - 10:30 AM',
+    '10:30 AM - 11:00 AM',
+    '11:00 AM - 11:30 AM',
+    '11:30 AM - 12:00 PM',
+    '12:00 PM - 12:30 PM',
+    '12:30 PM - 1:00 PM',
+    '1:00 PM - 1:30 PM',
+    '1:30 PM - 2:00 PM',
+    '2:00 PM - 2:30 PM',
+    '2:30 PM - 3:00 PM',
+    '3:00 PM - 3:30 PM',
+    '3:30 PM - 4:00 PM',
+    '4:00 PM - 4:30 PM',
+]
 
 function nextPage() {
     if (currentPage.value < totalPages) {
@@ -264,6 +294,7 @@ const submitForm = async () => {
             name_of_student: name_of_student.value,
             grade_and_section: grade_and_section.value,
             date: date.value,
+            selected_time: selected_time.value,
             concern: concern.value,
             brief_description: brief_description.value,
             intervention_done: intervention_done.value,

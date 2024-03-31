@@ -105,20 +105,22 @@ Class AssignmentServiceImpl implements AssignmentService
         }
     }
 
-    public function getAssignedForms($id){
+    public function getAssignedForms($id, $form_name){
         try{
-            $data = Assignment::where('assignee', $id)->get();
+            $data = Assignment::where('assignee', $id)->where('form_name', $form_name)->get();
 
-            if(!$data){
+            if($data->count() === 0){
                 return response()->json([
-                    "success" => false,
-                    "message" => "Internal Server Error.",
-                ], 500);
+                    "success" => true,
+                    "message" => "Fetched all assigned forms to this assignee.",
+                    "count" => 0,
+                ], 200);
             }
 
             return response()->json([
                 "success" => true,
                 "message" => "Fetched all assigned forms to this assignee.",
+                "count" => $data->count(),
                 "data" => $data
             ], 200);
         }

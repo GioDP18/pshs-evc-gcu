@@ -1,7 +1,6 @@
 <template>
-    <div class="d-flex gap-5 container">
+    <div class="d-flex gap-5 mb-5 container">
         <div class="calendar">
-            <div style="height:30px; background-color:#67a5fc;"></div>
             <el-calendar v-model="value">
                 <template #date-cell="{ data }">
                     <p :class="data.isSelected ? 'is-selected' : ''" @click="handleDateClick(data)">
@@ -18,16 +17,11 @@
                         <div><b>Choose Time:</b></div>
                         <small v-if="!no_available_time">Note: Red means time is already reserved</small>
                         <div class="ml-3 mt-2 d-flex gap-4" style="flex-wrap:wrap;">
-                            <div class="text-center mt-5" style="width:100%;" v-if="no_available_time">
-                                <p class="text-dark"><b>No available time.</b></p>
-                            </div>
                             <div class="radio-input">
-                                <div class="radio-container" v-for="item in availableTimeSlots" :key="item.id">
-                                    <input v-model="chosen_time" :value="item.id" name="value-radio"
-                                        :id="'value-' + item.id" type="radio" :disabled="item.user_id_reserved !== null">
-                                    <label :for="'value-' + item.id"
-                                        :style="'background-color:' + (item.user_id_reserved !== null ? '#ed9696;' : ';') + 'color:' + (item.user_id_reserved !== null ? 'white' : '')">{{
-                item.available_time }}</label>
+                                <div class="radio-container" v-for="item in available_time" :key="item.id">
+                                    <input v-model="chosen_time" :value="item" name="value-radio"
+                                        :id="'value-' + item" type="radio">
+                                    <label :for="'value-' + item">{{ item }}</label>
                                 </div>
                             </div>
                         </div>
@@ -43,7 +37,7 @@
         <div class="details">
             <div class="d-flex flex-column gap-3">
                 <div style="width:100%; padding:10px; border-radius:20px; border:2px solid #fbebeb">
-                    <p style="font-weight:bold; color:gray; font-size:15px; opacity:60%">Appoinment</p>
+                    <p style="font-weight:bold; color:gray; font-size:15px; opacity:60%">Your appoinment for today</p>
                     <div class="ml-4">
                         <p style="font-weight:bold; color:#27516B"><i class="fa-regular fa-clock"
                                 style="color:#ED9696"></i>
@@ -55,25 +49,16 @@
                         style="width:100%; padding:10px; border-radius:30px; background-color:#ED9696; border:1px solid #fbebeb">Reschedule</button>
                 </div>
 
-                <div style="width:100%; padding:10px; border-radius:20px; border:2px solid #fbebeb; max-height: 295px; overflow-y: auto;">
+                <div
+                    style="width:100%; padding:10px; border-radius:20px; border:2px solid #fbebeb; max-height: 295px; overflow-y: auto;">
                     <p style="font-weight:bold; color:gray; font-size:15px; opacity:60%">Available time for today</p>
                     <div class="ml-4">
-                        <p style="font-weight:bold; color:#27516B" v-if="available_time_today.length === 0">No Available
+                        <p style="font-weight:bold; color:#27516B" v-if="not_available_time_today.length === 0">No Available
                             time
                             for today.</p>
                         <p style="font-weight:bold; color:#27516B" v-for="item in available_time_today" :key="item.id">
-                            <i class="fa-regular fa-clock" style="color:#ED9696"></i> {{ item.available_time }}
+                            <i class="fa-regular fa-clock" style="color:#ED9696"></i> {{ item }}
                         </p>
-                    </div>
-                </div>
-
-                <div style="width:100%; padding:10px; border-radius:20px; border:2px solid #fbebeb">
-                    <p style="font-weight:bold; color:gray; font-size:15px; opacity:60%">Participants</p>
-                    <div class="d-flex gap-2">
-                        <p style="font-weight:bold; color:#27516B; font-size:30px;"><i class="fa-regular fa-circle-user"
-                                style="color:#9DCBF3"></i></p>
-                        <p style="font-weight:bold; color:#27516B; font-size:30px;"><i class="fa-regular fa-circle-user"
-                                style="color:#ED9696"></i></p>
                     </div>
                 </div>
             </div>
@@ -90,19 +75,58 @@ import { ref, onMounted } from 'vue'
 const value = ref(new Date())
 const modalVisible = ref(false)
 const selectedDate = ref(null)
-const availableTimeSlots = ref([])
-const available_time_today = ref([])
+const notAvailableTimeSlots = ref([])
+const not_available_time_today = ref([])
 const chosen_time = ref(null)
 const no_available_time = ref(false)
+const fixedTimeSlots = [
+    '7:30 AM - 8:00 AM',
+    '8:00 AM - 8:30 AM',
+    '8:30 AM - 9:00 AM',
+    '9:00 AM - 9:30 PM',
+    '9:30 AM - 10:00 AM',
+    '10:00 AM - 10:30 AM',
+    '10:30 AM - 11:00 AM',
+    '11:00 AM - 11:30 AM',
+    '11:30 AM - 12:00 PM',
+    '12:00 PM - 12:30 PM',
+    '12:30 PM - 1:00 PM',
+    '1:00 PM - 1:30 PM',
+    '1:30 PM - 2:00 PM',
+    '2:00 PM - 2:30 PM',
+    '2:30 PM - 3:00 PM',
+    '3:00 PM - 3:30 PM',
+    '3:30 PM - 4:00 PM',
+    '4:00 PM - 4:30 PM',
+]
+const available_time = ref([]);
+const available_time_today = ref([]);
 
 onMounted(() => {
-    getTimeAvailableToday();
+    getTimeNotAvailableToday();
 })
 
 const handleDateClick = async (data) => {
+    chosen_time.value = null;
     try {
-        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/get-schedule/${data.day}`)
-        availableTimeSlots.value = response.data.schedule
+        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/get-not-available-time/${data.day}`);
+        console.log(response.data.schedule);
+
+        // Extract times from the API response
+        const notAvailableTimes = response.data.schedule.map(slot => slot.time);
+
+        // Filter out not available times from fixedTimeSlots
+        available_time.value = fixedTimeSlots.filter(slot => !notAvailableTimes.includes(slot));
+
+
+        const response2 = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/get-reserved-time/${data.day}`);
+        // Extract times from the API response
+        const notAvailableTimes2 = response2.data.schedule.map(slot => slot.time);
+
+        // Filter out not available times from fixedTimeSlots
+        available_time.value = fixedTimeSlots.filter(slot => !notAvailableTimes2.includes(slot));
+
+        console.log(available_time.value);
         selectedDate.value = data.day
         modalVisible.value = true
         if (response.data.schedule.length == 0) {
@@ -117,11 +141,17 @@ const handleDateClick = async (data) => {
 }
 
 
-const getTimeAvailableToday = async () => {
+const getTimeNotAvailableToday = async () => {
     try {
-        const result = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/get-available-time-today`)
-        console.log(result.data)
-        available_time_today.value = result.data.schedule
+        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/get-not-available-time-today`)
+        // Extract times from the API response
+        const notAvailableTimes = response.data.schedule.map(slot => slot.time);
+
+        // Filter out not available times from fixedTimeSlots
+        available_time_today.value = fixedTimeSlots.filter(slot => !notAvailableTimes.includes(slot));
+
+        console.log(response.data)
+        not_available_time_today.value = response.data.schedule
     }
     catch (error) {
         console.error(error);
@@ -131,8 +161,9 @@ const getTimeAvailableToday = async () => {
 const reserveConsultation = async () => {
     try {
         const result = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/reserve-consultation`, {
-            calendar_id: chosen_time.value,
-            user_id_reserved: localStorage.getItem('user_id')
+            time: chosen_time.value,
+            date: selectedDate.value,
+            user_id: localStorage.getItem('user_id')
         });
         if (result) {
             swal({
@@ -142,7 +173,8 @@ const reserveConsultation = async () => {
             });
         }
         modalVisible.value = false
-        getTimeAvailableToday();
+        chosen_time.value = null;
+        getTimeNotAvailableToday();
     }
     catch (error) {
         console.error(error);

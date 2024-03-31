@@ -45,6 +45,9 @@ import StudentCummulativeRecord from "../Components/Pages/Student/Forms/StudentC
 import StudentClientMonitoring from "../Components/Pages/Student/Forms/StudentClientMonitoring.vue";
 //Fields
 import FillClientMonitoring from "../Components/Pages/Student/FillForm/FillClientMonitoringForm.vue";
+//Assignments
+import AssignmentCumulative from "../Components/Pages/Student/Assignments/StudentAssignmentCummulativeRecord.vue";
+import AssignmentClientMonitoring from "../Components/Pages/Student/Assignments/StudentAssignmentClientMonitoring.vue";
 
 //---------------------------------Parents and Teachers---------------------------------
 import ParentsTeacherView from "../Components/Views/ParentsTeacherView.vue";
@@ -56,6 +59,9 @@ import ParentsTeacherParentQuestionnaire from "../Components/Pages/ParentsTeache
 import ParentsTeacherReferralForm from "../Components/Pages/ParentsTeacher/Forms/ParentsTeacherReferralForm.vue";
 //Fields
 import FillReferral from "../Components/Pages/ParentsTeacher/FillForm/FillReferralForm.vue";
+//Assignments
+// import AssignmentParentQuestionnaire from "../Components/Pages/ParentsTeacher/Assignments/PTAssignmentParentQuestionnaire.vue";
+import AssignmentReferralForm from "../Components/Pages/ParentsTeacher/Assignments/PTAssignmentReferral.vue";
 
 import NotFound from "../Components/404.vue";
 
@@ -247,6 +253,17 @@ const routes = [
                 component: FillClientMonitoring,
                 name: "student-fillClientMonitoring",
             },
+            // ASSIGNMENTS
+            {
+                path: "assignmentCumulative",
+                component: AssignmentCumulative,
+                name: "student-assignmentCumulative",
+            },
+            {
+                path: "assignmentClientMonitoring",
+                component: AssignmentClientMonitoring,
+                name: "student-assignmentClientMonitoring",
+            },
         ],
     },
     {
@@ -285,6 +302,12 @@ const routes = [
                 path: "fillReferral",
                 component: FillReferral,
                 name: "parentsTeacher-fillReferral",
+            },
+            //ASSIGNMENTS
+            {
+                path: "assReferral",
+                component: AssignmentReferralForm,
+                name: "parentsTeacher-assReferral",
             },
         ],
     },
