@@ -54,7 +54,7 @@ class User extends Authenticatable implements JWTSubject
      */
     public function getJWTIdentifier() {
         return $this->getKey();
-    }
+    }   
     /**
      * Return a key value array, containing any custom claims to be added to the JWT.
      *
@@ -65,7 +65,7 @@ class User extends Authenticatable implements JWTSubject
     }
 
     public function reservations(){
-        return $this->hasMany(Calendar::class);
+        return $this->hasMany(Reservation::class);
     }
 
     public function referral_form(){

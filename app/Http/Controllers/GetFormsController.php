@@ -43,4 +43,8 @@ class GetFormsController extends Controller
     public function getMyReferralForms($id){
         return $this->getFormsService->getMyReferralForms($id);
     }
+
+    public function getMyClientMonitoringForms($id){
+        return $this->getFormsService->getMyClientMonitoringForms($id);
+    }
 }
