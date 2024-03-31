@@ -171,8 +171,8 @@ Class GetFormsServiceImpl implements GetFormsService
 
     public function getAllClientMonitoringForms(){
         try{
-            $data = ClientMonitoringForm::all();
-            // $data = GuidanceAdmissionSlip::all();
+            // $data = ClientMonitoringForm::all();
+            $data = GuidanceAdmissionSlip::all();
 
             if(!$data){
                 return response()->json([

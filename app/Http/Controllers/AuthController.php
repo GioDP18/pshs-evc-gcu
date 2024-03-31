@@ -1,6 +1,8 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EmailVerificationRequest;
+use App\Http\Requests\ResendEmailVerificationLinkRequest;
 use App\Http\Services\AuthService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,7 +18,7 @@ class AuthController extends Controller
      * @return void
      */
     public function __construct(public AuthService $authService) {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register', 'verifyUserEmail', 'resendEmailVerificationLink']]);
     }
     /**
      * Get a JWT via given credentials.
@@ -65,5 +67,15 @@ class AuthController extends Controller
     public function socialLoginCallback($provider)
     {
         return $this->authService->authenticateSocialLogin($provider);
+    }
+
+    public function verifyUserEmail(EmailVerificationRequest $request)
+    {
+        return $this->authService->verifyUserEmail($request);
+    }
+
+    public function resendEmailVerificationLink(ResendEmailVerificationLinkRequest $request)
+    {
+        return $this->authService->resendEmailVerificationLink($request);
     }
 }

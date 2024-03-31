@@ -3,6 +3,7 @@ import axios from 'axios';
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import $ from 'jquery';
+import store from "../../../../State/index.js";
 
 const status = ref(null);
 const router = useRouter();
@@ -28,6 +29,31 @@ const getMyReferralForms = async () => {
     }
     catch (error) {
         console.log(error);
+    }
+}
+
+const generateForm = async (form_id) => {
+    store.commit('setLoading', true)
+    try {
+        const resp = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/generate-referral-form/${form_id}`, {
+            responseType: 'arraybuffer'
+        })
+        if (resp.status === 200) {
+            var newBlob = new Blob([resp.data], { type: 'application/pdf' })
+
+            console.log(resp.data)
+            const data = window.URL.createObjectURL(newBlob)
+            var link = document.createElement('a')
+            link.href = data
+            link.download = 'Referral_Form' + '.pdf'
+            link.click()
+        }
+    }
+    catch (error) {
+        console.log(error);
+    }
+    finally {
+        store.commit('setLoading', false)
     }
 }
 
@@ -101,7 +127,7 @@ const goToAss = () => {
             <div class="column-1">
                 <div class="table-card">
                     <div class="sub-header">
-                        <div class="content-text">Client Monitoring Form</div>
+                        <div class="content-text">Referral Form</div>
                         <div class="d-flex flex-column flex-md-row gap-2">
                             <button @click="handleRequest" v-if="status === false">Request</button>
                             <button @click="handleRequest" v-if="status === 'pending'" style="cursor:not-allowed" disabled>Request</button>

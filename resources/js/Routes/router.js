@@ -4,6 +4,7 @@ import isAuthenticated from "../Middleware/isAuthenticated";
 import LoginView from "../Components/Views/LoginView.vue";
 import RegistrationView from "../Components/Views/RegistrationView.vue";
 import AboutPage from "../Components/Views/AboutPage.vue";
+import VerifyEmail from "../Components/Views/VerifyEmail.vue";
 
 //---------------------------------Staff---------------------------------
 import StaffView from "../Components/Views/StaffView.vue";
@@ -63,6 +64,8 @@ import FillReferral from "../Components/Pages/ParentsTeacher/FillForm/FillReferr
 // import AssignmentParentQuestionnaire from "../Components/Pages/ParentsTeacher/Assignments/PTAssignmentParentQuestionnaire.vue";
 import AssignmentReferralForm from "../Components/Pages/ParentsTeacher/Assignments/PTAssignmentReferral.vue";
 
+import VerifiedEmail from "../Components/Views/VerifiedEmail.vue";
+import NotVerifiedEmail from "../Components/Views/NotVerifiedEmail.vue";
 import NotFound from "../Components/404.vue";
 
 const routes = [
@@ -80,6 +83,11 @@ const routes = [
         path: "/about",
         component: AboutPage,
         name: "about",
+    },
+    {
+        path: "/verify-email",
+        component: VerifyEmail,
+        name: "verify-email",
     },
     {
         path: "/staff",
@@ -310,6 +318,16 @@ const routes = [
                 name: "parentsTeacher-assReferral",
             },
         ],
+    },
+    {
+        path: "/verifiedEmail",
+        component: VerifiedEmail,
+        name: "verifiedEmail",
+    },
+    {
+        path: "/notVerifiedEmail",
+        component: NotVerifiedEmail,
+        name: "notVerifiedEmail",
     },
     {
         path: "/:path(.*)",

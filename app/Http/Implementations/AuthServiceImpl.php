@@ -1,6 +1,9 @@
 <?php
 
 namespace App\Http\Implementations;
+
+use App\Http\Requests\EmailVerificationRequest;
+use App\Http\Requests\ResendEmailVerificationLinkRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
@@ -8,9 +11,15 @@ use Validator;
 use JWTAuth;
 use App\Http\Services\AuthService;
 use Laravel\Socialite\Facades\Socialite;
+use App\Http\Services\EmailVerificationService;
 
 Class AuthServiceImpl implements AuthService
 {
+
+    public function __construct(private EmailVerificationService $emailVerificationService)
+    {
+        
+    }
     /**
      * Get a JWT via given credentials.
      *
@@ -79,10 +88,29 @@ Class AuthServiceImpl implements AuthService
                     ['signature' => $signaturePath],
                     ['password' => bcrypt($request->password)]
                 ));
+        if ($user){
+            $this->emailVerificationService->sendVerificationLink($user);
+        }
         return response()->json([
             'message' => 'User successfully registered',
             'user' => $user
         ], 200);
+    }
+
+    /**
+     * Resend verification link
+     */
+    public function resendEmailVerificationLink(ResendEmailVerificationLinkRequest $request)
+    {
+        return $this->emailVerificationService->resendLink($request->email);
+    }
+
+    /**
+     * Verify user Email
+     */
+    public function verifyUserEmail(EmailVerificationRequest $request)
+    {
+        return $this->emailVerificationService->verifyEmail($request->email, $request->token);
     }
 
     /**
