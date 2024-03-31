@@ -26,7 +26,7 @@ Class AuthServiceImpl implements AuthService
      * @return \Illuminate\Http\JsonResponse
      */
     public function login(Request $request){
-    	$validator = Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required|string|min:6',
         ]);
@@ -36,7 +36,23 @@ Class AuthServiceImpl implements AuthService
         if (! $token = auth()->attempt($validator->validated())) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
+        // Return the token
         return $this->createNewToken($token);
+    }
+
+    public function checkAuth(){
+        if (auth()->check()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'You are authenticated.',
+                'user' => auth()->user()
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'You are unauthenticated.'
+            ], 401);
+        }
     }
 
     /**
