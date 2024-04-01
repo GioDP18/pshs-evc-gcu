@@ -4,7 +4,6 @@ import isAuthenticated from "../Middleware/isAuthenticated";
 import LoginView from "../Components/Views/LoginView.vue";
 import RegistrationView from "../Components/Views/RegistrationView.vue";
 import AboutPage from "../Components/Views/AboutPage.vue";
-import VerifyEmail from "../Components/Views/VerifyEmail.vue";
 
 //---------------------------------Staff---------------------------------
 import StaffView from "../Components/Views/StaffView.vue";
@@ -66,6 +65,7 @@ import AssignmentReferralForm from "../Components/Pages/ParentsTeacher/Assignmen
 
 import ConfirmEmail from "../Components/Views/ConfirmEmail.vue";
 import VerifiedEmail from "../Components/Views/VerifiedEmail.vue";
+import VerifyEmail from "../Components/Views/VerifyEmail.vue";
 import NotVerifiedEmail from "../Components/Views/NotVerifiedEmail.vue";
 import NotFound from "../Components/404.vue";
 

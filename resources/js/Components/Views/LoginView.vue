@@ -142,28 +142,35 @@ const submitForm = async () => {
                         localStorage.setItem('token', response.data.access_token);
                         localStorage.setItem('role', response.data.user.role);
                         localStorage.setItem('valid', true);
-                        switch (response.data.user.role) {
-                            case 'gcu_staff':
-                                localStorage.setItem('role', 'gcu_staff');
-                                router.push({ name: 'staff-home' })
-                                break;
-                            case 'student':
-                                localStorage.setItem('role', 'student');
-                                router.push({ name: 'student-Home' })
-                                break;
-                            case 'teacher':
-                                localStorage.setItem('role', 'teacher');
-                                router.push({ name: 'parentsTeacher-Home' })
-                                break;
-                            case 'parent':
-                                localStorage.setItem('role', 'parent');
-                                router.push({ name: 'parentsTeacher-Home' })
-                                break;
+                        if(response.data.user.email_verified_at === null){
+                            router.push({ name: 'notVerifiedEmail' })
 
-                            default:
-                                router.push({ name: 'login' })
-                                break;
                         }
+                        else{
+                            switch (response.data.user.role) {
+                                case 'gcu_staff':
+                                    localStorage.setItem('role', 'gcu_staff');
+                                    router.push({ name: 'staff-home' })
+                                    break;
+                                case 'student':
+                                    localStorage.setItem('role', 'student');
+                                    router.push({ name: 'student-Home' })
+                                    break;
+                                case 'teacher':
+                                    localStorage.setItem('role', 'teacher');
+                                    router.push({ name: 'parentsTeacher-Home' })
+                                    break;
+                                case 'parent':
+                                    localStorage.setItem('role', 'parent');
+                                    router.push({ name: 'parentsTeacher-Home' })
+                                    break;
+
+                                default:
+                                    router.push({ name: 'login' })
+                                    break;
+                            }
+                        }
+
                         store.commit('setWarning', null)
                     }
                 })
