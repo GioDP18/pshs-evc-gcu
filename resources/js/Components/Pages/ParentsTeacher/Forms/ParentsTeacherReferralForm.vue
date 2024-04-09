@@ -3,19 +3,59 @@ import axios from 'axios';
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import $ from 'jquery';
+import store from "../../../../State/index.js";
 
 const status = ref(null);
 const router = useRouter();
+const all_data = ref([]);
+const user_id = localStorage.getItem('user_id');
 
 onMounted(async () => {
     // await getUsers();
     initializeDataTable();
+    getMyReferralForms();
     checkRequest();
 });
 
 const initializeDataTable = () => {
     $('#dailyTimeLog').DataTable();
 };
+
+const getMyReferralForms = async () => {
+    try {
+        const resp = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/get-my-referral-forms/${user_id}`)
+
+        all_data.value = resp.data.data;
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+const generateForm = async (form_id) => {
+    store.commit('setLoading', true)
+    try {
+        const resp = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/generate-referral-form/${form_id}`, {
+            responseType: 'arraybuffer'
+        })
+        if (resp.status === 200) {
+            var newBlob = new Blob([resp.data], { type: 'application/pdf' })
+
+            console.log(resp.data)
+            const data = window.URL.createObjectURL(newBlob)
+            var link = document.createElement('a')
+            link.href = data
+            link.download = 'Referral_Form' + '.pdf'
+            link.click()
+        }
+    }
+    catch (error) {
+        console.log(error);
+    }
+    finally {
+        store.commit('setLoading', false)
+    }
+}
 
 const createRequest = async () => {
     try {
@@ -75,6 +115,9 @@ const goToFill = () => {
     router.push({ name: 'parentsTeacher-fillReferral'})
 }
 
+const goToAss = () => {
+    router.push({ name: 'parentsTeacher-assReferral'})
+}
 </script>
 
 
@@ -84,47 +127,48 @@ const goToFill = () => {
             <div class="column-1">
                 <div class="table-card">
                     <div class="sub-header">
-                        <div class="content-text">Client Monitoring Form</div>
-                        <button @click="handleRequest" v-if="status === false">Request</button>
-                        <button @click="handleRequest" v-if="status === 'pending'" style="cursor:not-allowed" disabled>Request</button>
-                        <button @click="goToFill" v-if="status === 'approved'">Fill Form</button>
+                        <div class="content-text">Referral Form</div>
+                        <div class="d-flex flex-column flex-md-row gap-2">
+                            <button @click="handleRequest" v-if="status === false">Request</button>
+                            <button @click="handleRequest" v-if="status === 'pending'" style="cursor:not-allowed" disabled>Request</button>
+                            <button @click="goToFill" v-if="status === 'approved'">Fill Form</button>
+                            <button @click="goToAss" style="background-color:#DD6D6D;">Assignments</button>
+                        </div>
+
                     </div>
                     <table id="dailyTimeLog" class="table table-striped table-hover" width="100%">
                         <thead>
                             <tr>
-                                <th>ID Number</th>
-                                <th>Name</th>
-                                <th>Gender</th>
-                                <th>Date</th>
+                                <th>Campus</th>
+                                <th>Student Referred</th>
+                                <th>Date of Interview</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>123</td>
-                                <td>Bogart The Explorer</td>
-                                <td>Male</td>
-                                <td>July 1, 2002</td>
+                            <tr v-for="data in all_data" :key="data.id">
+                                <td>{{ data.campus }}</td>
+                                <td>{{ data.name_of_student }}</td>
+                                <td>{{ data.date }}</td>
                                 <td>
                                     <div class="dropdown">
-                                        <button style="padding-right: 10px;" class="card14 dropdown-toggle"
-                                            type="button" id="sendUserCertDropdown" data-bs-toggle="dropdown"
-                                            aria-expanded="false">
+                                        <button style="padding-right: 5px;" class="card14 dropdown-toggle" type="button"
+                                            id="sendUserCertDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                                             <span class="send-text">Action</span>
                                         </button>
                                         <ul class="dropdown-menu" aria-labelledby="sendUserCertDropdown">
-                                            <li><a class="dropdown-item view" href="#"
+                                            <!-- <li><a class="dropdown-item view" href="#"
                                                     @click="sendCertificate('certificate1')"><i><font-awesome-icon
                                                             :icon="['fas', 'eye']"
-                                                            style="margin-right: 10px;" /></i>View</a></li>
+                                                            style="margin-right: 10px;" /></i>View</a></li> -->
                                             <li><a class="dropdown-item generate" href="#"
-                                                    @click="sendCertificate('certificate2')"><i><font-awesome-icon
+                                                    @click="generateForm(data.id)"><i><font-awesome-icon
                                                             :icon="['fas', 'file']"
                                                             style="margin-right: 10px;" /></i>Generate</a></li>
-                                            <li><a class="dropdown-item delete" href="#"
+                                            <!-- <li><a class="dropdown-item delete" href="#"
                                                     @click="sendCertificate('certificate2')"><i><font-awesome-icon
                                                             :icon="['fas', 'trash']"
-                                                            style="margin-right: 10px;" /></i>Delete</a></li>
+                                                            style="margin-right: 10px;" /></i>Delete</a></li> -->
                                         </ul>
                                     </div>
                                 </td>

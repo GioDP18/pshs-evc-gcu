@@ -10,7 +10,7 @@
                         <div class="pink-card">
                             <div class="hello-text">
                                 <p class="hello">Hello,</p>
-                                <p class="name">Bogart!</p>
+                                <p class="name">{{ name }}!</p>
                             </div>
                             <div class="undraw">
                                 <img src="../../../../../public/external/undraw_true_friends_c-94-g.svg" alt="">
@@ -51,7 +51,7 @@
 
                                     <!-- Red circle with number -->
                                     <circle cx="21" cy="5.5" r="2" fill="red" />
-                                    <text x="21" y="6.5" fill="white" font-size="3" text-anchor="middle">5</text>
+                                    <text x="21" y="6.5" fill="white" font-size="3" text-anchor="middle" @click="goToAssCRF" style="cursor:pointer">{{ crf_count }}</text>
                                     <!-- Adjust fill here -->
                                 </svg>
 
@@ -68,7 +68,7 @@
 
                                     <!-- Red circle with number -->
                                     <circle cx="21" cy="5.5" r="2" fill="red" />
-                                    <text x="21" y="6.5" fill="white" font-size="3" text-anchor="middle">5</text>
+                                    <text x="21" y="6.5" fill="white" font-size="3" text-anchor="middle" @click="goToAssCMF" style="cursor:pointer">{{ cmf_count }}</text>
                                     <!-- Adjust fill here -->
                                 </svg>
                             </div>
@@ -83,11 +83,21 @@
 <script setup>
 import axios from "axios";
 import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
 
+
+const router = useRouter();
+const name = localStorage.getItem("firstname");
+const user_id = localStorage.getItem("user_id");
 const events = ref([]);
+
+const crf_count = ref(0);
+const cmf_count = ref(0);
 
 onMounted(() => {
     getEvents();
+    getCRF();
+    getCMF();
 });
 
 const getEvents = async () => {
@@ -98,6 +108,36 @@ const getEvents = async () => {
     catch (error) {
         console.log(error);
     }
+}
+
+const getCRF = async () => {
+    try{
+        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/get-assigned-forms/${user_id}/${'Cumulative Record Form'}`)
+        crf_count.value = response.data.count
+        console.log(response.data.data)
+    }
+    catch(error){
+        console.log(error);
+    }
+}
+
+const getCMF = async () => {
+    try{
+        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/get-assigned-forms/${user_id}/${'Client Monitoring Form'}`)
+        cmf_count.value = response.data.count
+        console.log(response.data.data)
+    }
+    catch(error){
+        console.log(error);
+    }
+}
+
+const goToAssCRF = () => {
+    router.push({ name: 'student-assignmentCumulative'})
+}
+
+const goToAssCMF = () => {
+    router.push({ name: 'student-assignmentClientMonitoring'})
 }
 </script>
 

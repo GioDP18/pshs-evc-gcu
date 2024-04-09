@@ -194,4 +194,57 @@ Class GetFormsServiceImpl implements GetFormsService
             ]);
         }
     }
+
+
+    public function getMyReferralForms($id){
+        try{
+            $data = ReferralForm::with('referrer_info')->where('user_id', $id)->get();
+            // $data = GuidanceAdmissionSlip::all();
+
+            if(!$data){
+                return response()->json([
+                    "success" => false,
+                    "message" => "Internal Server Error.",
+                ], 500);
+            }
+
+            return response()->json([
+                "success" => true,
+                "message" => "Fetched All Referral Forms.",
+                "data" => $data
+            ], 200);
+        }
+        catch (\Exception $error){
+            return response()->json([
+                "success"=> false,
+                "message"=> $error->getMessage()
+            ]);
+        }
+    }
+
+    public function getMyClientMonitoringForms($id){
+        try{
+            $data = ClientMonitoringForm::with('user')->where('user_id', $id)->get();
+            // $data = GuidanceAdmissionSlip::all();
+
+            if(!$data){
+                return response()->json([
+                    "success" => false,
+                    "message" => "Internal Server Error.",
+                ], 500);
+            }
+
+            return response()->json([
+                "success" => true,
+                "message" => "Fetched All Client Monitoring Forms.",
+                "data" => $data
+            ], 200);
+        }
+        catch (\Exception $error){
+            return response()->json([
+                "success"=> false,
+                "message"=> $error->getMessage()
+            ]);
+        }
+    }
 }

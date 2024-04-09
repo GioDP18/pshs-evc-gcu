@@ -8,9 +8,13 @@ interface CalendarService
 {
     public function getSchedule($date);
 
+    public function getNotAvailableTime($date);
+
+    public function getReservedTime($date);
+
     public function updateSchedule(Request $request);
 
-    public function getAvailableTimeToday();
+    public function getNotAvailableTimeToday();
 
     public function reserveConsultation(Request $request);
 

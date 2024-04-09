@@ -39,7 +39,7 @@
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="sendUserCertDropdown">
                                         <li><a class="dropdown-item view" href="#"
-                                                @click="sendCertificate('certificate1')"><i><font-awesome-icon
+                                                @click="viewForm"><i><font-awesome-icon
                                                         :icon="['fas', 'eye']"
                                                         style="margin-right: 10px;" /></i>View</a></li>
                                         <li><a class="dropdown-item generate" href="#"
@@ -279,6 +279,10 @@ const getAllIntakeInterviewForms = async () => {
     catch (error) {
         console.log(error);
     }
+}
+
+const viewForm = (file_name) => {
+    window.open(`${import.meta.env.VITE_BASE_URL}/intake_interview/${file_name}.pdf`, '_blank');
 }
 
 const generateForm = async (form_id) => {

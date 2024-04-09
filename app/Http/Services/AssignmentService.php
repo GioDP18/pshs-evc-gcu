@@ -12,5 +12,5 @@ interface AssignmentService
 
     public function bulkAssignFormBySection(Request $request);
 
-    public function getAssignedForms($id);
+    public function getAssignedForms($id, $form_name);
 }

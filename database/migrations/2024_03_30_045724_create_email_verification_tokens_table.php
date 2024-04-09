@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('calendars', function (Blueprint $table) {
+        Schema::create('email_verification_tokens', function (Blueprint $table) {
             $table->id();
-            $table->string('available_time');
-            $table->date('date');
-            $table->foreignId('user_id_reserved')->nullable()->constrained('users');
+            $table->string('email');
+            $table->string('token');
+            $table->timestamp('expired_at');
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('calendars');
+        Schema::dropIfExists('email_verification_tokens');
     }
 };

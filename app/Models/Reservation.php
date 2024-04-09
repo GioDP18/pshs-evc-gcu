@@ -5,17 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Calendar extends Model
+class Reservation extends Model
 {
     protected $fillable = [
-        'available_time',
         'date',
-        'user_id_reserved',
+        'time',
+        'user_id',
     ];
 
     use HasFactory;
 
     public function reserved_user(){
-        return $this->belongsTo(User::class, 'user_id_reserved');
+        return $this->belongsTo(User::class,'user_id');
     }
 }

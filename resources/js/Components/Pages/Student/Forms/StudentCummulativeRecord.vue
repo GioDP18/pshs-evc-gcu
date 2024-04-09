@@ -4,9 +4,13 @@
             <div class="table-card">
                 <div class="sub-header">
                     <div class="content-text">Cumulative Record Form</div>
-                    <button @click="handleRequest" v-if="status === false">Request</button>
-                    <button @click="handleRequest" v-if="status === 'pending'" style="cursor:not-allowed" disabled>Request</button>
-                    <button @click="goToFill" v-if="status === 'approved'">Fill Form</button>
+                    <div class="d-flex flex-column flex-md-row gap-2">
+                        <button @click="handleRequest" v-if="status === false">Request</button>
+                        <button @click="handleRequest" v-if="status === 'pending'" style="cursor:not-allowed" disabled>Request</button>
+                        <button @click="goToFill" v-if="status === 'approved'">Fill Form</button>
+                        <button @click="goToAss" style="background-color:#DD6D6D;">Assignments</button>
+                    </div>
+
                 </div>
                 <table id="table-cmf" class="table table-striped table-hover" width="100%">
                     <thead>
@@ -129,6 +133,10 @@ const checkRequest = async () => {
 
 const goToFill = () => {
     router.push({ name: 'student-fillCumulativeRecord'})
+}
+
+const goToAss = () => {
+    router.push({ name: 'student-assignmentCumulative'})
 }
 
 </script>
