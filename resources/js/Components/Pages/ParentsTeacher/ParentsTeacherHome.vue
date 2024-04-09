@@ -90,12 +90,12 @@ onMounted(() => {
     getEvents();
 });
 
-const getEvents =async () => {
-    try{
+const getEvents = async () => {
+    try {
         const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/get-events`)
         events.value = response.data.data
     }
-    catch(error){
+    catch (error) {
         console.log(error);
     }
 }
@@ -369,7 +369,8 @@ const getEvents =async () => {
 @media screen and (max-width: 360px) {
     .main-content {
         width: 100%;
-        height: auto; /* Change height to auto for responsiveness */
+        height: auto;
+        /* Change height to auto for responsiveness */
     }
 
     .left-right {
@@ -379,13 +380,17 @@ const getEvents =async () => {
     }
 
     .left {
-        width: 100%; /* Make the left section full width */
+        width: 100%;
+        /* Make the left section full width */
     }
 
     .pink-card {
-        flex-direction: column; /* Stack Hello and undraw vertically */
-        align-items: center; /* Center the content horizontally */
-        gap: 10px; /* Increase gap for better spacing */
+        flex-direction: column;
+        /* Stack Hello and undraw vertically */
+        align-items: center;
+        /* Center the content horizontally */
+        gap: 10px;
+        /* Increase gap for better spacing */
     }
 
     .pink-card .hello-text {
@@ -434,7 +439,6 @@ const getEvents =async () => {
         width: 50%;
         justify-content: center;
         margin-top: 5px;
-        border: 1px solid red;
     }
 }
 </style>

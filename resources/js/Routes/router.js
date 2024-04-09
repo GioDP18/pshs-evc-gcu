@@ -9,6 +9,7 @@ import AboutPage from "../Components/Views/AboutPage.vue";
 import StaffView from "../Components/Views/StaffView.vue";
 import Home from "../Components/Pages/Staff/Home.vue";
 import ProfilePage from "../Components/Pages/Staff/ProfilePage.vue";
+import Accounts from "../Components/Pages/Staff/Accounts.vue";
 import Calendar from "../Components/Pages/Staff/Calendar.vue";
 //Forms
 import IntakeInterviewForm from "../Components/Pages/Staff/Forms/IntakeInterviewForm.vue";
@@ -92,6 +93,11 @@ const routes = [
                 path: "calendar",
                 component: Calendar,
                 name: "staff-calendar",
+            },
+            {
+                path: "accounts",
+                component: Accounts,
+                name: "staff-accounts",
             },
             {
                 path: "profilePage",
