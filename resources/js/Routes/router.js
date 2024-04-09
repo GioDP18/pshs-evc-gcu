@@ -4,12 +4,12 @@ import isAuthenticated from "../Middleware/isAuthenticated";
 import LoginView from "../Components/Views/LoginView.vue";
 import RegistrationView from "../Components/Views/RegistrationView.vue";
 import AboutPage from "../Components/Views/AboutPage.vue";
-import VerifyEmail from "../Components/Views/VerifyEmail.vue";
 
 //---------------------------------Staff---------------------------------
 import StaffView from "../Components/Views/StaffView.vue";
 import Home from "../Components/Pages/Staff/Home.vue";
 import ProfilePage from "../Components/Pages/Staff/ProfilePage.vue";
+import Accounts from "../Components/Pages/Staff/Accounts.vue";
 import Calendar from "../Components/Pages/Staff/Calendar.vue";
 //Forms
 import IntakeInterviewForm from "../Components/Pages/Staff/Forms/IntakeInterviewForm.vue";
@@ -64,7 +64,9 @@ import FillReferral from "../Components/Pages/ParentsTeacher/FillForm/FillReferr
 // import AssignmentParentQuestionnaire from "../Components/Pages/ParentsTeacher/Assignments/PTAssignmentParentQuestionnaire.vue";
 import AssignmentReferralForm from "../Components/Pages/ParentsTeacher/Assignments/PTAssignmentReferral.vue";
 
+import ConfirmEmail from "../Components/Views/ConfirmEmail.vue";
 import VerifiedEmail from "../Components/Views/VerifiedEmail.vue";
+import VerifyEmail from "../Components/Views/VerifyEmail.vue";
 import NotVerifiedEmail from "../Components/Views/NotVerifiedEmail.vue";
 import NotFound from "../Components/404.vue";
 
@@ -103,6 +105,11 @@ const routes = [
                 path: "calendar",
                 component: Calendar,
                 name: "staff-calendar",
+            },
+            {
+                path: "accounts",
+                component: Accounts,
+                name: "staff-accounts",
             },
             {
                 path: "profilePage",
@@ -318,6 +325,11 @@ const routes = [
                 name: "parentsTeacher-assReferral",
             },
         ],
+    },
+    {
+        path: "/confirmEmail",
+        component: ConfirmEmail,
+        name: "ConfirmEmail",
     },
     {
         path: "/verifiedEmail",

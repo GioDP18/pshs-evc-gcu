@@ -3,39 +3,46 @@
         <div class="main-content">
             <div class="table-card">
                 <div class="d-flex justify-content-lg-between">
-                    <div>
+                    <div class="dashboard">
                         <div class="content-text">Dashboard
                         </div>
                         <p class="date">Monday, 25 March 2024</p>
                     </div>
                     <div>
-                        <button class="add-event-btn" data-bs-toggle="modal" data-bs-target="#add-event-modal"><i class="fa-solid fa-plus"></i> Add Event</button>
+                        <button class="add-event-btn" data-bs-toggle="modal" data-bs-target="#add-event-modal"><i
+                                class="fa-solid fa-plus"></i> Add Event</button>
                     </div>
                     <!-- Modal Add Event -->
-                    <div class="modal fade" id="add-event-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal fade" id="add-event-modal" data-bs-backdrop="static" data-bs-keyboard="false"
+                        tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <form @submit.prevent="handleAddEvent">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="staticBackdropLabel"><i class="fa-solid fa-pen-nib"></i> Add New Event</h1>
+                                        <h1 class="modal-title fs-5" id="staticBackdropLabel"><i
+                                                class="fa-solid fa-pen-nib"></i> Add New Event</h1>
                                     </div>
                                     <div class="modal-body">
                                         <div class="mb-3">
                                             <label for="event-name" class="form-label">Event Name</label>
-                                            <input type="text" v-model="event_name"class="form-control" id="event-name">
+                                            <input type="text" v-model="event_name" class="form-control"
+                                                id="event-name">
                                         </div>
                                         <div class="mb-3">
                                             <label for="event-date" class="form-label">Event Date</label>
-                                            <input type="date" v-model="event_date"class="form-control" id="event-date">
+                                            <input type="date" v-model="event_date" class="form-control"
+                                                id="event-date">
                                         </div>
                                         <div class="mb-3">
                                             <label for="event-time" class="form-label">Event Time</label>
-                                            <input type="time" v-model="event_time"class="form-control" id="event-time">
+                                            <input type="time" v-model="event_time" class="form-control"
+                                                id="event-time">
                                         </div>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="submit" class="btn btn-primary">Add</button>
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
                                     </div>
                                 </div>
                             </form>
@@ -44,7 +51,15 @@
                 </div>
                 <div class="left-right">
                     <div class="left">
-                        <div class="pink-card"></div>
+                        <div class="pink-card">
+                            <div class="pink-text">
+                                <h1>Hello,</h1>
+                                <h3>Bogart</h3>
+                            </div>
+                            <div class="pink-img">
+                                <img src="../../../../../public/external/dog.svg" alt="">
+                            </div>
+                        </div>
                         <div class="below-pink">
                             <div class="pink-left">
                                 <div class="left-text">Activities</div>
@@ -205,25 +220,25 @@ onMounted(() => {
     getEvents();
 })
 
-const getEvents =async () => {
-    try{
+const getEvents = async () => {
+    try {
         const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/get-events`)
         events.value = response.data.data
     }
-    catch(error){
+    catch (error) {
         console.log(error);
     }
 }
 
 const handleAddEvent = async () => {
-    try{
+    try {
         const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/add-event`, {
             event_name: event_name.value,
             event_date: event_date.value,
             event_time: event_time.value
         })
 
-        if(response.status === 200){
+        if (response.status === 200) {
             swal({
                 title: response.data.message,
                 icon: "success",
@@ -232,7 +247,7 @@ const handleAddEvent = async () => {
         }
         getEvents();
     }
-    catch(error){
+    catch (error) {
         console.log(error);
     }
 }
@@ -332,6 +347,71 @@ const handleAddEvent = async () => {
     height: 20%;
     background-color: #FFDDDD;
     border-radius: 15px;
+    padding-left: 30px;
+    display: flex;
+}
+
+.pink-text {
+    width: 70%;
+    gap: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.pink-text h1 {
+    font-size: 55px;
+}
+
+.pink-text h3 {
+    font-size: 45px;
+}
+
+.pink-text h1,
+.pink-text h3 {
+    margin: 0;
+    font-weight: 700;
+    color: #2087E4;
+}
+
+.pink-img {
+    width: 30%;
+    display: flex;
+    align-items: end;
+}
+
+.pink-img img {
+    width: 10rem;
+}
+
+@media screen and (max-width:360px) {
+    .dashboard {
+        margin-right: 15px;
+    }
+
+    .left .pink-card {
+        padding-left: 10px;
+        margin-bottom: 20px;
+    }
+
+    .pink-text {
+        width: 50%;
+    }
+
+    .pink-text h1 {
+        font-size: 30px;
+    }
+
+    .pink-text h3 {
+        font-size: 25px;
+    }
+
+    .pink-img {
+        width: 50%;
+    }
+
+    .pink-img img {
+        width: 10rem;
+    }
 }
 
 .left .below-pink {
@@ -572,29 +652,29 @@ const handleAddEvent = async () => {
 }
 
 .add-event-btn {
-  border-radius: .25rem;
-  text-transform: uppercase;
-  font-style: normal;
-  font-weight: bold;
-  padding-left: 25px;
-  padding-right: 25px;
-  color: #fff;
-  -webkit-clip-path: polygon(0 0,0 0,100% 0,100% 0,100% calc(100% - 15px),calc(100% - 15px) 100%,15px 100%,0 100%);
-  clip-path: polygon(0 0,0 0,100% 0,100% 0,100% calc(100% - 15px),calc(100% - 15px) 100%,15px 100%,0 100%);
-  height: 40px;
-  font-size: 0.7rem;
-  line-height: 14px;
-  letter-spacing: 1.2px;
-  transition: .2s .1s;
-  background-image: linear-gradient(90deg,#04439b,#4587E4);
-  border: 0 solid;
-  overflow: hidden;
+    border-radius: .25rem;
+    text-transform: uppercase;
+    font-style: normal;
+    font-weight: bold;
+    padding-left: 25px;
+    padding-right: 25px;
+    color: #fff;
+    -webkit-clip-path: polygon(0 0, 0 0, 100% 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 15px 100%, 0 100%);
+    clip-path: polygon(0 0, 0 0, 100% 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 15px 100%, 0 100%);
+    height: 40px;
+    font-size: 0.7rem;
+    line-height: 14px;
+    letter-spacing: 1.2px;
+    transition: .2s .1s;
+    background-image: linear-gradient(90deg, #04439b, #4587E4);
+    border: 0 solid;
+    overflow: hidden;
 }
 
 .add-event-btn:hover {
-  cursor: pointer;
-  transition: all .3s ease-in;
-  padding-right: 30px;
-  padding-left: 30px;
+    cursor: pointer;
+    transition: all .3s ease-in;
+    padding-right: 30px;
+    padding-left: 30px;
 }
 </style>

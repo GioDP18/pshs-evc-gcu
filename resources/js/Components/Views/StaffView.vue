@@ -22,6 +22,11 @@
                     <i><font-awesome-icon class="icon" :icon="['fas', 'calendar']" /></i>
                     <div v-if="showSidebar" class="sidebar-text">Calendar</div>
                 </RouterLink>
+                <RouterLink to="accounts" class="sidebar-menu" active-class="active" style="text-decoration: none;"
+                    title="Accounts">
+                    <i style="margin-left: -1px;"><font-awesome-icon class="icon" :icon="['fas', 'users']" /></i>
+                    <div v-if="showSidebar" class="sidebar-text" style="margin-left: -4px;">Accounts</div>
+                </RouterLink>
                 <div class="forms">
                     <div class="forms-header" @click="toggleForms"
                         :class="{ 'active': $route.path.startsWith('/staff/intakeInterviewForm') || $route.path.startsWith('/staff/guidanceAdmissionSlip') || $route.path.startsWith('/staff/guidanceCallSlip') || $route.path.startsWith('/staff/parentQuestionnaireForm') || $route.path.startsWith('/staff/referralForm') || $route.path.startsWith('/staff/cumulativeRecordForm') || $route.path.startsWith('/staff/clientMonitoringForm') }">
@@ -295,7 +300,7 @@
                         </div>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <RouterLink to="profilePage" class="dropdown-item"><i><font-awesome-icon :icon="['fas', 'user']"
+                        <RouterLink to="#" class="dropdown-item"><i><font-awesome-icon :icon="['fas', 'user']"
                                     style="margin-right: 15px;" /></i>View Profile</RouterLink>
                         <button style="color: #a5000e;" @click="handleLogout" class="dropdown-item"
                             href="#"><i><font-awesome-icon class="icon" :icon="['fas', 'fa-power-off']"

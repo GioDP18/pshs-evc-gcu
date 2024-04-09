@@ -28,6 +28,11 @@ class AuthController extends Controller
     public function login(Request $request){
     	return $this->authService->login($request);
     }
+
+    public function checkAuth(){
+        return $this->authService->checkAuth();
+    }
+
     /**
      * Register a User.
      *

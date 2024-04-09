@@ -454,7 +454,7 @@ const submitForm = async () => {
             })
             .then((response) => {
                 if (response.status === 200) {
-                    router.push({ name: 'login' })
+                    router.push({ name: 'ConfirmEmail' });
                 }
             })
         }

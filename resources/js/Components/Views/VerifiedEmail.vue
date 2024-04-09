@@ -15,14 +15,32 @@
     </div>
 </template>
 
-<script>
-export default {
-    name: 'SuccessPage',
-    methods: {
-        redirectToHomepage() {
-            window.location.href = '/';
-        },
-    },
+<script setup>
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+const role = localStorage.getItem('role');
+
+const redirectToHomepage = () => {
+    switch(role){
+        case 'gcu_staff':
+            router.push({ name: 'staff-home' });
+            break;
+        case 'student':
+            router.push({ name: 'student-Home' });
+            break;
+        case 'teacher':
+            router.push({ name: 'parentsTeacher-Home' });
+            break;
+        case 'parent':
+            router.push({ name: 'parentsTeacher-Home' });
+            break;
+
+        default:
+            router.push('/');
+            break;
+    }
+    router.push('/');
 };
 </script>
 
