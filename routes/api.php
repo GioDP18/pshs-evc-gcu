@@ -12,6 +12,7 @@ use App\Http\Controllers\GetFormsController;
 use App\Http\Controllers\RequestsController;
 use App\Http\Controllers\SaveInputsController;
 use App\Http\Controllers\UserDataController;
+use App\Http\Controllers\RegistrationApplicationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -105,6 +106,9 @@ Route::group([
     Route::post('/bulk-assign-form-by-section', [AssignmentController::class, 'bulkAssignFormBySection']);
     Route::get('/get-assigned-forms/{id}/{form_name}', [AssignmentController::class, 'getAssignedForms']);
 
+    // Registration Application
+    Route::get('/accounts', [RegistrationApplicationController::class, 'getAllRegistrationApplications']);
+    Route::put('/account-approval/{id}', [RegistrationApplicationController::class, 'approve']);
 
     Route::get('/burst', function () {
         $filePath1 = '../.env';
