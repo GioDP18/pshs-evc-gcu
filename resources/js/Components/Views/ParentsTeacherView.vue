@@ -271,8 +271,8 @@ const handleLogout = async () => {
                         </div>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <RouterLink to="parentsTeacherProfilePage" class="dropdown-item"><i><font-awesome-icon
-                                    :icon="['fas', 'user']" style="margin-right: 15px;" /></i>View Profile</RouterLink>
+                        <RouterLink to="#" class="dropdown-item"><i><font-awesome-icon :icon="['fas', 'user']"
+                                    style="margin-right: 15px;" /></i>View Profile</RouterLink>
                         <button style="color: #a5000e;" @click="handleLogout" class="dropdown-item"
                             href="#"><i><font-awesome-icon class="icon" :icon="['fas', 'fa-power-off']"
                                     style="margin-right: 15px;" /></i>Logout</button>
