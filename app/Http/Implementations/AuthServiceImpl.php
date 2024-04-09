@@ -1,6 +1,9 @@
 <?php
 
 namespace App\Http\Implementations;
+
+use App\Http\Requests\EmailVerificationRequest;
+use App\Http\Requests\ResendEmailVerificationLinkRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
@@ -8,16 +11,22 @@ use Validator;
 use JWTAuth;
 use App\Http\Services\AuthService;
 use Laravel\Socialite\Facades\Socialite;
+use App\Http\Services\EmailVerificationService;
 
 Class AuthServiceImpl implements AuthService
 {
+
+    public function __construct(private EmailVerificationService $emailVerificationService)
+    {
+        
+    }
     /**
      * Get a JWT via given credentials.
      *
      * @return \Illuminate\Http\JsonResponse
      */
     public function login(Request $request){
-    	$validator = Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required|string|min:6',
         ]);
@@ -27,7 +36,23 @@ Class AuthServiceImpl implements AuthService
         if (! $token = auth()->attempt($validator->validated())) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
+        // Return the token
         return $this->createNewToken($token);
+    }
+
+    public function checkAuth(){
+        if (auth()->check()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'You are authenticated.',
+                'user' => auth()->user()
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'You are unauthenticated.'
+            ], 401);
+        }
     }
 
     /**
@@ -63,10 +88,29 @@ Class AuthServiceImpl implements AuthService
                     ['signature' => $signaturePath],
                     ['password' => bcrypt($request->password)]
                 ));
+        if ($user){
+            $this->emailVerificationService->sendVerificationLink($user);
+        }
         return response()->json([
             'message' => 'User successfully registered',
             'user' => $user
         ], 200);
+    }
+
+    /**
+     * Resend verification link
+     */
+    public function resendEmailVerificationLink(ResendEmailVerificationLinkRequest $request)
+    {
+        return $this->emailVerificationService->resendLink($request->email);
+    }
+
+    /**
+     * Verify user Email
+     */
+    public function verifyUserEmail(EmailVerificationRequest $request)
+    {
+        return $this->emailVerificationService->verifyEmail($request->email, $request->token);
     }
 
     /**

@@ -5,6 +5,8 @@ namespace App\Http\Implementations;
 
 use App\Http\Services\CalendarService;
 use App\Models\Calendar;
+use App\Models\NotAvailableTime;
+use App\Models\Reservation;
 use Illuminate\Http\Request;
 
 Class CalendarServiceImpl implements CalendarService
@@ -15,7 +17,7 @@ Class CalendarServiceImpl implements CalendarService
 
     public function getSchedule($date){
         try{
-            $schedule = Calendar::where('date', $date)->get();
+            $schedule = NotAvailableTime::where('date', $date)->get();
 
             if(!$schedule){
                 return response()->json([
@@ -26,7 +28,57 @@ Class CalendarServiceImpl implements CalendarService
 
             return response()->json([
                 "success"=> true,
-                "message"=> "Fetched available time for ".$date,
+                "message"=> "Fetched not available time for ".$date,
+                "schedule" => $schedule
+            ], 200);
+        }
+        catch (\Exception $error){
+            return response()->json([
+                "success"=> false,
+                "message"=> $error->getMessage()
+            ]);
+        }
+    }
+
+    public function getNotAvailableTime($date){
+        try{
+            $schedule = NotAvailableTime::where('date', $date)->get();
+
+            if(!$schedule){
+                return response()->json([
+                    "success"=> false,
+                    "message"=> "Internal Server Error.",
+                ], 500);
+            }
+
+            return response()->json([
+                "success"=> true,
+                "message"=> "Fetched not available time for ".$date,
+                "schedule" => $schedule
+            ], 200);
+        }
+        catch (\Exception $error){
+            return response()->json([
+                "success"=> false,
+                "message"=> $error->getMessage()
+            ]);
+        }
+    }
+
+    public function getReservedTime($date){
+        try{
+            $schedule = Reservation::where('date', $date)->get();
+
+            if(!$schedule){
+                return response()->json([
+                    "success"=> false,
+                    "message"=> "Internal Server Error.",
+                ], 500);
+            }
+
+            return response()->json([
+                "success"=> true,
+                "message"=> "Fetched not available time for ".$date,
                 "schedule" => $schedule
             ], 200);
         }
@@ -40,10 +92,10 @@ Class CalendarServiceImpl implements CalendarService
 
     public function updateSchedule(Request $request){
         try {
-            Calendar::where('date', $request->date)->delete();
-            foreach ($request->available_time as $timeSlot) {
-                $result = Calendar::create([
-                    'available_time' => $timeSlot,
+            NotAvailableTime::where('date', $request->date)->delete();
+            foreach ($request->time as $timeSlot) {
+                $result = NotAvailableTime::create([
+                    'time' => $timeSlot,
                     'date' => $request->date,
                     // 'user_id_reserved' => $request->user_id_reserved
                 ]);
@@ -68,16 +120,25 @@ Class CalendarServiceImpl implements CalendarService
         }
     }
 
-    public function getAvailableTimeToday(){
+    public function getNotAvailableTimeToday(){
         try{
-            $schedule = Calendar::where('date', date('Y-m-d'))->where('user_id_reserved', null)->get();
-
-            if(!$schedule){
+            $data1 = NotAvailableTime::where('date', date('Y-m-d'))->get();
+            if(!$data1){
                 return response()->json([
                     "success"=> false,
                     "message"=> "Internal Server Error."
                 ], 500);
             }
+
+            $data2 = Reservation::where('date', date('Y-m-d'))->get();
+            if(!$data2){
+                return response()->json([
+                    "success"=> false,
+                    "message"=> "Internal Server Error."
+                ], 500);
+            }
+
+            $schedule = $data1->merge($data2)->toArray();
 
             return response()->json([
                 "success"=> true,
@@ -95,8 +156,10 @@ Class CalendarServiceImpl implements CalendarService
 
     public function reserveConsultation(Request $request){
         try{
-            $result = Calendar::where('id', $request->calendar_id)->update([
-                'user_id_reserved' => $request->user_id_reserved
+            $result = Reservation::create([
+                'time' => $request->time,
+                'date' => $request->date,
+                'user_id' => $request->user_id
             ]);
 
             if(!$result){
@@ -122,7 +185,7 @@ Class CalendarServiceImpl implements CalendarService
 
     public function getAppointmentsToday(Request $request){
         try{
-            $result = Calendar::with('reserved_user')->where('date', date('Y-m-d'))->where('user_id_reserved', '<>', null)->get();
+            $result = Reservation::with('reserved_user')->where('date', date('Y-m-d'))->get();
 
             if(!$result){
                 return response()->json([

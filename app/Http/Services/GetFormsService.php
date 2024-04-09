@@ -19,4 +19,8 @@ interface GetFormsService
     public function getAllCumulativeRecordForms();
 
     public function getAllClientMonitoringForms();
+
+    public function getMyReferralForms($id);
+
+    public function getMyClientMonitoringForms($id);
 }

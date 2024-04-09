@@ -12,5 +12,13 @@ interface SaveInputsService
 
     public function submitGuidanceCallSlip(Request $request);
 
+    // Parent
+
     public function submitReferralForm(Request $request);
+
+    // Cumulative
+
+    public function submitClientMonitoringForm(Request $request);
+
+    public function updateClientMonitoringForm(Request $request);
 }

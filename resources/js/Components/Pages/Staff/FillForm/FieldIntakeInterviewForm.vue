@@ -50,8 +50,15 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="interviewedBy">Interviewed By:</label>
-                                <input type="text" v-model="interviewer" class="form-control" id="interviewedBy" required>
+                                <label class="form-label">Interviewer:</label>
+                                <div class="custom-dropdown">
+                                    <input type="text" v-model="searchInput" class="form-control">
+                                    <div class="dropdown-options" v-show="isDropdownOpen">
+                                        <div v-for="staff in filteredStaffs" :key="staff.id" @click="selectStaff(staff)">
+                                        {{ staff.firstname }} {{ staff.middlename }} {{ staff.lastname }}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="comments">Notes:</label>
@@ -75,7 +82,7 @@
 
 <script setup>
 import axios from "axios";
-import { ref } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import store from "../../../../State/index.js"
 
@@ -90,10 +97,44 @@ const age = ref("");
 const sex = ref("");
 const date_of_interview = ref("");
 const notes = ref("");
-const interviewer = ref("");
+const interviewer = ref(null);
 
+const searchInput = ref('');
+const staffs = ref([]);
+const isDropdownOpen = ref(false);
 
+// Function to filter students based on search input
+const filteredStaffs = ref([]);
 
+onMounted(() => {
+    getStaffs();
+})
+
+const selectStaff = (staff) => {
+    interviewer.value = staff.id;
+    searchInput.value = `${staff.firstname} ${staff.middlename} ${staff.lastname}`;
+    isDropdownOpen.value = false;
+};
+
+const getStaffs = async () => {
+    const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/get-all-staffs`)
+    staffs.value = response.data.data;
+    console.log(response.data.data);
+}
+
+watch(searchInput, (newValue) => {
+    if (newValue) {
+        filteredStaffs.value = staffs.value.filter(staff =>
+            (staff.firstname.toLowerCase().includes(newValue.toLowerCase())) ||
+            (staff.middlename.toLowerCase().includes(newValue.toLowerCase())) ||
+            (staff.lastname.toLowerCase().includes(newValue.toLowerCase()))
+        );
+        isDropdownOpen.value = true;
+    } else {
+        filteredStaffs.value = [];
+        isDropdownOpen.value = false;
+    }
+});
 
 const submitIntakeInterview = async () => {
     store.commit('setLoading', true)
@@ -125,6 +166,31 @@ const submitIntakeInterview = async () => {
 </script>
 
 <style scoped>
+.custom-dropdown {
+  position: relative;
+}
+
+.dropdown-options {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-top: none;
+  border-radius: 0 0 5px 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-options > div {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.dropdown-options > div:hover {
+  background-color: #f0f0f0;
+}
+
 .container {
     margin-bottom: 40px;
 }

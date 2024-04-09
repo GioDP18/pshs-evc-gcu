@@ -26,6 +26,14 @@ class CalendarController extends Controller
         return $this->calendarService->getSchedule($date);
     }
 
+    public function getNotAvailableTime($date){
+        return $this->calendarService->getNotAvailableTime($date);
+    }
+
+    public function getReservedTime($date){
+        return $this->calendarService->getReservedTime($date);
+    }
+
     /**
      * Function to update schedule for specific date.
      *
@@ -41,9 +49,10 @@ class CalendarController extends Controller
      *
      * @return void
      */
-    public function getAvailableTimeToday(){
-        return $this->calendarService->getAvailableTimeToday();
+    public function getNotAvailableTimeToday(){
+        return $this->calendarService->getNotAvailableTimeToday();
     }
+
 
     /**
      * Function to reserve a consultation

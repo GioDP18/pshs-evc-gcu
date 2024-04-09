@@ -6,20 +6,19 @@
                 <path class="thex__x" fill="none" d="M16 16 36 36 M36 16 16 36" />
             </svg>
         </div>
-        <h1>Failed to Verify Email!</h1>
-        <p>Sorry, we were unable to verify your email.</p>
-        <button @click="redirectToHomepage">Continue</button>
+        <h1>Email Not Verified!</h1>
+        <p>Please verify your email to continue.</p>
+        <button @click="redirectToVerify">Verify</button>
     </div>
 </template>
 
-<script>
-export default {
-    name: 'SuccessPage',
-    methods: {
-        redirectToHomepage() {
-            window.location.href = '/';
-        },
-    },
+<script setup>
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+const redirectToVerify = () => {
+    router.push({ name: 'ConfirmEmail' });
 };
 </script>
 

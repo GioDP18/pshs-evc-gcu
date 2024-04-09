@@ -23,7 +23,19 @@ class SaveInputsController extends Controller
         return $this->saveInputsService->submitGuidanceCallSlip($request);
     }
 
+    // Parent Here
+
     public function submitReferralForm(Request $request){
         return $this->saveInputsService->submitReferralForm($request);
+    }
+
+    // Cumulative here
+
+    public function submitClientMonitoringForm(Request $request){
+        return $this->saveInputsService->submitClientMonitoringForm($request);
+    }
+
+    public function updateClientMonitoringForm(Request $request){
+        return $this->saveInputsService->updateClientMonitoringForm($request);
     }
 }

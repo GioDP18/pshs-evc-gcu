@@ -10,43 +10,45 @@
                                     :icon="['fas', 'user']" /></i>Rejected</button>
                     </div>
                 </div>
-                <table id="table-intake" class="table table-striped table-hover" width="100%">
-                    <thead>
-                        <tr>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Role</th>
-                            <th>ID Number</th>
-                            <th>Grade</th>
-                            <th>Section</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Bogart</td>
-                            <td>Explorer</td>
-                            <td>Jungler</td>
-                            <td>09123456789</td>
-                            <td>7</td>
-                            <td>Zigzag</td>
-                            <td>
-                                <div class="actions">
-                                    <button style="padding-right: 5px;" class="card14 approve" type="button"
-                                        @click="acceptRequest(request.id)">
-                                        <span class="send-text"><font-awesome-icon :icon="['fas', 'check']" />
-                                            Approve</span>
-                                    </button>
-                                    <button style="padding-right: 5px;" class="card14 reject" type="button"
-                                        @click="rejectRequest(request.id)">
-                                        <span class="send-text"><font-awesome-icon :icon="['fas', 'xmark']" />
-                                            Reject</span>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="table-content">
+                    <table id="table-intake" class="table table-striped table-hover" width="100%">
+                        <thead>
+                            <tr>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Role</th>
+                                <th>ID Number</th>
+                                <th>Grade</th>
+                                <th>Section</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Bogart</td>
+                                <td>Explorer</td>
+                                <td>Jungler</td>
+                                <td>09123456789</td>
+                                <td>7</td>
+                                <td>Zigzag</td>
+                                <td>
+                                    <div class="actions">
+                                        <button style="padding-right: 5px;" class="card14 approve" type="button"
+                                            @click="acceptRequest(request.id)">
+                                            <span class="send-text"><font-awesome-icon :icon="['fas', 'check']" />
+                                                Approve</span>
+                                        </button>
+                                        <button style="padding-right: 5px;" class="card14 reject" type="button"
+                                            @click="rejectRequest(request.id)">
+                                            <span class="send-text"><font-awesome-icon :icon="['fas', 'xmark']" />
+                                                Reject</span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
                 <!-- Individual Modal -->
                 <div class="modal fade" id="rejected" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -113,6 +115,25 @@ const initializeDataTable = () => {
 <style scoped>
 .main-content {
     width: 100%;
+}
+
+.table-content {
+    width: 100%;
+    height: 85%;
+}
+
+@media screen and (max-width:360px) {
+    .table-content {
+        width: 100%;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    #table-cmf th,
+    #table-cmf td {
+        min-width: 150px;
+        /* Set a minimum width for table cells */
+    }
 }
 
 .actions {
@@ -203,6 +224,16 @@ const initializeDataTable = () => {
     font-weight: 500;
     font-size: 15px;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
+}
+
+@media screen and (max-width: 360px) {
+    .sub-header button {
+        width: 100%;
+    }
+
+    .sub-header .rejected {
+        width: 100%;
+    }
 }
 
 .sub-header a {

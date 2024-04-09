@@ -19,17 +19,15 @@
                         <tr>
                             <th>Campus</th>
                             <th>Name of student</th>
-                            <th>Date of Interview</th>
-                            <th>Interviewer</th>
+                            <th>Adviser</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="data in all_data" :key="data.id">
                             <td>{{ data.campus }}</td>
-                            <td>{{ data.name_of_student }}</td>
-                            <td>{{ data.date_of_interview }}</td>
-                            <td>{{ data.interviewer_info.firstname }} {{ data.interviewer_info.lastname }}</td>
+                            <td>{{ data.user.firstname }} {{ data.user.lastname }}</td>
+                            <td>{{ data.adviser }}</td>
                             <td>
                                 <div class="dropdown">
                                     <button style="padding-right: 5px;" class="card14 dropdown-toggle" type="button"
@@ -219,6 +217,7 @@ import axios from 'axios';
 import { ref, onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import $ from 'jquery';
+import store from "../../../../State/index.js";
 
 const router = useRouter();
 
@@ -282,7 +281,19 @@ const getAllClientMonitoringForms = async () => {
 const generateForm = async (form_id) => {
     store.commit('setLoading', true)
     try {
-        // Logic here
+        const resp = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/generate-client-monitoring/${form_id}`, {
+            responseType: 'arraybuffer'
+        })
+        if (resp.status === 200) {
+            var newBlob = new Blob([resp.data], { type: 'application/pdf' })
+
+            console.log(resp.data)
+            const data = window.URL.createObjectURL(newBlob)
+            var link = document.createElement('a')
+            link.href = data
+            link.download = 'ClientMonitoringForm' + '.pdf'
+            link.click()
+        }
     }
     catch (error) {
         console.log(error);
