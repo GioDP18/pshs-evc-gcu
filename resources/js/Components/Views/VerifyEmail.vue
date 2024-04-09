@@ -1,5 +1,5 @@
 <template>
-    
+
 </template>
 
 <script setup>
@@ -16,7 +16,7 @@ const token = ref('');
 onMounted(async () => {
     parseUrlParams();
     verifyEmail();
-    
+
 });
 
 const verifyEmail = async () => {
@@ -28,7 +28,7 @@ const verifyEmail = async () => {
             email: email.value,
             token: token.value
         })
-        
+
         response.value = resp.data;
         router.push({ name: 'verifiedEmail' })
     }
