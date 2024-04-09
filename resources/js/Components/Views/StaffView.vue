@@ -295,7 +295,7 @@
                         </div>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <RouterLink to="profilePage" class="dropdown-item"><i><font-awesome-icon :icon="['fas', 'user']"
+                        <RouterLink to="#" class="dropdown-item"><i><font-awesome-icon :icon="['fas', 'user']"
                                     style="margin-right: 15px;" /></i>View Profile</RouterLink>
                         <button style="color: #a5000e;" @click="handleLogout" class="dropdown-item"
                             href="#"><i><font-awesome-icon class="icon" :icon="['fas', 'fa-power-off']"
