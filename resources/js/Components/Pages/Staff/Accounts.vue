@@ -61,28 +61,30 @@
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <table id="table-intake" class="table table-striped table-hover" width="100%">
-                                    <thead>
-                                        <tr>
-                                            <th>First Name</th>
-                                            <th>Last Name</th>
-                                            <th>Role</th>
-                                            <th>ID Number</th>
-                                            <th>Grade</th>
-                                            <th>Section</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Bogart</td>
-                                            <td>Explorer</td>
-                                            <td>Jungler</td>
-                                            <td>09123456789</td>
-                                            <td>7</td>
-                                            <td>Zigzag</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <div class="table-content">
+                                    <table id="table-intake" class="table table-striped table-hover" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>First Name</th>
+                                                <th>Last Name</th>
+                                                <th>Role</th>
+                                                <th>ID Number</th>
+                                                <th>Grade</th>
+                                                <th>Section</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Bogart</td>
+                                                <td>Explorer</td>
+                                                <td>Jungler</td>
+                                                <td>09123456789</td>
+                                                <td>7</td>
+                                                <td>Zigzag</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
