@@ -37,7 +37,7 @@ class EmailVerificationNotification extends Notification
         return (new MailMessage)
                     ->subject('Verify Your Email Address')
                     ->line("Dear $notifiable->name")
-                    ->line('Welcome to RMS, where seamless experiences await you! Take the first step towards unlocking exclusive features by verifying your email now. Thank you for choosing us to enhance your digital journey!')
+                    ->line('Welcome to PSHS-EVC-GCU, where seamless experiences await you! Take the first step towards unlocking exclusive features by verifying your email now. Thank you for choosing us to enhance your digital journey!')
                     ->action('Verify Email', $this->url)
                     ->line('Thank you for using our application!');
     }
