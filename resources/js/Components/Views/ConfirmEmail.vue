@@ -14,7 +14,7 @@
                         email address.</p>
                 </div>
                 <div id="verify">
-                    <a href="#">Resend Confirmation Email</a>
+                    <a href="#" @click="resendEmailVerification()">Resend Confirmation Email</a>
                 </div>
             </div>
         </div>
@@ -22,7 +22,34 @@
 </template>
 
 <script setup>
+import axios from 'axios';
+import { ref, computed, onMounted } from 'vue';
+import { useRouter } from "vue-router";
+import store from "../../State/index.js";
 
+const router = useRouter();
+
+const email = router.currentRoute.value.params.email; 
+
+const resendEmailVerification = async () => {
+    store.commit('setLoading', true)
+    try {
+        const resp = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/resend-email-verification-link`, {
+            email: email
+        })
+        if (resp.data.success == true) {
+            console.log(resp.data.message);
+        }else {
+            console.log(resp.data.message);
+        }
+    }
+    catch (error) {
+        console.log(error);
+    }
+    finally {
+        store.commit('setLoading', false)
+    }
+}
 </script>
 
 <style scoped>

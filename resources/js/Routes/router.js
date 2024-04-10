@@ -327,9 +327,10 @@ const routes = [
         ],
     },
     {
-        path: "/confirmEmail",
+        path: "/confirmEmail/:email",
         component: ConfirmEmail,
         name: "ConfirmEmail",
+        props: true,
     },
     {
         path: "/verifiedEmail",
@@ -337,9 +338,10 @@ const routes = [
         name: "verifiedEmail",
     },
     {
-        path: "/notVerifiedEmail",
+        path: "/notVerifiedEmail/:email",
         component: NotVerifiedEmail,
         name: "notVerifiedEmail",
+        props: true,
     },
     {
         path: "/:path(.*)",

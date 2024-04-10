@@ -6,48 +6,9 @@
                     <div class="content-text">Accounts Registration Application</div>
                     <div class="buttons">
                         <button class="rejected" data-bs-toggle="modal" data-bs-target="#rejected"><i
-                                style="margin-right: 10px;"><font-awesome-icon
+                                style="margin-right: 10px;" @click="getRegistraionApplicationsRejected()"><font-awesome-icon
                                     :icon="['fas', 'user']" /></i>Rejected</button>
                     </div>
-                </div>
-                <div class="table-content">
-                    <table id="table-intake" class="table table-striped table-hover" width="100%">
-                        <thead>
-                            <tr>
-                                <th>First Name</th>
-                                <th>Last Name</th>
-                                <th>Role</th>
-                                <th>ID Number</th>
-                                <th>Grade</th>
-                                <th>Section</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Bogart</td>
-                                <td>Explorer</td>
-                                <td>Jungler</td>
-                                <td>09123456789</td>
-                                <td>7</td>
-                                <td>Zigzag</td>
-                                <td>
-                                    <div class="actions">
-                                        <button style="padding-right: 5px;" class="card14 approve" type="button"
-                                            @click="acceptRequest(request.id)">
-                                            <span class="send-text"><font-awesome-icon :icon="['fas', 'check']" />
-                                                Approve</span>
-                                        </button>
-                                        <button style="padding-right: 5px;" class="card14 reject" type="button"
-                                            @click="rejectRequest(request.id)">
-                                            <span class="send-text"><font-awesome-icon :icon="['fas', 'xmark']" />
-                                                Reject</span>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
                 </div>
 
                 <!-- Individual Modal -->
@@ -73,13 +34,13 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>Bogart</td>
-                                            <td>Explorer</td>
-                                            <td>Jungler</td>
-                                            <td>09123456789</td>
-                                            <td>7</td>
-                                            <td>Zigzag</td>
+                                        <tr v-for="user in rejections" :key="user.id">
+                                            <td>{{ user.firstname }}</td>
+                                            <td>{{ user.lastname }}</td>
+                                            <td>{{ user.role }}</td>
+                                            <td>{{ user.id_number }}</td>
+                                            <td>{{ user.grade_level }}</td>
+                                            <td>{{ user.section }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -87,8 +48,46 @@
                         </div>
                     </div>
                 </div>
+                
+                <table id="table-gcs" class="table table-striped table-hover" width="100%">
+                    <thead>
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Role</th>
+                            <th>ID Number</th>
+                            <th>Grade</th>
+                            <th>Section</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="application in applications" :key="application.id">
+                            <td>{{ application.firstname }}</td>
+                            <td>{{ application.lastname }}</td>
+                            <td>{{ application.role }}</td>
+                            <td>{{ application.id_number }}</td>
+                            <td>{{ application.grade_level }}</td>
+                            <td>{{ application.section }}</td>
+                            <td>
+                                <div class="actions">
+                                    <button style="padding-right: 5px;" class="card14 approve" type="button"
+                                        @click="approveApplication(application.id)">
+                                        <span class="send-text"><font-awesome-icon :icon="['fas', 'check']" />
+                                            Approve</span>
+                                    </button>
+                                    <button style="padding-right: 5px;" class="card14 reject" type="button"
+                                        @click="rejectionApplication(application.id)">
+                                        <span class="send-text"><font-awesome-icon :icon="['fas', 'xmark']" />
+                                            Reject</span>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-        </div>
+        </div> 
     </div>
 </template>
 
@@ -96,16 +95,80 @@
 import axios from 'axios';
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import $ from 'jquery';
 import DataTable from 'datatables.net-vue3';
 import DataTablesCore from 'datatables.net-bs5';
+import $ from 'jquery';
+import store from "../../../State/index.js";
 
-const router = useRouter();
-
+const applications = ref([]);
+const rejections = ref([]);
 
 onMounted(async () => {
     initializeDataTable();
+    getRegistraionApplications();
+    getRegistraionApplicationsRejected(); 
 });
+
+const getRegistraionApplications = async () => {
+    try {
+        const resp = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/accounts`)
+
+        applications.value = resp.data.data;
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+const getRegistraionApplicationsRejected = async () => {
+    try {
+        const resp = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/accounts-rejected`)
+
+        rejections.value = resp.data.data;
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+const approveApplication = async (form_id) => {
+    store.commit('setLoading', true)
+    try {
+        const resp = await axios.put(`${import.meta.env.VITE_BASE_URL}/api/v1/account-approval/${form_id}`)
+        if (resp.data.success == true) {
+            console.log(resp.data.message);
+        }else {
+            console.log(resp.data.message);
+        }
+        getRegistraionApplications(); 
+    }
+    catch (error) {
+        console.log(error);
+    }
+    finally {
+        store.commit('setLoading', false)
+    }
+}
+
+const rejectionApplication = async (form_id) => {
+    store.commit('setLoading', true)
+    
+    try {
+        const resp = await axios.put(`${import.meta.env.VITE_BASE_URL}/api/v1/account-rejection/${form_id}`)
+        if (resp.data.success == true) {
+            console.log(resp.data.message);
+        }else {
+            console.log(resp.data.message);
+        }
+        getRegistraionApplications();
+    }
+    catch (error) {
+        console.log(error);
+    }
+    finally {
+        store.commit('setLoading', false)
+    }
+}
 
 const initializeDataTable = () => {
     $('#table-intake').DataTable();

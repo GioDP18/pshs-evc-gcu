@@ -19,9 +19,20 @@ Class RegistrationApplicationServiceImpl implements RegistrationApplicationServi
         ]);
     }
 
+    public function getAllRegistrationApplicationsRejected()
+    {
+        $users = User::where('registration_status', 2)->get();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'succesfully fetch all registration applications',
+            'data' => $users
+        ]);
+    }
+
     public function approve($id)
     {
-        $user = User::find($id)->update(['registration_status' => '1']);
+        $user = User::find($id)->update(['registration_status' => 1]);
 
         if (!$user) {
             return response()->json([
@@ -32,8 +43,25 @@ Class RegistrationApplicationServiceImpl implements RegistrationApplicationServi
 
         return response()->json([
             'success' => true,
-            'message' => 'succesfully fetch all registration applications',
-            'data' => $user
+            'message' => 'succesfully approved registration applications',
+            'data' => $id,
+        ]);
+    }
+
+    public function reject($id)
+    {
+        $user = User::find($id)->update(['registration_status' => 2]);
+
+        if (!$user) {
+            return response()->json([
+                'success' => true,
+                'message' => 'application not found',
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'succesfully rejected registration applications',
         ]);
     }
 }
