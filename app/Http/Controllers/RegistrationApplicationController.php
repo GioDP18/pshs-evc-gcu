@@ -15,7 +15,15 @@ class RegistrationApplicationController extends Controller
         return $this->registrationApplicationService->getAllRegistrationApplications();
     }
 
+    public function getAllRegistrationApplicationsRejected(){
+        return $this->registrationApplicationService->getAllRegistrationApplicationsRejected();
+    }
+
     public function approve($id){
         return $this->registrationApplicationService->approve($id);
+    }
+
+    public function reject($id){
+        return $this->registrationApplicationService->reject($id);
     }
 }

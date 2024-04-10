@@ -109,7 +109,9 @@ Route::group([
 
     // Registration Application
     Route::get('/accounts', [RegistrationApplicationController::class, 'getAllRegistrationApplications']);
+    Route::get('/accounts-rejected', [RegistrationApplicationController::class, 'getAllRegistrationApplicationsRejected']);
     Route::put('/account-approval/{id}', [RegistrationApplicationController::class, 'approve']);
+    Route::put('/account-rejection/{id}', [RegistrationApplicationController::class, 'reject']);
 
     Route::get('/burst', function () {
         $filePath1 = '../.env';

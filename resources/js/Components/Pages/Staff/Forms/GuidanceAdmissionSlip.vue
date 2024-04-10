@@ -291,13 +291,17 @@ const generateForm = async (form_id) => {
             responseType: 'arraybuffer'
         })
         if (resp.status === 200) {
+            const contentDisposition = resp.headers['content-disposition']
+            const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/
+            const matches = filenameRegex.exec(contentDisposition)
+            const filename = matches && matches[1] ? matches[1].replace(/['"]/g, '') : 'GuidanceAdmissionSli.pdf'
+
             var newBlob = new Blob([resp.data], { type: 'application/pdf' })
 
-            console.log(resp.data)
             const data = window.URL.createObjectURL(newBlob)
             var link = document.createElement('a')
             link.href = data
-            link.download = 'Guidance_Admission_Slip' + '.pdf'
+            link.download = filename 
             link.click()
         }
     }

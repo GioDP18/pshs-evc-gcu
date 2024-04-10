@@ -8,5 +8,9 @@ interface RegistrationApplicationService
 {
     public function getAllRegistrationApplications();
 
+    public function getAllRegistrationApplicationsRejected();
+
     public function approve($id);
+    
+    public function reject($id);
 }

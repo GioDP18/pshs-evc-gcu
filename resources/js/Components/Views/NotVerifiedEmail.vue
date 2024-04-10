@@ -13,12 +13,17 @@
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router';
+import axios from 'axios';
+import { ref, computed, onMounted } from 'vue';
+import { useRouter } from "vue-router";
+import store from "../../State/index.js";
 
 const router = useRouter();
 
+const email = router.currentRoute.value.params.email; 
+
 const redirectToVerify = () => {
-    router.push({ name: 'ConfirmEmail' });
+    router.push({ name: 'ConfirmEmail', params: { email: email } });
 };
 </script>
 
