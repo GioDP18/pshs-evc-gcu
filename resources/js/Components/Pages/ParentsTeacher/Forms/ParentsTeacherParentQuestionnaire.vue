@@ -3,6 +3,7 @@ import axios from 'axios';
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import $ from 'jquery';
+import store from "../../../../State/index.js";
 
 const status = ref(null);
 const router = useRouter();
@@ -35,6 +36,35 @@ const createRequest = async () => {
     }
     catch (error) {
         console.log(error);
+    }
+}
+
+const generateForm = async (form_id) => {
+    store.commit('setLoading', true)
+    try {
+        const resp = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/generate-parent-questionaire`, {
+            responseType: 'arraybuffer'
+        })
+        if (resp.status === 200) {
+            const contentDisposition = resp.headers['content-disposition']
+            const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/
+            const matches = filenameRegex.exec(contentDisposition)
+            const filename = matches && matches[1] ? matches[1].replace(/['"]/g, '') : 'Parent-Questionaire.pdf'
+
+            var newBlob = new Blob([resp.data], { type: 'application/pdf' })
+
+            const data = window.URL.createObjectURL(newBlob)
+            var link = document.createElement('a')
+            link.href = data
+            link.download = filename 
+            link.click()
+        }
+    }
+    catch (error) {
+        console.log(error);
+    }
+    finally {
+        store.commit('setLoading', false)
     }
 }
 
@@ -118,7 +148,7 @@ const goToFill = () => {
                                                             :icon="['fas', 'eye']"
                                                             style="margin-right: 10px;" /></i>View</a></li>
                                             <li><a class="dropdown-item generate" href="#"
-                                                    @click="sendCertificate('certificate2')"><i><font-awesome-icon
+                                                    @click="generateForm()"><i><font-awesome-icon
                                                             :icon="['fas', 'file']"
                                                             style="margin-right: 10px;" /></i>Generate</a></li>
                                             <li><a class="dropdown-item delete" href="#"
