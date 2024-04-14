@@ -526,17 +526,17 @@ Class GenerateServiceImpl implements GenerateService
         $templateProcessor->setValue('home-guardian', 'example answer');
         $templateProcessor->setValue('relationship-guardian', 'example answer');
 
+        $form_number = 'PSHS-00-F-GCU-01-Ver02-Rev0-' . date('Y-m-d');
         // file path save
-        $newFilePath = public_path('parents_questionaire\\' . 'John Vincent Ramada' . '.docx');
+        $newFilePath = public_path('parents_questionaire\\' . 'parent' . '-' . 'examplename' . '-' . $form_number . '.docx');
         $templateProcessor->saveAs($newFilePath);
         
         $convert = $this->wordToPdf($newFilePath);
-        $convert->saveFiles(public_path('parents_questionaire\\'. 'John Vincent Ramada' . '.pdf'));
+        $pdfPath = public_path('parents_questionaire\\' . 'parent' . '-' . 'examplename' . '-' . $form_number . '.pdf');
+        $convert->saveFiles($pdfPath);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Successfully generated parents questionaire form',
-        ], 201);
+        
+        return response()->download($pdfPath);
     }
 
     public function generateClientMonitoring($id)
@@ -636,7 +636,7 @@ Class GenerateServiceImpl implements GenerateService
 
     private function wordToPdf($newFilePath)
     {
-        ConvertApi::setApiSecret('1MDrmpYzrCkI1g04');
+        ConvertApi::setApiSecret('BSmGJ9kYjkc8J5o5');
         $result = ConvertApi::convert('pdf', [
                 'File' => $newFilePath,
             ], 'doc'
