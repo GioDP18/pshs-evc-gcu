@@ -13,6 +13,7 @@ use App\Http\Implementations\GetFormsServiceImpl;
 use App\Http\Implementations\RequestsServiceImpl;
 use App\Http\Implementations\SaveInputsServiceImpl;
 use App\Http\Implementations\EmailVerificationServiceImpl;
+use App\Http\Implementations\RegistrationApplicationServiceImpl;
 use App\Http\Services\AssignmentService;
 use App\Http\Services\AuthService;
 use App\Http\Services\CalendarService;
@@ -22,6 +23,7 @@ use App\Http\Services\GetFormsService;
 use App\Http\Services\RequestsService;
 use App\Http\Services\SaveInputsService;
 use App\Http\Services\EmailVerificationService;
+use App\Http\Services\RegistrationApplicationService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -35,6 +37,7 @@ class AppServiceProvider extends ServiceProvider
         AssignmentService::class => AssignmentServiceImpl::class,
         EventService::class => EventServiceImpl::class,
         EmailVerificationService::class => EmailVerificationServiceImpl::class,
+        RegistrationApplicationService::class => RegistrationApplicationServiceImpl::class,
     ];
     /**
      * Register any application services.

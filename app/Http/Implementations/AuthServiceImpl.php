@@ -33,7 +33,19 @@ Class AuthServiceImpl implements AuthService
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
-        if (! $token = auth()->attempt($validator->validated())) {
+        
+        $credentials = $validator->validated();
+        $user = User::where('email', $credentials['email'])
+                ->where('registration_status', 1)
+                ->first();
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'wait for the approval of your registration'
+            ]);
+        }
+
+        if (! $token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
         // Return the token

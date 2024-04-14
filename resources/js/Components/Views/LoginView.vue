@@ -135,18 +135,18 @@ const submitForm = async () => {
             })
                 .then((response) => {
                     if (response.status === 200) {
-                        localStorage.setItem('user_id', response.data.user.id);
-                        localStorage.setItem('firstname', response.data.user.firstname);
-                        localStorage.setItem('middlename', response.data.user.middlename);
-                        localStorage.setItem('lastname', response.data.user.lastname);
-                        localStorage.setItem('token', response.data.access_token);
-                        localStorage.setItem('role', response.data.user.role);
-                        localStorage.setItem('valid', true);
                         if(response.data.user.email_verified_at === null){
-                            router.push({ name: 'notVerifiedEmail' })
-
+                            router.push({ name: 'notVerifiedEmail', params: { email: formData.value.email } })
                         }
                         else{
+                            localStorage.setItem('user_id', response.data.user.id);
+                            localStorage.setItem('firstname', response.data.user.firstname);
+                            localStorage.setItem('middlename', response.data.user.middlename);
+                            localStorage.setItem('lastname', response.data.user.lastname);
+                            localStorage.setItem('token', response.data.access_token);
+                            localStorage.setItem('role', response.data.user.role);
+                            localStorage.setItem('valid', true);
+
                             switch (response.data.user.role) {
                                 case 'gcu_staff':
                                     localStorage.setItem('role', 'gcu_staff');

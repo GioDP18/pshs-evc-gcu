@@ -20,7 +20,7 @@
                         <div class="radio-input" style="width:11rem" v-for="timeSlot in fixedTimeSlots" :key="timeSlot">
                             <div class="radio-container">
                                 <input type="checkbox" :id="timeSlot" :value="timeSlot"
-                                    :checked="availableTimeSlots.includes(timeSlot)" @change="handleChange(timeSlot)">
+                                    :checked="availableTimeSlots.includes(timeSlot) || available_time_today.includes(timeSlot)" @change="handleChange(timeSlot)">
                                 <label :for="timeSlot" class="m-1">{{ timeSlot }}</label>
                             </div>
 
@@ -81,6 +81,13 @@ const selectedDate = ref(null)
 const selectedTimeSlots = ref([])
 const user_id_reserved = ref([])
 const availableTimeSlots = reactive([])
+const currentIndex = ref('');
+const available_time_today = ref([]);
+const appointments_today = ref([])
+const currentTime = new Date();
+const currentHour = currentTime.getHours();
+const currentMinute = currentTime.getMinutes();
+const checked_time_passed = ref([]);
 const fixedTimeSlots = [
     '7:30 AM - 8:00 AM',
     '8:00 AM - 8:30 AM',
@@ -101,10 +108,19 @@ const fixedTimeSlots = [
     '3:30 PM - 4:00 PM',
     '4:00 PM - 4:30 PM',
 ]
-const available_time = ref([]);
-const available_time_today = ref([]);
-const appointments_today = ref([])
 
+
+const formatTime = (hour, minute) => {
+    const meridiem = hour >= 12 ? 'PM' : 'AM';
+    const formattedHour = hour % 12 === 0 ? 12 : hour % 12;
+    const formattedMinute = minute < 10 ? '0' + minute : minute;
+    return `${formattedHour}:${formattedMinute} ${meridiem}`;
+};
+
+const currentFormattedTime = formatTime(currentMinute < 30 ? currentHour : currentHour + 1, currentMinute > 30 ? 0 : 30);
+const filteredTimeSlots = ref([]);
+
+console.log(currentFormattedTime);
 onMounted(() => {
     getTimeNotAvailableToday();
     getAppointmentsToday();
@@ -120,7 +136,8 @@ const handleDateClick = async (data) => {
         modalVisible.value = true
         availableTimeSlots.splice(0, availableTimeSlots.length, ...response.data.schedule.map(schedule => schedule.time))
         selectedTimeSlots.value = availableTimeSlots
-        console.log(selectedTimeSlots.value)
+        checked_time_passed.value
+
     } catch (error) {
         console.error(error);
     }
@@ -165,10 +182,19 @@ const getTimeNotAvailableToday = async () => {
         // Extract times from the API response
         const notAvailableTimes = response.data.schedule.map(slot => slot.time);
 
-        // Filter out not available times from fixedTimeSlots
-        available_time_today.value = fixedTimeSlots.filter(slot => !notAvailableTimes.includes(slot));
+        currentIndex.value = fixedTimeSlots.findIndex(slot => slot.startsWith(currentFormattedTime));
 
-        console.log(response.data)
+        if (currentIndex.value === -1) {
+            currentIndex.value = 100; // Set to null if currentIndex is -1
+        }
+
+        // Filter out not available times from fixedTimeSlots
+        filteredTimeSlots.value = fixedTimeSlots.slice(currentIndex.value);
+        checked_time_passed.value = fixedTimeSlots.slice(0, 15 + 1);
+        available_time_today.value = filteredTimeSlots.value;
+
+        
+        console.log(checked_time_passed.value)
         // not_available_time_today.value = response.data.schedule
     }
     catch (error) {
