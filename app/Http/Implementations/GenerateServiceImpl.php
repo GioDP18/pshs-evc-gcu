@@ -27,7 +27,7 @@ Class GenerateServiceImpl implements GenerateService
             $intake = IntakeInterviewForm::findOrFail($id);
             $interviewer = User::findOrFail($intake->interviewer);
             $form_number = 'PSHS-00-F-GCU-01-Ver02-Rev0-' . date('Y-m-d', strtotime($intake->created_at));
-            $templateProcessor = new TemplateProcessor(public_path('templates\PSHS-00-F-GCU-01-Ver02-Rev0-Intake-Interview-Form.docx'));
+            $templateProcessor = new TemplateProcessor(public_path('templates/PSHS-00-F-GCU-01-Ver02-Rev0-Intake-Interview-Form.docx'));
             $templateProcessor->setValue('campus', $intake->campus);
             $templateProcessor->setValue('name', $intake->name_of_student);
             $templateProcessor->setValue('nickName', $intake->nickname);
@@ -40,12 +40,12 @@ Class GenerateServiceImpl implements GenerateService
             $templateProcessor->setValue('form-number', $form_number);
 
 
-            $newFilePath = public_path('intake_interview\\' . 'student-' . $intake->name_of_student . '-' . $form_number . '.docx');
+            $newFilePath = public_path('intake_interview/' . 'student-' . $intake->name_of_student . '-' . $form_number . '.docx');
             $templateProcessor->saveAs($newFilePath);
 
             // $docxFilePath = public_path('example.docx');
             $convert = $this->wordToPdf($newFilePath);
-            $pdfPath = public_path('intake_interview\\'. 'student-' . $intake->name_of_student . '-' . $form_number . '.pdf');
+            $pdfPath = public_path('intake_interview/'. 'student-' . $intake->name_of_student . '-' . $form_number . '.pdf');
             $convert->saveFiles($pdfPath);
 
             return response()->download($pdfPath);
@@ -56,7 +56,7 @@ Class GenerateServiceImpl implements GenerateService
     {
         $admission = GuidanceAdmissionSlip::findOrFail($id);
         $form_number = 'PSHS-00-F-GCU-01-Ver02-Rev0-' . date('Y-m-d', strtotime($admission->created_at));
-        $templateProcessor = new TemplateProcessor(public_path('templates\PSHS-00-F-GCU-05-Ver02-Rev0-Guidance-Admission-Slip.docx'));
+        $templateProcessor = new TemplateProcessor(public_path('templates/PSHS-00-F-GCU-05-Ver02-Rev0-Guidance-Admission-Slip.docx'));
         $templateProcessor->setValue('campus', $admission->campus);
         $templateProcessor->setValue('name', $admission->name_of_student);
         $templateProcessor->setValue('grade-section', $admission->grade_and_section);
@@ -68,11 +68,11 @@ Class GenerateServiceImpl implements GenerateService
         $templateProcessor->setValue('teacher', $admission->dear);
         $templateProcessor->setValue('form-number', $form_number);
 
-        $newFilePath = public_path('guidance_admission_slip\\' . 'student-' . $admission->name_of_student . '-' . $form_number . '.docx');
+        $newFilePath = public_path('guidance_admission_slip/' . 'student-' . $admission->name_of_student . '-' . $form_number . '.docx');
         $templateProcessor->saveAs($newFilePath);
 
         $convert = $this->wordToPdf($newFilePath);
-        $pdfPath = public_path('guidance_admission_slip\\' . 'student-' . $admission->name_of_student . '-' . $form_number . '.pdf');
+        $pdfPath = public_path('guidance_admission_slip/' . 'student-' . $admission->name_of_student . '-' . $form_number . '.pdf');
         $convert->saveFiles($pdfPath);
 
         return response()->download($pdfPath);
@@ -84,7 +84,7 @@ Class GenerateServiceImpl implements GenerateService
         $user = User::find($referral->user_id);
 
         $form_number = 'PSHS-00-F-GCU-01-Ver02-Rev0-' . date('Y-m-d', strtotime($referral->created_at));
-        $templateProcessor = new TemplateProcessor(public_path('templates\PSHS-00-F-GCU-03-Ver02-Rev0-Referral-Form.docx'));
+        $templateProcessor = new TemplateProcessor(public_path('templates/PSHS-00-F-GCU-03-Ver02-Rev0-Referral-Form.docx'));
         $templateProcessor->setValue('campus', $referral->campus);
         $templateProcessor->setValue('name', $referral->name_of_student);
         $templateProcessor->setValue('grade-section', $referral->grade_and_section);
@@ -232,11 +232,11 @@ Class GenerateServiceImpl implements GenerateService
         $templateProcessor->setValue('behavior13.1', 'example others');
         $templateProcessor->setValue('form-number', $form_number);
         
-        $newFilePath = public_path('referral_form\\' . $user->role . $user->last_name . '-' . $form_number . '.docx');
+        $newFilePath = public_path('referral_form/' . $user->role . $user->last_name . '-' . $form_number . '.docx');
         $templateProcessor->saveAs($newFilePath);
 
         $convert = $this->wordToPdf($newFilePath);
-        $pdfPath = public_path('referral_form\\' . $user->role . $user->last_name . '-' . $form_number . '.pdf');
+        $pdfPath = public_path('referral_form/' . $user->role . $user->last_name . '-' . $form_number . '.pdf');
         $convert->saveFiles($pdfPath);
         
         return response()->download($pdfPath);
@@ -247,7 +247,7 @@ Class GenerateServiceImpl implements GenerateService
 
         $guid_call = GuidanceCallSlip::with('gcspk')->findOrFail($id);
         $form_number = 'PSHS-00-F-GCU-01-Ver02-Rev0-' . date('Y-m-d', strtotime($guid_call->created_at));
-        $templateProcessor = new TemplateProcessor(public_path('templates\PSHS-00-F-GCU-04-Ver02-Rev0-Guidance-Call-Slip-1.docx'));
+        $templateProcessor = new TemplateProcessor(public_path('templates/PSHS-00-F-GCU-04-Ver02-Rev0-Guidance-Call-Slip-1.docx'));
         $templateProcessor->setValue('campus', ($guid_call->campus != null) ? $guid_call->campus : '');
         $templateProcessor->setValue('date', ($guid_call->date != null) ? $guid_call->date : '');
         $templateProcessor->setValue('time', ($guid_call->time != null) ? $guid_call->time : '');
@@ -299,11 +299,11 @@ Class GenerateServiceImpl implements GenerateService
         $templateProcessor->setValue('teacher-name', $guid_call->teacher_in_charge);
         $templateProcessor->setValue('form-number', $form_number);
 
-        $newFilePath = public_path('guidance_call_slip\\' . 'teachear-' . $guid_call->teacher_in_charge . '-' . $form_number . '.docx');
+        $newFilePath = public_path('guidance_call_slip/' . 'teachear-' . $guid_call->teacher_in_charge . '-' . $form_number . '.docx');
         $templateProcessor->saveAs($newFilePath);
 
         $convert = $this->wordToPdf($newFilePath);
-        $pdfPath = public_path('guidance_call_slip\\' . 'teachear-' . $guid_call->teacher_in_charge . '-' . $form_number . '.pdf');
+        $pdfPath = public_path('guidance_call_slip/' . 'teachear-' . $guid_call->teacher_in_charge . '-' . $form_number . '.pdf');
         $convert->saveFiles($pdfPath);
 
         return response()->download($pdfPath);
@@ -311,7 +311,7 @@ Class GenerateServiceImpl implements GenerateService
 
     public function generateParentQuestionaire(Request $request)
     {
-        $templateProcessor = new TemplateProcessor(public_path('templates\PSHS-00-F-GCU-02-Ver02-Rev0-Parent-Questionnaire-Form.docx'));
+        $templateProcessor = new TemplateProcessor(public_path('templates/PSHS-00-F-GCU-02-Ver02-Rev0-Parent-Questionnaire-Form.docx'));
         
         $Q1 = 'Yes';
         $Q1_parent = 'Mother';
@@ -528,11 +528,11 @@ Class GenerateServiceImpl implements GenerateService
 
         $form_number = 'PSHS-00-F-GCU-01-Ver02-Rev0-' . date('Y-m-d');
         // file path save
-        $newFilePath = public_path('parents_questionaire\\' . 'parent' . '-' . 'examplename' . '-' . $form_number . '.docx');
+        $newFilePath = public_path('parents_questionaire/' . 'parent' . '-' . 'examplename' . '-' . $form_number . '.docx');
         $templateProcessor->saveAs($newFilePath);
         
         $convert = $this->wordToPdf($newFilePath);
-        $pdfPath = public_path('parents_questionaire\\' . 'parent' . '-' . 'examplename' . '-' . $form_number . '.pdf');
+        $pdfPath = public_path('parents_questionaire/' . 'parent' . '-' . 'examplename' . '-' . $form_number . '.pdf');
         $convert->saveFiles($pdfPath);
 
         
@@ -544,7 +544,7 @@ Class GenerateServiceImpl implements GenerateService
         $user = ClientMonitoringForm::with(['user','concern'])->findOrFail($id);
         
         $form_number = 'PSHS-00-F-GCU-01-Ver02-Rev0-' . date('Y-m-d', strtotime($user->created_at));
-        $templateProcessor = new TemplateProcessor(public_path('templates\PSHS-00-F-GCU-07-Ver02-Rev1-Client-Monitoring-Form.docx'));
+        $templateProcessor = new TemplateProcessor(public_path('templates/PSHS-00-F-GCU-07-Ver02-Rev1-Client-Monitoring-Form.docx'));
         $templateProcessor->setValue('name', $user->user->firstname .' '. $user->lastname);
         $templateProcessor->setValue('grade-section', $user->user->grade_level .'-'. $user->user->section);
         $templateProcessor->setValue('adviser', $user->adviser);
@@ -567,11 +567,11 @@ Class GenerateServiceImpl implements GenerateService
 
         $this->tableClientMonitoring($templateProcessor, $headerData, $tableData);
 
-        $newFilePath = public_path('client_monitoring\\' . $user->user->role . '-' . $user->user->lastname . '-' . $form_number . '.docx');
+        $newFilePath = public_path('client_monitoring/' . $user->user->role . '-' . $user->user->lastname . '-' . $form_number . '.docx');
         $templateProcessor->saveAs($newFilePath);
 
         $convert = $this->wordToPdf($newFilePath);
-        $pdfPath = public_path('client_monitoring\\' . $user->user->role . '-' . $user->user->lastname . '-' . $form_number . '.pdf');
+        $pdfPath = public_path('client_monitoring/' . $user->user->role . '-' . $user->user->lastname . '-' . $form_number . '.pdf');
         $convert->saveFiles($pdfPath);
 
         return response()->download($pdfPath);
