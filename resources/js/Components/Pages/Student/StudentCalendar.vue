@@ -53,9 +53,6 @@
                     style="width:100%; padding:10px; border-radius:20px; border:2px solid #fbebeb; max-height: 295px; overflow-y: auto;">
                     <p style="font-weight:bold; color:gray; font-size:15px; opacity:60%">Available time for today</p>
                     <div class="ml-4">
-                        <p style="font-weight:bold; color:#27516B" v-if="not_available_time_today.length === 0">No Available
-                            time
-                            for today.</p>
                         <p style="font-weight:bold; color:#27516B" v-for="item in available_time_today" :key="item.id">
                             <i class="fa-regular fa-clock" style="color:#ED9696"></i> {{ item }}
                         </p>
@@ -78,7 +75,12 @@ const selectedDate = ref(null)
 const notAvailableTimeSlots = ref([])
 const not_available_time_today = ref([])
 const chosen_time = ref(null)
+const currentIndex = ref('');
 const no_available_time = ref(false)
+const currentTime = new Date();
+const currentHour = currentTime.getHours();
+const currentMinute = currentTime.getMinutes();
+const checked_time_passed = ref([]);
 const fixedTimeSlots = [
     '7:30 AM - 8:00 AM',
     '8:00 AM - 8:30 AM',
@@ -99,6 +101,16 @@ const fixedTimeSlots = [
     '3:30 PM - 4:00 PM',
     '4:00 PM - 4:30 PM',
 ]
+const formatTime = (hour, minute) => {
+    const meridiem = hour >= 12 ? 'PM' : 'AM';
+    const formattedHour = hour % 12 === 0 ? 12 : hour % 12;
+    const formattedMinute = minute < 10 ? '0' + minute : minute;
+    return `${formattedHour}:${formattedMinute} ${meridiem}`;
+};
+
+const currentFormattedTime = formatTime(currentMinute < 30 ? currentHour : currentHour + 1, currentMinute > 30 ? 0 : 30);
+const filteredTimeSlots = ref([]);
+
 const available_time = ref([]);
 const available_time_today = ref([]);
 
@@ -147,10 +159,19 @@ const getTimeNotAvailableToday = async () => {
         // Extract times from the API response
         const notAvailableTimes = response.data.schedule.map(slot => slot.time);
 
-        // Filter out not available times from fixedTimeSlots
-        available_time_today.value = fixedTimeSlots.filter(slot => !notAvailableTimes.includes(slot));
+        currentIndex.value = fixedTimeSlots.findIndex(slot => slot.startsWith(currentFormattedTime));
 
-        console.log(response.data)
+        if (currentIndex.value === -1) {
+            currentIndex.value = 100; 
+        }
+
+        // Filter out not available times from fixedTimeSlots
+        filteredTimeSlots.value = fixedTimeSlots.slice(currentIndex.value);
+        checked_time_passed.value = fixedTimeSlots.slice(0, 15 + 1);
+        available_time_today.value = filteredTimeSlots.value;
+
+        
+        console.log(available_time_today.value)
         not_available_time_today.value = response.data.schedule
     }
     catch (error) {

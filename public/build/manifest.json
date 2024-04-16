@@ -40,8 +40,13 @@
     "isEntry": true,
     "src": "resources/css/app.css"
   },
+  "resources/css/hamburgers.css": {
+    "file": "assets/hamburgers-9627b0f4.css",
+    "isEntry": true,
+    "src": "resources/css/hamburgers.css"
+  },
   "resources/js/app.css": {
-    "file": "assets/app-737aaf8f.css",
+    "file": "assets/app-11cba9f5.css",
     "src": "resources/js/app.css"
   },
   "resources/js/app.js": {
@@ -57,9 +62,9 @@
       "assets/logo-8280a3f0.png"
     ],
     "css": [
-      "assets/app-737aaf8f.css"
+      "assets/app-11cba9f5.css"
     ],
-    "file": "assets/app-019b446b.js",
+    "file": "assets/app-2cad3a77.js",
     "isEntry": true,
     "src": "resources/js/app.js"
   }
