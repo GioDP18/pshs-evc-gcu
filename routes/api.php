@@ -60,6 +60,7 @@ Route::group([
     Route::get('/get-not-available-time-today', [CalendarController::class, 'getNotAvailableTimeToday']);
     Route::post('/reserve-consultation', [CalendarController::class, 'reserveConsultation']);
     Route::get('/get-appointments-today', [CalendarController::class, 'getAppointmentsToday']);
+    Route::get('/get-appointments-today-user/{id}', [CalendarController::class, 'getAppointmentsTodayByUser']);
 
     // Events
     Route::get('/get-events', [EventController::class, 'getEvents']);
