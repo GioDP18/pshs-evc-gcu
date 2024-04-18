@@ -38,15 +38,16 @@
             <div class="d-flex flex-column gap-3">
                 <div style="width:100%; padding:10px; border-radius:20px; border:2px solid #fbebeb">
                     <p style="font-weight:bold; color:gray; font-size:15px; opacity:60%">Your appoinment for today</p>
-                    <div class="ml-4">
+                    <div class="ml-4" v-for="appointment in appointments_today" :key="appointment.index">
                         <p style="font-weight:bold; color:#27516B"><i class="fa-regular fa-clock"
                                 style="color:#ED9696"></i>
-                            9:30 am - 11:00 am</p>
+                            {{ appointment.time }}</p>
                         <p style="font-weight:bold; color:#27516B"><i class="fa-solid fa-calendar-days"
-                                style="color:#ED9696"></i> Mon, 25 March 2024</p>
+                                style="color:#ED9696"></i>{{ formattedDateFE(appointment.date) }}</p>
                     </div>
-                    <button class="text-light"
-                        style="width:100%; padding:10px; border-radius:30px; background-color:#ED9696; border:1px solid #fbebeb">Reschedule</button>
+                    <button class="text-light" v-if="appointments_today.length > 0"
+                        style="width:100%; padding:10px; border-radius:30px; background-color:#ED9696; border:1px solid #fbebeb">Reschedule
+                    </button>
                 </div>
 
                 <div
@@ -77,6 +78,7 @@ const not_available_time_today = ref([])
 const chosen_time = ref(null)
 const no_available_time = ref(false)
 const currentIndex = ref('');
+const appointments_today = ref([])
 const currentTime = new Date();
 const currentHour = currentTime.getHours();
 const currentMinute = currentTime.getMinutes();
@@ -116,6 +118,7 @@ const available_time_today = ref([]);
 
 onMounted(() => {
     getTimeNotAvailableToday();
+    getAppointmentsToday();
 })
 
 const handleDateClick = async (data) => {
@@ -152,6 +155,16 @@ const handleDateClick = async (data) => {
     }
 }
 
+const getAppointmentsToday = async () => {
+    try {
+        const result = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/get-appointments-today`)
+        console.log(result.data)
+        appointments_today.value = result.data.appointments
+    }
+    catch (error) {
+        console.error(error);
+    }
+}
 
 const getTimeNotAvailableToday = async () => {
     try {
@@ -196,11 +209,20 @@ const reserveConsultation = async () => {
         modalVisible.value = false
         chosen_time.value = null;
         getTimeNotAvailableToday();
+        getAppointmentsToday();
     }
     catch (error) {
         console.error(error);
     }
 }
+
+const formattedDateFE = (dateToFormat) => {
+    return new Date(dateToFormat).toLocaleDateString('en-US', {
+        month: 'long',
+        day: '2-digit',
+        year: 'numeric'
+    });
+};
 </script>
 
 <style scoped>
