@@ -207,4 +207,32 @@ Class CalendarServiceImpl implements CalendarService
             ]);
         }
     }
+
+    public function getAppointmentsTodayByUser($id)
+    {
+        try{
+            $result = Reservation::where('date', date('Y-m-d'))
+                ->where('user_id', $id)
+                ->get();
+
+            if(!$result){
+                return response()->json([
+                    "success"=> false,
+                    "message"=> "Internal Server Error."
+                ], 500);
+            }
+
+            return response()->json([
+                "success"=> true,
+                "message"=> "Fetched all appointments for today.",
+                "appointments" => $result
+            ], 200);
+        }
+        catch (\Exception $error){
+            return response()->json([
+                "success"=> false,
+                "message"=> $error->getMessage()
+            ]);
+        }
+    }
 }

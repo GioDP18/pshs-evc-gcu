@@ -157,7 +157,7 @@ const handleDateClick = async (data) => {
 
 const getAppointmentsToday = async () => {
     try {
-        const result = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/get-appointments-today`)
+        const result = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/get-appointments-today-user/${localStorage.getItem('user_id')}`)
         console.log(result.data)
         appointments_today.value = result.data.appointments
     }

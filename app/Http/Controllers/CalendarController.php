@@ -68,4 +68,8 @@ class CalendarController extends Controller
         return $this->calendarService->getAppointmentsToday($request);
     }
 
+    public function getAppointmentsTodayByUser($id){
+        return $this->calendarService->getAppointmentsTodayByUser($id);
+    }
+
 }
