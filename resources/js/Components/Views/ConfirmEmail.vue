@@ -10,8 +10,7 @@
                 <div id="banner"></div>
                 <div id="info">
                     <div class="big_title">Email Confirmation</div>
-                    <p>Hey Sara! you're almost ready to start using GRASS. Simple click the button below to verify your
-                        email address.</p>
+                    <p>Hey {{ email }}! you're almost ready to start using GRASS. Simple go to your Email and click the verify button. If you didnt received verify email you may click the button bellow to resend email verification. </p>
                 </div>
                 <div id="verify">
                     <a href="#" @click="resendEmailVerification()">Resend Confirmation Email</a>
