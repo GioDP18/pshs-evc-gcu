@@ -10,11 +10,10 @@
                 <div id="banner"></div>
                 <div id="info">
                     <div class="big_title">Email Confirmation</div>
-                    <p>Hey Sara! you're almost ready to start using GRASS. Simple click the button below to verify your
-                        email address.</p>
+                    <p>Hey {{ email }}! you're almost ready to start using GRASS. Simple go to your Email and click the verify button. If you didnt received verify email you may click the button bellow to resend email verification. </p>
                 </div>
                 <div id="verify">
-                    <a href="#">Resend Confirmation Email</a>
+                    <a href="#" @click="resendEmailVerification()">Resend Confirmation Email</a>
                 </div>
             </div>
         </div>
@@ -22,7 +21,34 @@
 </template>
 
 <script setup>
+import axios from 'axios';
+import { ref, computed, onMounted } from 'vue';
+import { useRouter } from "vue-router";
+import store from "../../State/index.js";
 
+const router = useRouter();
+
+const email = router.currentRoute.value.params.email; 
+
+const resendEmailVerification = async () => {
+    store.commit('setLoading', true)
+    try {
+        const resp = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/resend-email-verification-link`, {
+            email: email
+        })
+        if (resp.data.success == true) {
+            console.log(resp.data.message);
+        }else {
+            console.log(resp.data.message);
+        }
+    }
+    catch (error) {
+        console.log(error);
+    }
+    finally {
+        store.commit('setLoading', false)
+    }
+}
 </script>
 
 <style scoped>

@@ -38,24 +38,22 @@
             <div class="d-flex flex-column gap-3">
                 <div style="width:100%; padding:10px; border-radius:20px; border:2px solid #fbebeb">
                     <p style="font-weight:bold; color:gray; font-size:15px; opacity:60%">Your appoinment for today</p>
-                    <div class="ml-4">
+                    <div class="ml-4" v-for="appointment in appointments_today" :key="appointment.index">
                         <p style="font-weight:bold; color:#27516B"><i class="fa-regular fa-clock"
                                 style="color:#ED9696"></i>
-                            9:30 am - 11:00 am</p>
+                            {{ appointment.time }}</p>
                         <p style="font-weight:bold; color:#27516B"><i class="fa-solid fa-calendar-days"
-                                style="color:#ED9696"></i> Mon, 25 March 2024</p>
+                                style="color:#ED9696"></i>{{ formattedDateFE(appointment.date) }}</p>
                     </div>
-                    <button class="text-light"
-                        style="width:100%; padding:10px; border-radius:30px; background-color:#ED9696; border:1px solid #fbebeb">Reschedule</button>
+                    <button class="text-light" v-if="appointments_today.length > 0"
+                        style="width:100%; padding:10px; border-radius:30px; background-color:#ED9696; border:1px solid #fbebeb">Reschedule
+                    </button>
                 </div>
 
                 <div
                     style="width:100%; padding:10px; border-radius:20px; border:2px solid #fbebeb; max-height: 295px; overflow-y: auto;">
                     <p style="font-weight:bold; color:gray; font-size:15px; opacity:60%">Available time for today</p>
                     <div class="ml-4">
-                        <p style="font-weight:bold; color:#27516B" v-if="not_available_time_today.length === 0">No Available
-                            time
-                            for today.</p>
                         <p style="font-weight:bold; color:#27516B" v-for="item in available_time_today" :key="item.id">
                             <i class="fa-regular fa-clock" style="color:#ED9696"></i> {{ item }}
                         </p>
@@ -78,7 +76,13 @@ const selectedDate = ref(null)
 const notAvailableTimeSlots = ref([])
 const not_available_time_today = ref([])
 const chosen_time = ref(null)
+const currentIndex = ref('');
 const no_available_time = ref(false)
+const appointments_today = ref([])
+const currentTime = new Date();
+const currentHour = currentTime.getHours();
+const currentMinute = currentTime.getMinutes();
+const checked_time_passed = ref([]);
 const fixedTimeSlots = [
     '7:30 AM - 8:00 AM',
     '8:00 AM - 8:30 AM',
@@ -99,11 +103,22 @@ const fixedTimeSlots = [
     '3:30 PM - 4:00 PM',
     '4:00 PM - 4:30 PM',
 ]
+const formatTime = (hour, minute) => {
+    const meridiem = hour >= 12 ? 'PM' : 'AM';
+    const formattedHour = hour % 12 === 0 ? 12 : hour % 12;
+    const formattedMinute = minute < 10 ? '0' + minute : minute;
+    return `${formattedHour}:${formattedMinute} ${meridiem}`;
+};
+
+const currentFormattedTime = formatTime(currentMinute < 30 ? currentHour : currentHour + 1, currentMinute > 30 ? 0 : 30);
+const filteredTimeSlots = ref([]);
+
 const available_time = ref([]);
 const available_time_today = ref([]);
 
 onMounted(() => {
     getTimeNotAvailableToday();
+    getAppointmentsToday();
 })
 
 const handleDateClick = async (data) => {
@@ -140,6 +155,16 @@ const handleDateClick = async (data) => {
     }
 }
 
+const getAppointmentsToday = async () => {
+    try {
+        const result = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/get-appointments-today-user/${localStorage.getItem('user_id')}`)
+        console.log(result.data)
+        appointments_today.value = result.data.appointments
+    }
+    catch (error) {
+        console.error(error);
+    }
+}
 
 const getTimeNotAvailableToday = async () => {
     try {
@@ -147,10 +172,19 @@ const getTimeNotAvailableToday = async () => {
         // Extract times from the API response
         const notAvailableTimes = response.data.schedule.map(slot => slot.time);
 
-        // Filter out not available times from fixedTimeSlots
-        available_time_today.value = fixedTimeSlots.filter(slot => !notAvailableTimes.includes(slot));
+        currentIndex.value = fixedTimeSlots.findIndex(slot => slot.startsWith(currentFormattedTime));
 
-        console.log(response.data)
+        if (currentIndex.value === -1) {
+            currentIndex.value = 100; 
+        }
+
+        // Filter out not available times from fixedTimeSlots
+        filteredTimeSlots.value = fixedTimeSlots.slice(currentIndex.value);
+        checked_time_passed.value = fixedTimeSlots.slice(0, 15 + 1);
+        available_time_today.value = filteredTimeSlots.value;
+
+        
+        console.log(available_time_today.value)
         not_available_time_today.value = response.data.schedule
     }
     catch (error) {
@@ -175,11 +209,20 @@ const reserveConsultation = async () => {
         modalVisible.value = false
         chosen_time.value = null;
         getTimeNotAvailableToday();
+        getAppointmentsToday();
     }
     catch (error) {
         console.error(error);
     }
 }
+
+const formattedDateFE = (dateToFormat) => {
+    return new Date(dateToFormat).toLocaleDateString('en-US', {
+        month: 'long',
+        day: '2-digit',
+        year: 'numeric'
+    });
+};
 </script>
 
 <style scoped>

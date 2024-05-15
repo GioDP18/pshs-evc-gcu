@@ -358,55 +358,57 @@ const gradeSections = {
 const validateForm = () => {
     errors.value = {};
 
-    if (!formData.value.firstname) {
-        errors.value.firstname = 'First Name is required';
+    
+    if (currentStep.value === 1) {
+        if (!formData.value.firstname) {
+            errors.value.firstname = 'First Name is required';
+        }
+
+        if (!formData.value.middlename) {
+            errors.value.middlename = 'Middle Name is required';
+        }
+
+        if (!formData.value.lastname) {
+            errors.value.lastname = 'Last Name is required';
+        }
+
+        if (!formData.value.email) {
+            errors.value.email = 'Email is required';
+        } else if (!isValidEmail(formData.value.email)) {
+            errors.value.email = 'Invalid email format';
+        }
+
+        if (!formData.value.sex) {
+            errors.value.sex = 'Sex is required';
+        }
+
+    } else if (currentStep.value === 2) {
+        if (!formData.value.date_of_birth) {
+            errors.value.date_of_birth = 'Date of Birth is required';
+        }
+
+        if (!formData.value.contact_number) {
+            errors.value.contact_number = 'Contact Number is required';
+        } else if (formData.value.contact_number.length !== 11) {
+            errors.value.contact_number = 'Contact Number should contain 11 characters';
+        }
+
+        if (!formData.value.password) {
+            errors.value.password = 'Password is required';
+        }
+
+        if (!formData.value.password_confirmation) {
+            errors.value.password_confirmation = "Confirm Password is required.";
+        } else if (formData.value.password_confirmation !== formData.value.password) {
+            errors.value.password_confirmation = "Passwords don't match.";
+        }
+    } else if (currentStep.value === 3) {
+        if (!formData.value.role) {
+            errors.value.role = 'Role is required';
+        }
     }
 
-    if (!formData.value.middlename) {
-        errors.value.middlename = 'Middle Name is required';
-    }
-
-    if (!formData.value.lastname) {
-        errors.value.lastname = 'Last Name is required';
-    }
-
-    if (!formData.value.sex) {
-        errors.value.sex = 'Sex is required';
-    }
-
-    if (!formData.value.date_of_birth) {
-        errors.value.date_of_birth = 'date_of_birth is required';
-    }
-
-    if (!formData.value.contact_number) {
-        errors.value.contact_number = 'Contact_number is required';
-    }
-
-    // if (!formData.value.id_number) {
-    //     errors.value.id_number = 'Student ID Number is required';
-    // }
-
-    if (!formData.value.email) {
-        errors.value.email = 'Email is required';
-    } else if (!isValidEmail(formData.value.email)) {
-        errors.value.email = 'Invalid email format';
-    }
-
-    if (!formData.value.role) {
-        errors.value.role = 'Role is required';
-    }
-
-    if (!formData.value.password) {
-        errors.value.password = 'Password is required';
-    }
-
-    if (!formData.value.password_confirmation) {
-        errors.value.password_confirmation = "Confirm Password is required.";
-    } else if (formData.value.password_confirmation !== formData.value.password) {
-        errors.value.password_confirmation = "Passwords don't match.";
-    }
-
-    if (!formData.value.acceptTerms) {
+    if (!formData.value.acceptTerms && currentStep.value === totalSteps) {
         errors.value.acceptTerms = 'You must accept the terms and conditions';
     }
 };
@@ -427,8 +429,9 @@ const chooseSignature = (event) => {
 
 const submitForm = async () => {
     validateForm();
-    store.commit('setLoading', true)
+    
     if (Object.keys(errors.value).length === 0) {
+        store.commit('setLoading', true)
         // console.log('Form submitted:', formData.value);
         try {
             await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/register`, {
@@ -454,7 +457,20 @@ const submitForm = async () => {
             })
             .then((response) => {
                 if (response.status === 200) {
-                    router.push({ name: 'ConfirmEmail' });
+                    swal({
+                        title: "Successfully Created Account",
+                        icon: "success",
+                        button: "Okay",
+                    });
+                    router.push({ name: 'ConfirmEmail', params: { email: response.data.user.email }});
+                }
+                else {
+                    swal({
+                        title: "Error Creating Account",
+                        description: response.data.message,
+                        icon: "error",
+                        button: "Okay",
+                    });
                 }
             })
         }
@@ -481,7 +497,13 @@ const toggleShowPassword = () => {
 
 const nextStep = () => {
     if (currentStep.value < totalSteps) {
-        currentStep.value++;
+        validateForm();
+        if (Object.keys(errors.value).length === 0) {
+            currentStep.value++;
+        }
+        else {
+            console.log(errors.value);
+        }
     }
 };
 

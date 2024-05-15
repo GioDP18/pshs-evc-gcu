@@ -18,9 +18,9 @@
                     <thead>
                         <tr>
                             <th>Campus</th>
-                            <th>Name of student</th>
-                            <th>Date of Interview</th>
-                            <th>Interviewer</th>
+                            <th>Name of parent</th>
+                            <th>Date</th>
+                            <th>Student Name</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -43,6 +43,35 @@
                                                         style="margin-right: 10px;" /></i>View</a></li>
                                         <li><a class="dropdown-item generate" href="#"
                                                 @click="generateForm(data.id)"><i><font-awesome-icon
+                                                        :icon="['fas', 'file']"
+                                                        style="margin-right: 10px;" /></i>Generate</a></li>
+                                        <li><a class="dropdown-item delete" href="#"
+                                                @click="sendCertificate('certificate2')"><i><font-awesome-icon
+                                                        :icon="['fas', 'trash']"
+                                                        style="margin-right: 10px;" /></i>Delete</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Example campus</td>
+                            <td>John Doe</td>
+                            <td>Example date</td>
+                            <td>Mary Jane</td>
+                            <td>
+                                <div class="dropdown">
+                                    <button style="padding-right: 5px;" class="card14 dropdown-toggle" type="button"
+                                        id="sendUserCertDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <span class="send-text">Action</span>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="sendUserCertDropdown">
+                                        <li><a class="dropdown-item view" href="#"
+                                                @click="sendCertificate('certificate1')"><i><font-awesome-icon
+                                                        :icon="['fas', 'eye']"
+                                                        style="margin-right: 10px;" /></i>View</a></li>
+                                        <li><a class="dropdown-item generate" href="#"
+                                                @click="generateForm()"><i><font-awesome-icon
                                                         :icon="['fas', 'file']"
                                                         style="margin-right: 10px;" /></i>Generate</a></li>
                                         <li><a class="dropdown-item delete" href="#"
@@ -220,6 +249,7 @@ import axios from 'axios';
 import { ref, onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import $ from 'jquery';
+import store from "../../../../State/index.js";
 
 const router = useRouter();
 const all_data = ref([]);
@@ -283,7 +313,23 @@ const getAllParentQuestionnaireForms = async () => {
 const generateForm = async (form_id) => {
     store.commit('setLoading', true)
     try {
-        // Logic here
+        const resp = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/generate-parent-questionaire`, {
+            responseType: 'arraybuffer'
+        })
+        if (resp.status === 200) {
+            const contentDisposition = resp.headers['content-disposition']
+            const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/
+            const matches = filenameRegex.exec(contentDisposition)
+            const filename = matches && matches[1] ? matches[1].replace(/['"]/g, '') : 'Parent-Questionaire.pdf'
+
+            var newBlob = new Blob([resp.data], { type: 'application/pdf' })
+
+            const data = window.URL.createObjectURL(newBlob)
+            var link = document.createElement('a')
+            link.href = data
+            link.download = filename 
+            link.click()
+        }
     }
     catch (error) {
         console.log(error);

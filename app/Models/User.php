@@ -5,6 +5,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Carbon\Carbon;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -28,6 +29,7 @@ class User extends Authenticatable implements JWTSubject
         'section',
         'email',
         'password',
+        'registration_status',
     ];
     /**
      * The attributes that should be hidden for arrays.
