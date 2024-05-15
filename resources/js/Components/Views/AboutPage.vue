@@ -482,6 +482,50 @@ a:hover {
     font-weight: 500;
 }
 
+@media screen and (max-width: 768px) {
+    .staff-info .image-container {
+        gap: 50px;
+    }
+}
+
+@media screen and (max-width: 425px) {
+    .about-us-info h2 {
+        font-size: 70px;
+    }
+
+    .history-info {
+        height: 70%;
+    }
+
+    .staff-info {
+        margin-top: 10px;
+    }
+
+    .staff-info .image-container {
+        flex-direction: column;
+        padding-top: 60px;
+    }
+}
+
+@media screen and (max-width: 375px) {
+    .about-us-info h2 {
+        font-size: 50px;
+    }
+
+    .history-info {
+        height: 80%;
+    }
+
+    .staff-info {
+        margin-top: 10px;
+    }
+
+    .staff-info .image-container {
+        flex-direction: column;
+        padding-top: 60px;
+    }
+}
+
 @media screen and (max-width:360px) {
     .about-us-info {
         height: 100%;

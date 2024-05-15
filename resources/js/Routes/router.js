@@ -68,6 +68,8 @@ import ConfirmEmail from "../Components/Views/ConfirmEmail.vue";
 import VerifiedEmail from "../Components/Views/VerifiedEmail.vue";
 import VerifyEmail from "../Components/Views/VerifyEmail.vue";
 import NotVerifiedEmail from "../Components/Views/NotVerifiedEmail.vue";
+import ForgotPassword from "../Components/Views/ForgotPassword.vue";
+import ResetPassword from "../Components/Views/ResetPassword.vue";
 import NotFound from "../Components/404.vue";
 
 const routes = [
@@ -342,6 +344,16 @@ const routes = [
         component: NotVerifiedEmail,
         name: "notVerifiedEmail",
         props: true,
+    },
+    {
+        path: "/forgotPassword",
+        component: ForgotPassword,
+        name: "forgotPassword"
+    },
+    {
+        path: "/resetPassword",
+        component: ResetPassword,
+        name: "resetPassword"
     },
     {
         path: "/:path(.*)",
