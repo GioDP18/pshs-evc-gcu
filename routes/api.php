@@ -13,6 +13,7 @@ use App\Http\Controllers\RequestsController;
 use App\Http\Controllers\SaveInputsController;
 use App\Http\Controllers\UserDataController;
 use App\Http\Controllers\RegistrationApplicationController;
+use App\Http\Controllers\ResetPassword;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +39,8 @@ Route::group([
     Route::get('/get-user-data/{id}', [UserDataController::class, 'getUserData']);
     Route::get('/get-all-users', [UserDataController::class, 'getAllUsers']);
     Route::get('/get-all-staffs', [UserDataController::class, 'getStaffs']);
+    Route::post('/forget-password', [ResetPassword::class, 'submitForgetPasswordForm']);
+    Route::post('/reset-password', [ResetPassword::class, 'submitResetPasswordForm']);
 
     // Social login
     Route::get('/oauth/{provider}', [AuthController::class, 'socialLogin']);
