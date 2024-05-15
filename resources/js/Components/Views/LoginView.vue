@@ -410,7 +410,7 @@ const viaGoogle = async () => {
     font-size: 15px;
 }
 
-@media screen and (max-width: 360px) {
+@media screen and (max-width: 425px) {
     .login-content {
         flex-direction: column;
         height: 100vh;

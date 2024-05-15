@@ -709,7 +709,7 @@ const prevStep = () => {
     width: 100%;
 }
 
-@media screen and (max-width: 360px) {
+@media screen and (max-width: 425px) {
     .register-content {
         flex-direction: column;
         height: 100vh;
@@ -768,7 +768,7 @@ const prevStep = () => {
 
     .white-box {
         width: 100%;
-        height: 100vh;
+        height: 110vh;
         border-radius: 0%;
     }
 }
