@@ -15,7 +15,7 @@
                 <p class="mt-3"><b>Date:</b> {{ selectedDate }}</p>
                 <div class="mb-4">
                     <div><b>Choose Available Time:</b></div>
-                    <small class="ml-4">Note: Red means time is is not available.</small>
+                    <small class="ml-4">Note: Red means time is not available.</small>
                     <div class="ml-4 mt-2 d-flex gap-4" style="flex-wrap:wrap;">
                         <div class="radio-input" style="width:11rem" v-for="timeSlot in fixedTimeSlots" :key="timeSlot">
                             <div class="radio-container">
@@ -108,7 +108,6 @@ const fixedTimeSlots = [
     '3:30 PM - 4:00 PM',
     '4:00 PM - 4:30 PM',
 ]
-
 
 const formatTime = (hour, minute) => {
     const meridiem = hour >= 12 ? 'PM' : 'AM';
@@ -216,6 +215,11 @@ const getAppointmentsToday = async () => {
 </script>
 
 <style scoped>
+.is-past {
+  /* Style for past dates */
+  cursor: not-allowed;
+  opacity: 0.5; /* Example: Reduce opacity for past dates */
+}
 .is-selected {
     background-color: #e6f7ff;
     cursor: pointer;
